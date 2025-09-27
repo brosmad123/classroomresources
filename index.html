@@ -1204,65 +1204,6 @@
                 </div>
             `;
         }
-                    ]
-                },
-                newspaper: {
-                    title: "Digital Newspaper",
-                    projects: [
-                        {
-                            title: "Breaking News Section",
-                            description: "Real-time news updates and alerts with live feed integration",
-                            tech: ["React", "Node.js", "WebSocket", "API"],
-                            link: "#"
-                        },
-                        {
-                            title: "Sports Coverage Platform",
-                            description: "Comprehensive sports news and live score tracking system",
-                            tech: ["HTML", "CSS", "JavaScript", "Sports API"],
-                            link: "#"
-                        },
-                        {
-                            title: "Opinion & Editorial Hub",
-                            description: "Editorial and opinion piece platform with comment system",
-                            tech: ["CMS", "WordPress", "PHP", "MySQL"],
-                            link: "#"
-                        },
-                        {
-                            title: "Weather & Local News",
-                            description: "Local weather integration with community news updates",
-                            tech: ["JavaScript", "Weather API", "Geolocation", "CSS"],
-                            link: "#"
-                        }
-                    ]
-                }
-            };
-
-            const data = portfolioData[type];
-            if (!data) return renderHomePage();
-
-            return `
-                <div class="portfolio-container">
-                    <button class="back-btn" onclick="navigateTo('/')">
-                        <i class="fas fa-arrow-left"></i> Back to Home
-                    </button>
-                    <h1 class="portfolio-title">${data.title}</h1>
-                    <div class="projects-grid">
-                        ${data.projects.map(project => `
-                            <div class="project-card">
-                                <h3 class="project-title">${project.title}</h3>
-                                <p class="project-description">${project.description}</p>
-                                <div class="tech-stack">
-                                    ${project.tech.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                                </div>
-                                <a href="${project.link}" class="project-link">
-                                    <i class="fas fa-external-link-alt"></i> View Project
-                                </a>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        }
 
         // Theme Management
         const themeSelector = document.getElementById('themeSelector');
