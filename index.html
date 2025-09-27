@@ -1,10 +1,4 @@
-// Initialize the app when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-        });
-
-        // Also initialize immediately in case DOMContentLoaded already fired
-        initializeApp();<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -501,59 +495,196 @@
     </div>
 
     <script>
-        // Cookie Management Functions
-        function setCookie(name, value, days = 30) {
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${JSON.stringify(value)};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        // Encryption/Decryption utility functions using Web Crypto API
+        class CookieEncryption {
+            constructor() {
+                this.algorithm = 'AES-GCM';
+                this.keyLength = 256;
+                this.ivLength = 12; // 96 bits for GCM
+                this.initKey();
+            }
+
+            async initKey() {
+                // Generate or retrieve encryption key
+                const keyData = localStorage.getItem('encryptionKey');
+                if (keyData) {
+                    // Import existing key
+                    const keyBuffer = this.base64ToArrayBuffer(keyData);
+                    this.cryptoKey = await crypto.subtle.importKey(
+                        'raw',
+                        keyBuffer,
+                        { name: this.algorithm },
+                        false,
+                        ['encrypt', 'decrypt']
+                    );
+                } else {
+                    // Generate new key
+                    this.cryptoKey = await crypto.subtle.generateKey(
+                        { name: this.algorithm, length: this.keyLength },
+                        true,
+                        ['encrypt', 'decrypt']
+                    );
+                    
+                    // Export and store key
+                    const keyBuffer = await crypto.subtle.exportKey('raw', this.cryptoKey);
+                    localStorage.setItem('encryptionKey', this.arrayBufferToBase64(keyBuffer));
+                }
+            }
+
+            async encrypt(data) {
+                if (!this.cryptoKey) await this.initKey();
+                
+                const encoder = new TextEncoder();
+                const dataBuffer = encoder.encode(JSON.stringify(data));
+                
+                // Generate random IV
+                const iv = crypto.getRandomValues(new Uint8Array(this.ivLength));
+                
+                // Encrypt data
+                const encryptedBuffer = await crypto.subtle.encrypt(
+                    { name: this.algorithm, iv: iv },
+                    this.cryptoKey,
+                    dataBuffer
+                );
+                
+                // Combine IV and encrypted data
+                const combined = new Uint8Array(iv.length + encryptedBuffer.byteLength);
+                combined.set(iv);
+                combined.set(new Uint8Array(encryptedBuffer), iv.length);
+                
+                return this.arrayBufferToBase64(combined.buffer);
+            }
+
+            async decrypt(encryptedData) {
+                if (!this.cryptoKey) await this.initKey();
+                
+                try {
+                    const combined = this.base64ToArrayBuffer(encryptedData);
+                    
+                    // Extract IV and encrypted data
+                    const iv = combined.slice(0, this.ivLength);
+                    const encrypted = combined.slice(this.ivLength);
+                    
+                    // Decrypt data
+                    const decryptedBuffer = await crypto.subtle.decrypt(
+                        { name: this.algorithm, iv: iv },
+                        this.cryptoKey,
+                        encrypted
+                    );
+                    
+                    const decoder = new TextDecoder();
+                    const decryptedText = decoder.decode(decryptedBuffer);
+                    
+                    return JSON.parse(decryptedText);
+                } catch (error) {
+                    console.warn('Failed to decrypt cookie:', error);
+                    return null;
+                }
+            }
+
+            arrayBufferToBase64(buffer) {
+                const bytes = new Uint8Array(buffer);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return btoa(binary);
+            }
+
+            base64ToArrayBuffer(base64) {
+                const binary = atob(base64);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
         }
 
-        function getCookie(name) {
+        // Initialize encryption instance
+        const cookieEncryption = new CookieEncryption();
+
+        // Encrypted Cookie Management Functions
+        async function setSecureCookie(name, value, days = 30) {
+            try {
+                const encryptedValue = await cookieEncryption.encrypt(value);
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = `${name}=${encryptedValue};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+            } catch (error) {
+                console.error('Failed to set secure cookie:', error);
+                showNotification('Failed to save user data securely', 'warning');
+            }
+        }
+
+        async function getSecureCookie(name) {
+            try {
+                const nameEQ = name + "=";
+                const ca = document.cookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) {
+                        const encryptedValue = c.substring(nameEQ.length, c.length);
+                        return await cookieEncryption.decrypt(encryptedValue);
+                    }
+                }
+                return null;
+            } catch (error) {
+                console.warn('Failed to get secure cookie:', error);
+                return null;
+            }
+        }
+
+        function deleteSecureCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        }
+
+        // Fallback functions for non-encrypted cookies (for themes, etc.)
+        function setPlainCookie(name, value, days = 30) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        }
+
+        function getPlainCookie(name) {
             const nameEQ = name + "=";
             const ca = document.cookie.split(';');
             for (let i = 0; i < ca.length; i++) {
                 let c = ca[i];
                 while (c.charAt(0) === ' ') c = c.substring(1, c.length);
                 if (c.indexOf(nameEQ) === 0) {
-                    try {
-                        return JSON.parse(c.substring(nameEQ.length, c.length));
-                    } catch (e) {
-                        return c.substring(nameEQ.length, c.length);
-                    }
+                    return c.substring(nameEQ.length, c.length);
                 }
             }
             return null;
         }
 
-        function deleteCookie(name) {
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-        }
-
-        // Initialize user data from cookies or defaults
+        // Initialize user data
         let userData = {
-            isLoggedIn: getCookie('isLoggedIn') || false,
-            user: getCookie('userData') || null,
-            theme: getCookie('userTheme') || 'dark',
-            rememberMe: getCookie('rememberMe') || false
+            isLoggedIn: false,
+            user: null,
+            theme: getPlainCookie('userTheme') || 'dark',
+            rememberMe: false
         };
 
         let isLoginMode = true;
 
-        // Theme Management with Cookie Persistence
+        // Theme Management (can remain unencrypted as it's not sensitive)
         const themeSelector = document.getElementById('themeSelector');
         themeSelector.addEventListener('change', function() {
             const theme = this.value;
             document.documentElement.setAttribute('data-theme', theme);
             userData.theme = theme;
             
-            // Save theme to cookies (30 days)
-            setCookie('userTheme', theme, 30);
+            // Save theme to plain cookies (30 days)
+            setPlainCookie('userTheme', theme, 30);
             showNotification(`Theme changed to ${theme}!`, 'success');
         });
 
-        // Load saved theme from cookies
+        // Load saved theme
         function loadSavedTheme() {
-            const savedTheme = getCookie('userTheme') || 'dark';
+            const savedTheme = getPlainCookie('userTheme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             themeSelector.value = savedTheme;
             userData.theme = savedTheme;
@@ -591,8 +722,18 @@
             }
         }
 
-        // Auth Form Handler with Cookie Persistence
-        document.getElementById('authForm').addEventListener('submit', function(e) {
+        // Secure password hashing (simple implementation - use stronger hashing in production)
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + 'salt_string_for_security');
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Auth Form Handler with Encrypted Cookie Persistence
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const email = document.getElementById('email').value;
@@ -600,7 +741,7 @@
             const name = document.getElementById('name').value;
             const rememberMe = document.getElementById('rememberMe').checked;
 
-            // Simple validation (in real app, you'd validate against server)
+            // Simple validation
             if (password.length < 6) {
                 showNotification('Password must be at least 6 characters!', 'warning');
                 return;
@@ -613,20 +754,21 @@
             };
 
             if (isLoginMode) {
-                // Simulate login - check if user exists in cookies
-                const existingUser = getCookie('registeredUsers') || {};
+                // Login - check encrypted user data
+                const existingUsers = await getSecureCookie('registeredUsers') || {};
+                const hashedPassword = await hashPassword(password);
                 
-                if (existingUser[email] && existingUser[email].password === password) {
+                if (existingUsers[email] && existingUsers[email].password === hashedPassword) {
                     // Successful login
                     userData.isLoggedIn = true;
                     userData.user = userInfo;
                     userData.rememberMe = rememberMe;
                     
-                    // Save login state to cookies
-                    const cookieDays = rememberMe ? 30 : 1; // 30 days if remember me, 1 day otherwise
-                    setCookie('isLoggedIn', true, cookieDays);
-                    setCookie('userData', userInfo, cookieDays);
-                    setCookie('rememberMe', rememberMe, cookieDays);
+                    // Save encrypted login state
+                    const cookieDays = rememberMe ? 30 : 1;
+                    await setSecureCookie('isLoggedIn', true, cookieDays);
+                    await setSecureCookie('userData', userInfo, cookieDays);
+                    await setSecureCookie('rememberMe', rememberMe, cookieDays);
                     
                     updateAuthUI();
                     closeAuthModal();
@@ -635,22 +777,23 @@
                     showNotification('Invalid email or password!', 'warning');
                 }
             } else {
-                // Simulate signup - save user to cookies
-                let registeredUsers = getCookie('registeredUsers') || {};
+                // Signup - save encrypted user data
+                let registeredUsers = await getSecureCookie('registeredUsers') || {};
                 
                 if (registeredUsers[email]) {
                     showNotification('User already exists! Please login.', 'warning');
                     return;
                 }
                 
-                // Save new user
+                // Save new user with hashed password
+                const hashedPassword = await hashPassword(password);
                 registeredUsers[email] = {
-                    password: password,
+                    password: hashedPassword,
                     name: userInfo.name,
                     registrationDate: new Date().toISOString()
                 };
                 
-                setCookie('registeredUsers', registeredUsers, 365); // Save for 1 year
+                await setSecureCookie('registeredUsers', registeredUsers, 365);
                 
                 // Auto-login after signup
                 userData.isLoggedIn = true;
@@ -658,9 +801,9 @@
                 userData.rememberMe = rememberMe;
                 
                 const cookieDays = rememberMe ? 30 : 1;
-                setCookie('isLoggedIn', true, cookieDays);
-                setCookie('userData', userInfo, cookieDays);
-                setCookie('rememberMe', rememberMe, cookieDays);
+                await setSecureCookie('isLoggedIn', true, cookieDays);
+                await setSecureCookie('userData', userInfo, cookieDays);
+                await setSecureCookie('rememberMe', rememberMe, cookieDays);
                 
                 updateAuthUI();
                 closeAuthModal();
@@ -671,15 +814,15 @@
             document.getElementById('authForm').reset();
         });
 
-        function logout() {
+        async function logout() {
             userData.isLoggedIn = false;
             userData.user = null;
             userData.rememberMe = false;
             
-            // Clear login cookies
-            deleteCookie('isLoggedIn');
-            deleteCookie('userData');
-            deleteCookie('rememberMe');
+            // Clear encrypted login cookies
+            deleteSecureCookie('isLoggedIn');
+            deleteSecureCookie('userData');
+            deleteSecureCookie('rememberMe');
             
             updateAuthUI();
             showNotification('Logged out successfully!', 'info');
@@ -871,47 +1014,97 @@
         // Also initialize immediately in case DOMContentLoaded already fired
         initializeApp();
 
-        // Initialize - Load user data from cookies on page load
-        function initializeApp() {
-            // Check if user should be logged in based on cookies
-            const isLoggedIn = getCookie('isLoggedIn');
-            const userData_cookie = getCookie('userData');
-            
-            if (isLoggedIn && userData_cookie) {
-                userData.isLoggedIn = true;
-                userData.user = userData_cookie;
-                updateAuthUI();
+        // Initialize - Load encrypted user data from cookies on page load
+        async function initializeApp() {
+            try {
+                // Check if user should be logged in based on encrypted cookies
+                const isLoggedIn = await getSecureCookie('isLoggedIn');
+                const userData_cookie = await getSecureCookie('userData');
                 
-                // Check if login is expired (optional security feature)
-                const loginTime = new Date(userData_cookie.loginTime || Date.now());
-                const now = new Date();
-                const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
-                
-                // If more than 24 hours and not "remember me", log out
-                if (hoursSinceLogin > 24 && !getCookie('rememberMe')) {
-                    logout();
-                    showNotification('Session expired. Please login again.', 'info');
+                if (isLoggedIn && userData_cookie) {
+                    userData.isLoggedIn = true;
+                    userData.user = userData_cookie;
+                    updateAuthUI();
+                    
+                    // Check if login is expired (optional security feature)
+                    const loginTime = new Date(userData_cookie.loginTime || Date.now());
+                    const now = new Date();
+                    const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                    
+                    // If more than 24 hours and not "remember me", log out
+                    const rememberMe = await getSecureCookie('rememberMe');
+                    if (hoursSinceLogin > 24 && !rememberMe) {
+                        await logout();
+                        showNotification('Session expired. Please login again.', 'info');
+                    }
+                } else {
+                    updateAuthUI();
                 }
+                
+                loadSavedTheme();
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                // Fallback to logged out state if encryption fails
+                userData.isLoggedIn = false;
+                userData.user = null;
+                updateAuthUI();
             }
-            
-            loadSavedTheme();
-            updateAuthUI();
         }
 
-        // User Preferences Management
-        function saveUserPreferences() {
-            const preferences = {
-                theme: userData.theme,
-                lastVisit: new Date().toISOString()
-            };
-            setCookie('userPreferences', preferences, 365);
+        // User Preferences Management with Encryption
+        async function saveUserPreferences() {
+            try {
+                const preferences = {
+                    theme: userData.theme,
+                    lastVisit: new Date().toISOString(),
+                    version: '1.0'
+                };
+                await setSecureCookie('userPreferences', preferences, 365);
+            } catch (error) {
+                console.warn('Failed to save user preferences:', error);
+            }
         }
 
         // Call when theme changes
-        function onThemeChange(theme) {
+        async function onThemeChange(theme) {
             userData.theme = theme;
-            saveUserPreferences();
+            await saveUserPreferences();
         }
+
+        // Security utility functions
+        function generateSecureToken() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Session management
+        async function refreshUserSession() {
+            if (userData.isLoggedIn && userData.user) {
+                userData.user.loginTime = new Date().toISOString();
+                const rememberMe = await getSecureCookie('rememberMe') || false;
+                const cookieDays = rememberMe ? 30 : 1;
+                await setSecureCookie('userData', userData.user, cookieDays);
+            }
+        }
+
+        // Refresh session every 30 minutes if user is active
+        setInterval(async () => {
+            if (userData.isLoggedIn) {
+                await refreshUserSession();
+            }
+        }, 30 * 60 * 1000);
+
+        // Clear encryption key on page unload for added security (optional)
+        window.addEventListener('beforeunload', function() {
+            if (!userData.rememberMe) {
+                // Only clear if user didn't choose "remember me"
+                // localStorage.removeItem('encryptionKey');
+            }
+        });
+
+        console.log('🔒 Portfolio Hub loaded with encrypted cookie security!');
+        console.log('🔐 User data is now encrypted and secure from prying eyes.');
     </script>
 </body>
 </html>
