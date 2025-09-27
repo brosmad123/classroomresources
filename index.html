@@ -16,6 +16,7 @@
             --border: rgba(255, 255, 255, 0.1);
             --shadow: rgba(0, 0, 0, 0.3);
         }
+
         :root[data-theme="light"] {
             --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
             --bg-card: rgba(255, 255, 255, 0.9);
@@ -26,6 +27,7 @@
             --border: rgba(0, 0, 0, 0.1);
             --shadow: rgba(0, 0, 0, 0.1);
         }
+
         :root[data-theme="neon"] {
             --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #330066 100%);
             --bg-card: rgba(255, 0, 255, 0.1);
@@ -36,6 +38,7 @@
             --border: rgba(255, 0, 255, 0.3);
             --shadow: rgba(255, 0, 255, 0.2);
         }
+
         :root[data-theme="ocean"] {
             --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
             --bg-card: rgba(255, 255, 255, 0.1);
@@ -46,6 +49,8 @@
             --border: rgba(255, 255, 255, 0.2);
             --shadow: rgba(0, 0, 0, 0.3);
         }
+
+        /* Custom themes can be added dynamically */
         :root[data-theme="custom"] {
             --bg-primary: var(--custom-bg-primary, linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%));
             --bg-card: var(--custom-bg-card, rgba(255, 255, 255, 0.1));
@@ -56,11 +61,13 @@
             --border: var(--custom-border, rgba(255, 255, 255, 0.1));
             --shadow: var(--custom-shadow, rgba(0, 0, 0, 0.3));
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
@@ -69,6 +76,7 @@
             overflow-x: hidden;
             transition: all 0.3s ease;
         }
+
         .header {
             position: fixed;
             top: 0;
@@ -83,16 +91,19 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--accent);
         }
+
         .header-nav {
             display: flex;
             gap: 2rem;
             align-items: center;
         }
+
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
@@ -100,14 +111,17 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
+
         .nav-link:hover, .nav-link.active {
             color: var(--accent);
         }
+
         .header-controls {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
+
         .theme-selector, .theme-editor-btn {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -117,10 +131,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .theme-selector:hover, .theme-editor-btn:hover {
             background: var(--accent);
             color: white;
         }
+
         .auth-btn {
             background: var(--accent);
             color: white;
@@ -131,14 +147,17 @@
             font-weight: 500;
             transition: all 0.3s ease;
         }
+
         .auth-btn:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
         }
+
         .main-container {
             padding-top: 100px;
             min-height: 100vh;
         }
+
         .content {
             text-align: center;
             max-width: 800px;
@@ -152,6 +171,7 @@
             justify-content: center;
             min-height: calc(100vh - 100px);
         }
+
         .title {
             font-size: 4rem;
             font-weight: 800;
@@ -162,12 +182,14 @@
             background-clip: text;
             animation: slideUp 1s ease-out;
         }
+
         .subtitle {
             font-size: 1.3rem;
             color: var(--text-secondary);
             margin-bottom: 3rem;
             animation: slideUp 1s ease-out 0.2s both;
         }
+
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -175,6 +197,7 @@
             margin-top: 2rem;
             width: 100%;
         }
+
         .nav-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -187,9 +210,11 @@
             overflow: hidden;
             animation: slideUp 1s ease-out both;
         }
+
         .nav-card:nth-child(1) { animation-delay: 0.4s; }
         .nav-card:nth-child(2) { animation-delay: 0.6s; }
         .nav-card:nth-child(3) { animation-delay: 0.8s; }
+
         .nav-card::before {
             content: '';
             position: absolute;
@@ -202,30 +227,36 @@
             transition: opacity 0.3s ease;
             pointer-events: none;
         }
+
         .nav-card:hover::before {
             opacity: 0.1;
         }
+
         .nav-card:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 20px 40px var(--shadow);
             border-color: var(--accent);
         }
+
         .card-icon {
             font-size: 3rem;
             color: var(--accent);
             margin-bottom: 1rem;
             display: block;
         }
+
         .card-title {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text-primary);
         }
+
         .card-description {
             color: var(--text-secondary);
             line-height: 1.6;
         }
+
         .floating-shapes {
             position: absolute;
             top: 0;
@@ -235,11 +266,13 @@
             pointer-events: none;
             z-index: 1;
         }
+
         .shape {
             position: absolute;
             opacity: 0.1;
             animation: float 6s ease-in-out infinite;
         }
+
         .shape:nth-child(1) {
             top: 20%;
             left: 10%;
@@ -249,6 +282,7 @@
             border-radius: 50%;
             animation-delay: 0s;
         }
+
         .shape:nth-child(2) {
             top: 60%;
             right: 15%;
@@ -258,6 +292,7 @@
             clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             animation-delay: 2s;
         }
+
         .shape:nth-child(3) {
             bottom: 30%;
             left: 15%;
@@ -267,6 +302,7 @@
             border-radius: 20px;
             animation-delay: 4s;
         }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -279,6 +315,7 @@
             z-index: 2000;
             backdrop-filter: blur(10px);
         }
+
         .modal-content {
             position: absolute;
             top: 50%;
@@ -294,16 +331,19 @@
             max-height: 80vh;
             overflow-y: auto;
         }
+
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.5rem;
         }
+
         .modal-title {
             font-size: 1.5rem;
             font-weight: 600;
         }
+
         .close-btn {
             background: none;
             border: none;
@@ -311,15 +351,18 @@
             color: var(--text-secondary);
             cursor: pointer;
         }
+
         .form-group {
             margin-bottom: 1rem;
         }
+
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
+
         .form-input {
             width: 100%;
             padding: 0.75rem;
@@ -330,11 +373,13 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
+
         .form-input:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
+
         .submit-btn {
             width: 100%;
             background: var(--accent);
@@ -347,51 +392,186 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .submit-btn:hover {
             background: var(--accent-hover);
         }
+
         .user-info {
             display: none;
             align-items: center;
             gap: 0.5rem;
             color: var(--text-primary);
         }
-        /* Responsive Styles */
+
+        /* Users page styles */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .user-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-badge {
+            background: #ff6b6b;
+        }
+
+        /* Theme Editor Styles */
+        .color-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            background: var(--bg-card);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .admin-title {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .editable-content {
+            position: relative;
+            cursor: text;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .editable-content:hover {
+            background: var(--bg-card);
+        }
+
+        .edit-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .editable-content:hover .edit-indicator {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
         @media (max-width: 768px) {
             .title {
-                font-size: 2.2rem;
+                font-size: 2.5rem;
             }
-            .subtitle {
-                font-size: 1.05rem;
-            }
+            
             .nav-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
-            .nav-card {
-                padding: 1rem;
-                font-size: 1rem;
-            }
+            
             .header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 0.5rem 1rem;
+                padding: 1rem;
             }
-            .logo {
-                margin-bottom: 0.5rem;
-            }
+            
             .header-controls {
                 gap: 0.5rem;
             }
+
             .header-nav {
                 gap: 1rem;
-                margin-bottom: 0.5rem;
-            }
-            .main-container {
-                padding-top: 80px;
-            }
-            .floating-shapes {
-                display: none;
             }
         }
     </style>
@@ -403,6 +583,7 @@
         </div>
         <nav class="header-nav">
             <a class="nav-link active" onclick="showSection('home')">Home</a>
+            <a class="nav-link" onclick="showSection('users')">Users</a>
         </nav>
         <div class="header-controls">
             <select class="theme-selector" id="themeSelector">
@@ -423,11 +604,13 @@
             <button class="auth-btn" id="authBtn" onclick="showAuthModal()">Sign Up</button>
         </div>
     </header>
+
     <div class="floating-shapes">
         <div class="shape"></div>
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
+
     <!-- Home Section -->
     <main class="main-container" id="homeSection">
         <div class="content">
@@ -439,21 +622,9 @@
                 Discover amazing work from talented creators
                 <span class="edit-indicator"><i class="fas fa-edit"></i></span>
             </p>
+            
             <div class="nav-grid">
-                <!-- Gurshaan's Portfolio Card -->
-                <div class="nav-card" onclick="window.location.href='/gurshaan'">
-                    <i class="fas fa-laptop-code card-icon"></i>
-                    <h3 class="card-title editable-content" data-key="gurshaan-title">
-                        Gurshaan's Portfolio
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </h3>
-                    <p class="card-description editable-content" data-key="gurshaan-desc">
-                        Discover creative web development and design solutions
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </p>
-                </div>
-                <!-- Harman's Portfolio Card -->
-                <div class="nav-card" onclick="window.location.href='/harman'">
+                <div class="nav-card" onclick="navigateToPortfolio('harman')">
                     <i class="fas fa-chart-line card-icon"></i>
                     <h3 class="card-title editable-content" data-key="harman-title">
                         Harman's Portfolio
@@ -464,8 +635,20 @@
                         <span class="edit-indicator"><i class="fas fa-edit"></i></span>
                     </p>
                 </div>
-                <!-- Digital Newspaper Card -->
-                <div class="nav-card" onclick="window.location.href='/newspaper'">
+                
+                <div class="nav-card" onclick="navigateToPortfolio('gurshaan')">
+                    <i class="fas fa-laptop-code card-icon"></i>
+                    <h3 class="card-title editable-content" data-key="gurshaan-title">
+                        Gurshaan's Portfolio
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </h3>
+                    <p class="card-description editable-content" data-key="gurshaan-desc">
+                        Discover creative web development and design solutions
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </p>
+                </div>
+                
+                <div class="nav-card" onclick="navigateToPortfolio('newspaper')">
                     <i class="fas fa-newspaper card-icon"></i>
                     <h3 class="card-title editable-content" data-key="newspaper-title">
                         Digital Newspaper
@@ -479,6 +662,17 @@
             </div>
         </div>
     </main>
+
+    <!-- Users Section -->
+    <div class="main-container" id="usersSection" style="display: none;">
+        <div style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
+            <h1 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; color: var(--text-primary);">User Community</h1>
+            <div class="users-grid" id="usersGrid">
+                <!-- Users will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
     <!-- Auth Modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
@@ -506,6 +700,7 @@
             </p>
         </div>
     </div>
+
     <!-- Theme Editor Modal -->
     <div id="themeModal" class="modal">
         <div class="modal-content">
@@ -540,16 +735,778 @@
             </div>
         </div>
     </div>
+
     <script>
-        // JavaScript remains unchanged except for showSection
+        // Profanity filter
+        const profanityList = [
+            'damn', 'hell', 'crap', 'shit', 'fuck', 'bitch', 'ass', 'bastard',
+            'stupid', 'idiot', 'moron', 'retard', 'gay', 'fag', 'nigger', 'nigga'
+        ];
+
+        function filterProfanity(text) {
+            let filtered = text;
+            profanityList.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                filtered = filtered.replace(regex, '*'.repeat(word.length));
+            });
+            return filtered;
+        }
+
+        // Encryption/Decryption utility functions using Web Crypto API
+        class CookieEncryption {
+            constructor() {
+                this.algorithm = 'AES-GCM';
+                this.keyLength = 256;
+                this.ivLength = 12;
+                this.initKey();
+            }
+
+            async initKey() {
+                const keyData = localStorage.getItem('encryptionKey');
+                if (keyData) {
+                    const keyBuffer = this.base64ToArrayBuffer(keyData);
+                    this.cryptoKey = await crypto.subtle.importKey(
+                        'raw',
+                        keyBuffer,
+                        { name: this.algorithm },
+                        false,
+                        ['encrypt', 'decrypt']
+                    );
+                } else {
+                    this.cryptoKey = await crypto.subtle.generateKey(
+                        { name: this.algorithm, length: this.keyLength },
+                        true,
+                        ['encrypt', 'decrypt']
+                    );
+                    
+                    const keyBuffer = await crypto.subtle.exportKey('raw', this.cryptoKey);
+                    localStorage.setItem('encryptionKey', this.arrayBufferToBase64(keyBuffer));
+                }
+            }
+
+            async encrypt(data) {
+                if (!this.cryptoKey) await this.initKey();
+                
+                const encoder = new TextEncoder();
+                const dataBuffer = encoder.encode(JSON.stringify(data));
+                const iv = crypto.getRandomValues(new Uint8Array(this.ivLength));
+                
+                const encryptedBuffer = await crypto.subtle.encrypt(
+                    { name: this.algorithm, iv: iv },
+                    this.cryptoKey,
+                    dataBuffer
+                );
+                
+                const combined = new Uint8Array(iv.length + encryptedBuffer.byteLength);
+                combined.set(iv);
+                combined.set(new Uint8Array(encryptedBuffer), iv.length);
+                
+                return this.arrayBufferToBase64(combined.buffer);
+            }
+
+            async decrypt(encryptedData) {
+                if (!this.cryptoKey) await this.initKey();
+                
+                try {
+                    const combined = this.base64ToArrayBuffer(encryptedData);
+                    const iv = combined.slice(0, this.ivLength);
+                    const encrypted = combined.slice(this.ivLength);
+                    
+                    const decryptedBuffer = await crypto.subtle.decrypt(
+                        { name: this.algorithm, iv: iv },
+                        this.cryptoKey,
+                        encrypted
+                    );
+                    
+                    const decoder = new TextDecoder();
+                    const decryptedText = decoder.decode(decryptedBuffer);
+                    
+                    return JSON.parse(decryptedText);
+                } catch (error) {
+                    console.warn('Failed to decrypt cookie:', error);
+                    return null;
+                }
+            }
+
+            arrayBufferToBase64(buffer) {
+                const bytes = new Uint8Array(buffer);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return btoa(binary);
+            }
+
+            base64ToArrayBuffer(base64) {
+                const binary = atob(base64);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+        }
+
+        // Initialize encryption instance
+        const cookieEncryption = new CookieEncryption();
+
+        // Encrypted Cookie Management Functions
+        async function setSecureCookie(name, value, days = 30) {
+            try {
+                const encryptedValue = await cookieEncryption.encrypt(value);
+                const expires = new Date();
+                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+                document.cookie = `${name}=${encryptedValue};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
+            } catch (error) {
+                console.error('Failed to set secure cookie:', error);
+                showNotification('Failed to save user data securely', 'warning');
+            }
+        }
+
+        async function getSecureCookie(name) {
+            try {
+                const nameEQ = name + "=";
+                const ca = document.cookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) {
+                        const encryptedValue = c.substring(nameEQ.length, c.length);
+                        return await cookieEncryption.decrypt(encryptedValue);
+                    }
+                }
+                return null;
+            } catch (error) {
+                console.warn('Failed to get secure cookie:', error);
+                return null;
+            }
+        }
+
+        function deleteSecureCookie(name) {
+            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
+        }
+
+        // Plain cookie functions for non-sensitive data
+        function setPlainCookie(name, value, days = 30) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
+        }
+
+        function getPlainCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) {
+                    return c.substring(nameEQ.length, c.length);
+                }
+            }
+            return null;
+        }
+
+        // Initialize user data
+        let userData = {
+            isLoggedIn: false,
+            user: null,
+            userId: null,
+            isAdmin: false,
+            theme: getPlainCookie('userTheme') || 'dark',
+            rememberMe: false
+        };
+
+        let isLoginMode = false; // Default to sign up mode
+        let currentSection = 'home';
+
+        // Global user counter for assigning unique IDs
+        let globalUserCounter = parseInt(getPlainCookie('userCounter') || '0');
+
+        // Section Management
         function showSection(section) {
+            // Update nav links
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            if (event && event.target) event.target.classList.add('active');
-            document.getElementById('homeSection').style.display = 'block';
+            event.target.classList.add('active');
+
+            // Hide all sections
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('usersSection').style.display = 'none';
+
+            // Show selected section
+            if (section === 'home') {
+                document.getElementById('homeSection').style.display = 'block';
+            } else if (section === 'users') {
+                document.getElementById('usersSection').style.display = 'block';
+                loadUsersList();
+            }
+
+            currentSection = section;
         }
-        // ... (rest of your JS unchanged)
+
+        // User Management
+        async function loadUsersList() {
+            const usersGrid = document.getElementById('usersGrid');
+            const registeredUsers = await getSecureCookie('registeredUsers') || {};
+            
+            usersGrid.innerHTML = '';
+
+            // Create user cards
+            Object.entries(registeredUsers).forEach(([username, userInfo]) => {
+                const userCard = document.createElement('div');
+                userCard.className = 'user-card';
+                
+                const isAdmin = userInfo.userId === 1;
+                const avatar = username.charAt(0).toUpperCase();
+                
+                userCard.innerHTML = `
+                    <div class="user-avatar">${avatar}</div>
+                    <div class="user-name">${filterProfanity(username)}</div>
+                    ${isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Joined: ${new Date(userInfo.registrationDate).toLocaleDateString()}
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        User ID: ${userInfo.userId}
+                    </p>
+                `;
+                
+                usersGrid.appendChild(userCard);
+            });
+
+            // Add current user if logged in and not in the list
+            if (userData.isLoggedIn && userData.user) {
+                const currentUserExists = Object.keys(registeredUsers).some(username => 
+                    registeredUsers[username].userId === userData.userId
+                );
+                
+                if (!currentUserExists) {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+                    userCard.style.borderColor = 'var(--accent)';
+                    
+                    const avatar = userData.user.name.charAt(0).toUpperCase();
+                    
+                    userCard.innerHTML = `
+                        <div class="user-avatar" style="background: var(--accent);">${avatar}</div>
+                        <div class="user-name">${filterProfanity(userData.user.name)} (You)</div>
+                        ${userData.isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                            Current Session
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                            User ID: ${userData.userId}
+                        </p>
+                    `;
+                    
+                    usersGrid.insertBefore(userCard, usersGrid.firstChild);
+                }
+            }
+
+            if (usersGrid.children.length === 0) {
+                usersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">No registered users yet. Be the first to sign up!</p>';
+            }
+        }
+
+        // Theme Management
+        const themeSelector = document.getElementById('themeSelector');
+        themeSelector.addEventListener('change', function() {
+            const theme = this.value;
+            document.documentElement.setAttribute('data-theme', theme);
+            userData.theme = theme;
+            
+            setPlainCookie('userTheme', theme, 30);
+            showNotification(`Theme changed to ${theme}!`, 'success');
+        });
+
+        function loadSavedTheme() {
+            const savedTheme = getPlainCookie('userTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeSelector.value = savedTheme;
+            userData.theme = savedTheme;
+        }
+
+        // Theme Editor Functions
+        function showThemeEditor() {
+            document.getElementById('themeModal').style.display = 'block';
+        }
+
+        function closeThemeEditor() {
+            document.getElementById('themeModal').style.display = 'none';
+        }
+
+        function applyCustomTheme() {
+            const bgPrimary = document.getElementById('bgPrimary').value;
+            const bgCard = document.getElementById('bgCard').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const textSecondary = document.getElementById('textSecondary').value;
+            const accent = document.getElementById('accent').value;
+
+            // Apply custom theme
+            const root = document.documentElement;
+            root.style.setProperty('--custom-bg-primary', `linear-gradient(135deg, ${bgPrimary} 0%, ${bgCard} 100%)`);
+            root.style.setProperty('--custom-bg-card', `${bgCard}aa`);
+            root.style.setProperty('--custom-text-primary', textPrimary);
+            root.style.setProperty('--custom-text-secondary', textSecondary);
+            root.style.setProperty('--custom-accent', accent);
+            root.style.setProperty('--custom-accent-hover', accent + 'dd');
+            root.style.setProperty('--custom-border', textPrimary + '22');
+            root.style.setProperty('--custom-shadow', '0, 0, 0');
+
+            // Set theme to custom
+            document.documentElement.setAttribute('data-theme', 'custom');
+            themeSelector.value = 'custom';
+            
+            // Save custom theme
+            const customTheme = {
+                bgPrimary, bgCard, textPrimary, textSecondary, accent
+            };
+            setPlainCookie('customTheme', JSON.stringify(customTheme), 30);
+            setPlainCookie('userTheme', 'custom', 30);
+
+            closeThemeEditor();
+            showNotification('Custom theme applied!', 'success');
+        }
+
+        function resetTheme() {
+            document.getElementById('bgPrimary').value = '#1a1a3a';
+            document.getElementById('bgCard').value = '#2a2a4a';
+            document.getElementById('textPrimary').value = '#ffffff';
+            document.getElementById('textSecondary').value = '#cccccc';
+            document.getElementById('accent').value = '#00d4ff';
+            updateThemePreview();
+        }
+
+        function updateThemePreview() {
+            const preview = document.getElementById('themePreview');
+            const bgPrimary = document.getElementById('bgPrimary').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const accent = document.getElementById('accent').value;
+            
+            preview.style.background = `linear-gradient(135deg, ${bgPrimary}, ${accent}22)`;
+            preview.style.color = textPrimary;
+        }
+
+        // Add event listeners for theme editor inputs
+        ['bgPrimary', 'bgCard', 'textPrimary', 'textSecondary', 'accent'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateThemePreview);
+        });
+
+        // Auth Modal Functions
+        function showAuthModal() {
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const modalTitle = document.getElementById('modalTitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const authSwitch = document.getElementById('authSwitch');
+
+            if (isLoginMode) {
+                modalTitle.textContent = 'Login';
+                submitBtn.textContent = 'Login';
+                authSwitch.innerHTML = `Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Sign up</a>`;
+            } else {
+                modalTitle.textContent = 'Sign Up';
+                submitBtn.textContent = 'Sign Up';
+                authSwitch.innerHTML = `Already have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Login</a>`;
+            }
+        }
+
+        // Password hashing
+        async function hashPassword(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password + 'portfolio_hub_salt');
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+
+        // Auth Form Handler
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = filterProfanity(document.getElementById('username').value.trim());
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            if (username.length < 3) {
+                showNotification('Username must be at least 3 characters!', 'warning');
+                return;
+            }
+
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters!', 'warning');
+                return;
+            }
+
+            const hashedPassword = await hashPassword(password);
+
+            if (isLoginMode) {
+                // Login
+                const registeredUsers = await getSecureCookie('registeredUsers') || {};
+                
+                if (registeredUsers[username] && registeredUsers[username].password === hashedPassword) {
+                    // Successful login
+                    userData.isLoggedIn = true;
+                    userData.user = { name: username, loginTime: new Date().toISOString() };
+                    userData.userId = registeredUsers[username].userId;
+                    userData.isAdmin = userData.userId === 1;
+                    userData.rememberMe = rememberMe;
+                    
+                    const cookieDays = rememberMe ? 30 : 1;
+                    await setSecureCookie('isLoggedIn', true, cookieDays);
+                    await setSecureCookie('userData', userData.user, cookieDays);
+                    await setSecureCookie('userId', userData.userId, cookieDays);
+                    await setSecureCookie('rememberMe', rememberMe, cookieDays);
+                    
+                    updateAuthUI();
+                    closeAuthModal();
+                    showNotification(`Welcome back, ${username}!${userData.isAdmin ? ' (Admin)' : ''}`, 'success');
+                } else {
+                    showNotification('Invalid username or password!', 'warning');
+                }
+            } else {
+                // Sign up
+                let registeredUsers = await getSecureCookie('registeredUsers') || {};
+                
+                if (registeredUsers[username]) {
+                    showNotification('Username already taken! Please choose another.', 'warning');
+                    return;
+                }
+                
+                // Assign user ID
+                globalUserCounter++;
+                const userId = globalUserCounter;
+                setPlainCookie('userCounter', globalUserCounter.toString(), 365);
+                
+                // Save new user
+                registeredUsers[username] = {
+                    password: hashedPassword,
+                    userId: userId,
+                    registrationDate: new Date().toISOString()
+                };
+                
+                await setSecureCookie('registeredUsers', registeredUsers, 365);
+                
+                // Auto-login after signup
+                userData.isLoggedIn = true;
+                userData.user = { name: username, loginTime: new Date().toISOString() };
+                userData.userId = userId;
+                userData.isAdmin = userId === 1; // First user is admin
+                userData.rememberMe = rememberMe;
+                
+                const cookieDays = rememberMe ? 30 : 1;
+                await setSecureCookie('isLoggedIn', true, cookieDays);
+                await setSecureCookie('userData', userData.user, cookieDays);
+                await setSecureCookie('userId', userId, cookieDays);
+                await setSecureCookie('rememberMe', rememberMe, cookieDays);
+                
+                updateAuthUI();
+                closeAuthModal();
+                showNotification(`Welcome to Portfolio Hub, ${username}!${userData.isAdmin ? ' You are the admin!' : ''}`, 'success');
+            }
+            
+            document.getElementById('authForm').reset();
+        });
+
+        async function logout() {
+            userData.isLoggedIn = false;
+            userData.user = null;
+            userData.userId = null;
+            userData.isAdmin = false;
+            userData.rememberMe = false;
+            
+            deleteSecureCookie('isLoggedIn');
+            deleteSecureCookie('userData');
+            deleteSecureCookie('userId');
+            deleteSecureCookie('rememberMe');
+            
+            updateAuthUI();
+            showNotification('Logged out successfully!', 'info');
+            
+            if (currentSection !== 'home') {
+                showSection('home');
+                document.querySelector('.nav-link').click();
+            }
+        }
+
+        function updateAuthUI() {
+            const authBtn = document.getElementById('authBtn');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+
+            if (userData.isLoggedIn && userData.user) {
+                authBtn.style.display = 'none';
+                userInfo.style.display = 'flex';
+                userName.textContent = `${userData.user.name}${userData.isAdmin ? ' (Admin)' : ''}`;
+                
+                // Show admin edit indicators
+                if (userData.isAdmin) {
+                    document.querySelectorAll('.editable-content').forEach(el => {
+                        el.style.cursor = 'pointer';
+                        el.addEventListener('click', enableEditing);
+                    });
+                }
+            } else {
+                authBtn.style.display = 'block';
+                userInfo.style.display = 'none';
+                
+                // Hide admin edit indicators
+                document.querySelectorAll('.editable-content').forEach(el => {
+                    el.style.cursor = 'default';
+                    el.removeEventListener('click', enableEditing);
+                });
+            }
+        }
+
+        // Admin Content Editing
+        async function enableEditing(event) {
+            if (!userData.isAdmin) return;
+            
+            event.stopPropagation();
+            const element = event.currentTarget;
+            const key = element.getAttribute('data-key');
+            const currentText = element.childNodes[0].textContent.trim();
+            
+            const newText = prompt('Edit content:', currentText);
+            if (newText && newText.trim() !== currentText) {
+                const filteredText = filterProfanity(newText.trim());
+                
+                // Update the element
+                element.childNodes[0].textContent = filteredText;
+                
+                // Save to secure storage
+                let editedContent = await getSecureCookie('editedContent') || {};
+                editedContent[key] = filteredText;
+                await setSecureCookie('editedContent', editedContent, 365);
+                
+                showNotification('Content updated!', 'success');
+            }
+        }
+
+        // Load edited content
+        async function loadEditedContent() {
+            const editedContent = await getSecureCookie('editedContent') || {};
+            
+            Object.entries(editedContent).forEach(([key, text]) => {
+                const element = document.querySelector(`[data-key="${key}"]`);
+                if (element && element.childNodes[0]) {
+                    element.childNodes[0].textContent = text;
+                }
+            });
+        }
+
+        // Navigation Functions - Now public access
+        function navigateToPortfolio(type) {
+            createPortfolioPage(type);
+        }
+
+        function createPortfolioPage(type) {
+            const portfolioData = {
+                harman: {
+                    title: "Harman's Portfolio",
+                    projects: [
+                        {
+                            title: "Data Analytics Dashboard",
+                            description: "Interactive dashboard for business intelligence",
+                            tech: ["Python", "Tableau", "SQL"],
+                            link: "#"
+                        },
+                        {
+                            title: "Machine Learning Model",
+                            description: "Predictive analytics for sales forecasting",
+                            tech: ["Python", "TensorFlow", "Pandas"],
+                            link: "#"
+                        },
+                        {
+                            title: "Financial Report Generator",
+                            description: "Automated reporting system for financial data",
+                            tech: ["Excel", "VBA", "Power BI"],
+                            link: "#"
+                        }
+                    ]
+                },
+                gurshaan: {
+                    title: "Gurshaan's Portfolio",
+                    projects: [
+                        {
+                            title: "Excel Calculator",
+                            description: "Custom Excel calculator for invoice creation",
+                            tech: ["Excel", "VBA", "Formulas"],
+                            link: "#"
+                        },
+                        {
+                            title: "Health Website",
+                            description: "Health-focused informational website",
+                            tech: ["HTML", "CSS"],
+                            link: "#"
+                        },
+                        {
+                            title: "Math Website",
+                            description: "Interactive mathematics learning platform",
+                            tech: ["HTML", "CSS"],
+                            link: "#"
+                        }
+                    ]
+                },
+                newspaper: {
+                    title: "Digital Newspaper",
+                    projects: [
+                        {
+                            title: "Breaking News Section",
+                            description: "Real-time news updates and alerts",
+                            tech: ["React", "Node.js", "API"],
+                            link: "#"
+                        },
+                        {
+                            title: "Sports Coverage",
+                            description: "Comprehensive sports news and analysis",
+                            tech: ["HTML", "CSS", "JavaScript"],
+                            link: "#"
+                        },
+                        {
+                            title: "Opinion Articles",
+                            description: "Editorial and opinion piece platform",
+                            tech: ["CMS", "WordPress"],
+                            link: "#"
+                        }
+                    ]
+                }
+            };
+
+            const data = portfolioData[type];
+            if (!data) return;
+
+            const newPageHTML = `
+                <div style="padding: 120px 2rem 2rem; min-height: 100vh;">
+                    <div style="max-width: 1200px; margin: 0 auto;">
+                        <button onclick="goBack()" style="background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin-bottom: 2rem; transition: all 0.3s ease;">
+                            <i class="fas fa-arrow-left"></i> Back to Home
+                        </button>
+                        <h1 style="font-size: 3rem; margin-bottom: 2rem; color: var(--text-primary);">${data.title}</h1>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                            ${data.projects.map(project => `
+                                <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all 0.3s ease; backdrop-filter: blur(20px);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px var(--shadow)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-primary);">${project.title}</h3>
+                                    <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">${project.description}</p>
+                                    <div style="margin-bottom: 1rem;">
+                                        ${project.tech.map(tech => `<span style="background: var(--accent); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block;">${tech}</span>`).join('')}
+                                    </div>
+                                    <a href="${project.link}" style="color: var(--accent); text-decoration: none; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.color='var(--accent-hover)'" onmouseout="this.style.color='var(--accent)'">
+                                        <i class="fas fa-external-link-alt"></i> View Project
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.body.innerHTML = document.body.innerHTML.replace(
+                document.querySelector('.main-container').outerHTML,
+                newPageHTML
+            );
+        }
+
+        function goBack() {
+            location.reload();
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 2rem;
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                border-radius: 8px;
+                z-index: 3000;
+                font-weight: 500;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        const notificationStyle = document.createElement('style');
+        notificationStyle.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(notificationStyle);
+
+        // Initialize app
+        async function initializeApp() {
+            try {
+                const isLoggedIn = await getSecureCookie('isLoggedIn');
+                const userData_cookie = await getSecureCookie('userData');
+                const userId_cookie = await getSecureCookie('userId');
+                
+                if (isLoggedIn && userData_cookie && userId_cookie) {
+                    userData.isLoggedIn = true;
+                    userData.user = userData_cookie;
+                    userData.userId = userId_cookie;
+                    userData.isAdmin = userId_cookie === 1;
+                    
+                    const loginTime = new Date(userData_cookie.loginTime || Date.now());
+                    const now = new Date();
+                    const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                    
+                    const rememberMe = await getSecureCookie('rememberMe');
+                    if (hoursSinceLogin > 24 && !rememberMe) {
+                        await logout();
+                        showNotification('Session expired. Please login again.', 'info');
+                    }
+                }
+                
+                loadSavedTheme();
+                await loadEditedContent();
+                updateAuthUI();
+                
+                // Load custom theme if saved
+                const savedCustomTheme = getPlainCookie('customTheme');
+                if (savedCustomTheme && userData.theme === 'custom') {
+                    const customTheme = JSON.parse(savedCustomTheme);
+                    Object.entries(customTheme).forEach(([key, value]) => {
+                        document.getElementById(key).value = value;
+                    });
+                    applyCustomTheme();
+                }
+                
+            } catch (error) {
+                console.error('Failed to initialize app:', error);
+                userData.isLoggedIn = false;
+                userData.user = null;
+                updateAuthUI();
+            }
+        }
+
+        // Initialize theme
+        loadSavedTheme();
+
+        // Initialize app when DOM loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+        initializeApp();
+
+        console.log('🔒 Portfolio Hub loaded with all new features!');
+        console.log('✨ Features: Theme Editor, User Profiles, Admin Controls, Content Filtering, Public Access');
     </script>
 </body>
 </html>
