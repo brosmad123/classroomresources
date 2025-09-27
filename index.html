@@ -407,41 +407,125 @@
 
         /* Portfolio page styles */
         .portfolio-container {
-            padding: 120px 2rem 2rem;
+            padding: 0;
             min-height: 100vh;
+        }
+
+        .portfolio-hero {
+            padding: 120px 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .portfolio-content {
+            max-width: 600px;
+        }
+
+        .portfolio-greeting {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-name {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            line-height: 1.1;
+        }
+
+        .portfolio-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .portfolio-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-item {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .portfolio-avatar {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            justify-self: center;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 120px;
+            left: 2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            backdrop-filter: blur(20px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .portfolio-sections {
+            padding: 0 2rem 4rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .back-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .back-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        .portfolio-title {
-            font-size: 3rem;
-            margin-bottom: 2rem;
-            color: var(--text-primary);
+        .section-title {
+            font-size: 2.5rem;
             font-weight: 700;
+            color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
+            margin-bottom: 4rem;
         }
 
         .project-card {
@@ -468,19 +552,19 @@
 
         .project-description {
             color: var(--text-secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             line-height: 1.6;
         }
 
         .tech-stack {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .tech-tag {
             background: var(--accent);
             color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
             font-size: 0.8rem;
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
@@ -497,6 +581,113 @@
 
         .project-link:hover {
             color: var(--accent-hover);
+        }
+
+        .contact-section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+        }
+
+        .contact-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .contact-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .contact-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-value {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .contact-value:hover {
+            color: var(--accent-hover);
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-hero {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+                padding: 120px 1rem 2rem;
+            }
+
+            .portfolio-name {
+                font-size: 2.5rem;
+            }
+
+            .portfolio-avatar {
+                width: 200px;
+                height: 200px;
+                font-size: 6rem;
+            }
+
+            .portfolio-stats {
+                justify-content: center;
+                gap: 2rem;
+            }
+
+            .back-btn {
+                position: static;
+                margin-bottom: 2rem;
+                display: inline-block;
+            }
+
+            .projects-grid, .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
         }
 
         /* Theme Editor Styles */
@@ -570,13 +761,10 @@
 <body data-theme="dark">
     <header class="header">
         <div class="logo" onclick="navigateTo('/')">
-            <i class="fas fa-code"></i> Portfolio Hub
+            <i class="fas fa-book"></i> Portfolio Hub
         </div>
         <nav class="header-nav">
-            <a class="nav-link" onclick="navigateTo('/')">Home</a>
-            <a class="nav-link" onclick="navigateTo('/harman')">Harman</a>
-            <a class="nav-link" onclick="navigateTo('/gurshaan')">Gurshaan</a>
-            <a class="nav-link" onclick="navigateTo('/newspaper')">Newspaper</a>
+            <a class="nav-link active" onclick="navigateTo('/')">Home</a>
         </nav>
         <div class="header-controls">
             <select class="theme-selector" id="themeSelector">
@@ -734,15 +922,9 @@
                 link.classList.remove('active');
             });
             
-            const navLinks = document.querySelectorAll('.nav-link');
+            // Only highlight Home link when on home page
             if (currentRoute === '/') {
-                navLinks[0].classList.add('active');
-            } else if (currentRoute === '/harman') {
-                navLinks[1].classList.add('active');
-            } else if (currentRoute === '/gurshaan') {
-                navLinks[2].classList.add('active');
-            } else if (currentRoute === '/newspaper') {
-                navLinks[3].classList.add('active');
+                document.querySelector('.nav-link').classList.add('active');
             }
         }
 
@@ -803,28 +985,38 @@
             const portfolioData = {
                 harman: {
                     title: "Harman's Portfolio",
+                    name: "Harman",
+                    greeting: "Nice to meet you,",
+                    fullName: "I'm Harman",
+                    description: "I'm a data enthusiast and aspiring analyst with a passion for turning numbers into insights. With 2+ years of experience in Python and SQL, I love uncovering patterns and creating data-driven solutions.",
+                    yearsExp: "2+",
+                    projectsCount: "6+",
+                    avatar: "H",
+                    email: "harman@example.com",
+                    github: "github.com/harman",
+                    linkedin: "linkedin.com/in/harman",
                     projects: [
                         {
                             title: "Data Analytics Dashboard",
-                            description: "Interactive dashboard for business intelligence and data visualization",
+                            description: "Interactive dashboard for business intelligence and data visualization with real-time updates and comprehensive reporting features.",
                             tech: ["Python", "Tableau", "SQL", "Pandas"],
                             link: "#"
                         },
                         {
                             title: "Machine Learning Model",
-                            description: "Predictive analytics for sales forecasting using advanced ML techniques",
+                            description: "Predictive analytics for sales forecasting using advanced ML techniques including regression analysis and time series forecasting.",
                             tech: ["Python", "TensorFlow", "Scikit-learn", "Pandas"],
                             link: "#"
                         },
                         {
                             title: "Financial Report Generator",
-                            description: "Automated reporting system for financial data analysis and insights",
+                            description: "Automated reporting system for financial data analysis and insights with customizable templates and scheduling.",
                             tech: ["Excel", "VBA", "Power BI", "SQL"],
                             link: "#"
                         },
                         {
                             title: "Customer Segmentation Analysis",
-                            description: "Advanced customer segmentation using clustering algorithms",
+                            description: "Advanced customer segmentation using clustering algorithms to identify target demographics and behavior patterns.",
                             tech: ["Python", "Matplotlib", "Seaborn", "K-means"],
                             link: "#"
                         }
@@ -832,31 +1024,186 @@
                 },
                 gurshaan: {
                     title: "Gurshaan's Portfolio",
+                    name: "Gurshaan",
+                    greeting: "Nice to meet you,",
+                    fullName: "I'm Gurshaan",
+                    description: "I'm a Grade 8 student and aspiring developer with a passion for creating awesome websites. With 2 years of experience in HTML and CSS, I love teaching others and bringing creative ideas to life!",
+                    yearsExp: "2+",
+                    projectsCount: "5+",
+                    avatar: "G",
+                    email: "gurshaan007@gmail.com",
+                    github: "github.com/GSDhaliwal05",
+                    school: "861250@pdsb.net",
                     projects: [
                         {
                             title: "Excel Calculator",
-                            description: "Custom Excel calculator for invoice creation and financial calculations",
+                            description: "Custom Excel calculator for invoice creation and financial calculations with automated formulas and professional formatting.",
                             tech: ["Excel", "VBA", "Formulas", "Macros"],
                             link: "#"
                         },
                         {
                             title: "Health & Wellness Website",
-                            description: "Health-focused informational website with interactive features",
+                            description: "Health-focused informational website with interactive features, nutrition guides, and wellness tracking tools.",
                             tech: ["HTML", "CSS", "JavaScript", "Bootstrap"],
                             link: "#"
                         },
                         {
                             title: "Interactive Math Learning Platform",
-                            description: "Educational platform for mathematics with interactive problem solving",
+                            description: "Educational platform for mathematics with interactive problem solving, progress tracking, and gamification elements.",
                             tech: ["HTML", "CSS", "JavaScript", "Chart.js"],
                             link: "#"
                         },
                         {
                             title: "Personal Finance Tracker",
-                            description: "Web-based application for tracking personal expenses and budgets",
+                            description: "Web-based application for tracking personal expenses and budgets with visual analytics and goal setting features.",
                             tech: ["HTML", "CSS", "JavaScript", "Local Storage"],
                             link: "#"
                         }
+                    ]
+                },
+                newspaper: {
+                    title: "Digital Newspaper",
+                    name: "Digital News",
+                    greeting: "Welcome to",
+                    fullName: "Digital Newspaper",
+                    description: "Your trusted source for breaking news, in-depth analysis, and local stories. We deliver comprehensive coverage across multiple categories with real-time updates.",
+                    yearsExp: "3+",
+                    projectsCount: "8+",
+                    avatar: "📰",
+                    email: "editor@digitalnews.com",
+                    website: "digitalnews.com",
+                    social: "@DigitalNews",
+                    projects: [
+                        {
+                            title: "Breaking News Section",
+                            description: "Real-time news updates and alerts with live feed integration, push notifications, and emergency broadcasting system.",
+                            tech: ["React", "Node.js", "WebSocket", "API"],
+                            link: "#"
+                        },
+                        {
+                            title: "Sports Coverage Platform",
+                            description: "Comprehensive sports news and live score tracking system with match analysis, player statistics, and team profiles.",
+                            tech: ["HTML", "CSS", "JavaScript", "Sports API"],
+                            link: "#"
+                        },
+                        {
+                            title: "Opinion & Editorial Hub",
+                            description: "Editorial and opinion piece platform with comment system, author profiles, and reader engagement features.",
+                            tech: ["CMS", "WordPress", "PHP", "MySQL"],
+                            link: "#"
+                        },
+                        {
+                            title: "Weather & Local News",
+                            description: "Local weather integration with community news updates, event listings, and location-based content delivery.",
+                            tech: ["JavaScript", "Weather API", "Geolocation", "CSS"],
+                            link: "#"
+                        }
+                    ]
+                }
+            };
+
+            const data = portfolioData[type];
+            if (!data) return renderHomePage();
+
+            return `
+                <div class="portfolio-container">
+                    <button class="back-btn" onclick="navigateTo('/')">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </button>
+                    
+                    <div class="portfolio-hero">
+                        <div class="portfolio-content">
+                            <div class="portfolio-greeting">${data.greeting}</div>
+                            <h1 class="portfolio-name">${data.fullName}</h1>
+                            <p class="portfolio-description">${data.description}</p>
+                            
+                            <div class="portfolio-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number">${data.yearsExp}</span>
+                                    <div class="stat-label">Years of Experience</div>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number">${data.projectsCount}</span>
+                                    <div class="stat-label">Projects Completed</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="portfolio-avatar">
+                            ${data.avatar}
+                        </div>
+                    </div>
+
+                    <div class="portfolio-sections">
+                        <h2 class="section-title">My Projects</h2>
+                        <div class="projects-grid">
+                            ${data.projects.map(project => `
+                                <div class="project-card">
+                                    <h3 class="project-title">${project.title}</h3>
+                                    <p class="project-description">${project.description}</p>
+                                    <div class="tech-stack">
+                                        ${project.tech.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                                    </div>
+                                    <a href="${project.link}" class="project-link">
+                                        <i class="fas fa-external-link-alt"></i> View Project
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="contact-section">
+                            <h2 class="contact-title">Contact Me</h2>
+                            <p class="contact-description">Feel free to reach out! I'm always excited to connect with fellow developers and discuss new opportunities.</p>
+                            
+                            <div class="contact-grid">
+                                ${data.email ? `
+                                    <div class="contact-card">
+                                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                                        <div class="contact-label">Email</div>
+                                        <a href="mailto:${data.email}" class="contact-value">${data.email}</a>
+                                    </div>
+                                ` : ''}
+                                ${data.github ? `
+                                    <div class="contact-card">
+                                        <div class="contact-icon"><i class="fab fa-github"></i></div>
+                                        <div class="contact-label">GitHub</div>
+                                        <a href="https://${data.github}" class="contact-value" target="_blank">${data.github}</a>
+                                    </div>
+                                ` : ''}
+                                ${data.school ? `
+                                    <div class="contact-card">
+                                        <div class="contact-icon"><i class="fas fa-school"></i></div>
+                                        <div class="contact-label">School Email</div>
+                                        <a href="mailto:${data.school}" class="contact-value">${data.school}</a>
+                                    </div>
+                                ` : ''}
+                                ${data.linkedin ? `
+                                    <div class="contact-card">
+                                        <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
+                                        <div class="contact-label">LinkedIn</div>
+                                        <a href="https://${data.linkedin}" class="contact-value" target="_blank">${data.linkedin}</a>
+                                    </div>
+                                ` : ''}
+                                ${data.website ? `
+                                    <div class="contact-card">
+                                        <div class="contact-icon"><i class="fas fa-globe"></i></div>
+                                        <div class="contact-label">Website</div>
+                                        <a href="https://${data.website}" class="contact-value" target="_blank">${data.website}</a>
+                                    </div>
+                                ` : ''}
+                                ${data.social ? `
+                                    <div class="contact-card">
+                                        <div class="contact-icon"><i class="fas fa-hashtag"></i></div>
+                                        <div class="contact-label">Social</div>
+                                        <span class="contact-value">${data.social}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
                     ]
                 },
                 newspaper: {
