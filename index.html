@@ -3,8 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Hub</title>
+    <title>Portfolio Hub - Modern</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root[data-theme="dark"] {
+            --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
+            --bg-card: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --accent: #00d4ff;
+            --accent-hover: #00b8e6;
+            --border: rgba(255, 255, 255, 0.1);
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        :root[data-theme="light"] {
+            --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        :root[data-theme="neon"] {
+            --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #330066 100%);
+            --bg-card: rgba(255, 0, 255, 0.1);
+            --text-primary: #ff00ff;
+            --text-secondary: #cc00cc;
+            --accent: #00ffff;
+            --accent-hover: #ff00ff;
+            --border: rgba(255, 0, 255, 0.3);
+            --shadow: rgba(255, 0, 255, 0.2);
+        }
+
+        :root[data-theme="ocean"] {
+            --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+            --bg-card: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --border: rgba(255, 255, 255, 0.2);
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,145 +58,320 @@
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .theme-selector {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-selector:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .auth-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .main-container {
+            padding-top: 100px;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            overflow: hidden;
         }
 
-        .container {
+        .content {
             text-align: center;
-            max-width: 600px;
+            max-width: 800px;
             padding: 2rem;
             position: relative;
             z-index: 2;
         }
 
         .title {
-            font-size: 3.5rem;
-            font-weight: 700;
+            font-size: 4rem;
+            font-weight: 800;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #f0f8ff);
+            background: linear-gradient(45deg, var(--accent), var(--text-primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
-            animation: fadeInUp 1s ease-out;
+            animation: slideUp 1s ease-out;
         }
 
         .subtitle {
             font-size: 1.3rem;
+            color: var(--text-secondary);
             margin-bottom: 3rem;
-            opacity: 0.9;
-            font-weight: 300;
-            animation: fadeInUp 1s ease-out 0.2s both;
+            animation: slideUp 1s ease-out 0.2s both;
         }
 
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            align-items: center;
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
         }
 
-        .nav-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 1.2rem 3rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 50px;
+        .nav-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            min-width: 250px;
-            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(20px);
             position: relative;
             overflow: hidden;
-            animation: fadeInUp 1s ease-out both;
+            animation: slideUp 1s ease-out both;
         }
 
-        .nav-button:nth-child(1) { animation-delay: 0.4s; }
-        .nav-button:nth-child(2) { animation-delay: 0.6s; }
-        .nav-button:nth-child(3) { animation-delay: 0.8s; }
+        .nav-card:nth-child(1) { animation-delay: 0.4s; }
+        .nav-card:nth-child(2) { animation-delay: 0.6s; }
+        .nav-card:nth-child(3) { animation-delay: 0.8s; }
 
-        .nav-button::before {
+        .nav-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
-        .nav-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        .nav-card:hover::before {
+            opacity: 0.1;
         }
 
-        .nav-button:hover::before {
-            left: 100%;
+        .nav-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px var(--shadow);
+            border-color: var(--accent);
         }
 
-        .nav-button:active {
-            transform: translateY(-1px);
+        .card-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: block;
         }
 
-        /* Background animation */
-        .bg-animation {
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .floating-shapes {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            pointer-events: none;
             z-index: 1;
-            opacity: 0.1;
         }
 
-        .floating-shape {
+        .shape {
             position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            opacity: 0.1;
             animation: float 6s ease-in-out infinite;
         }
 
-        .shape1 {
-            width: 80px;
-            height: 80px;
+        .shape:nth-child(1) {
             top: 20%;
             left: 10%;
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 50%;
             animation-delay: 0s;
         }
 
-        .shape2 {
-            width: 120px;
-            height: 120px;
+        .shape:nth-child(2) {
             top: 60%;
-            right: 10%;
+            right: 15%;
+            width: 60px;
+            height: 60px;
+            background: var(--text-primary);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
             animation-delay: 2s;
         }
 
-        .shape3 {
-            width: 60px;
-            height: 60px;
-            bottom: 20%;
-            left: 20%;
+        .shape:nth-child(3) {
+            bottom: 30%;
+            left: 15%;
+            width: 100px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 20px;
             animation-delay: 4s;
         }
 
-        @keyframes fadeInUp {
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        @keyframes slideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(50px);
             }
             to {
                 opacity: 1;
@@ -164,7 +384,7 @@
                 transform: translateY(0px) rotate(0deg);
             }
             50% {
-                transform: translateY(-20px) rotate(180deg);
+                transform: translateY(-30px) rotate(180deg);
             }
         }
 
@@ -173,104 +393,375 @@
                 font-size: 2.5rem;
             }
             
-            .subtitle {
-                font-size: 1.1rem;
+            .nav-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
             
-            .nav-button {
-                min-width: 200px;
-                padding: 1rem 2rem;
-            }
-            
-            .container {
+            .header {
                 padding: 1rem;
+            }
+            
+            .header-controls {
+                gap: 0.5rem;
             }
         }
     </style>
 </head>
-<body>
-    <div class="bg-animation">
-        <div class="floating-shape shape1"></div>
-        <div class="floating-shape shape2"></div>
-        <div class="floating-shape shape3"></div>
+<body data-theme="dark">
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-code"></i> Portfolio Hub
+        </div>
+        <div class="header-controls">
+            <select class="theme-selector" id="themeSelector">
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+                <option value="neon">Neon</option>
+                <option value="ocean">Ocean</option>
+            </select>
+            <div class="user-info" id="userInfo">
+                <i class="fas fa-user-circle"></i>
+                <span id="userName"></span>
+                <button class="auth-btn" onclick="logout()">Logout</button>
+            </div>
+            <button class="auth-btn" id="authBtn" onclick="showAuthModal()">Login</button>
+        </div>
+    </header>
+
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
 
-    <div class="container">
-        <h1 class="title">Portfolio Hub</h1>
-        <p class="subtitle">Choose a portfolio to explore</p>
-        
-        <div class="buttons-container">
-            <a href="#" class="nav-button" onclick="navigateToHarman()">
-                📊 Harman's Portfolio
-            </a>
+    <main class="main-container">
+        <div class="content">
+            <h1 class="title">Portfolio Universe</h1>
+            <p class="subtitle">Discover amazing work from talented creators</p>
             
-            <a href="#" class="nav-button" onclick="navigateToGurshaan()">
-                💼 Gurshaan's Portfolio
-            </a>
-            
-            <a href="#" class="nav-button" onclick="navigateToNewspaper()">
-                📰 Newspaper
-            </a>
+            <div class="nav-grid">
+                <div class="nav-card" onclick="navigateToPortfolio('harman')">
+                    <i class="fas fa-chart-line card-icon"></i>
+                    <h3 class="card-title">Harman's Portfolio</h3>
+                    <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
+                </div>
+                
+                <div class="nav-card" onclick="navigateToPortfolio('gurshaan')">
+                    <i class="fas fa-laptop-code card-icon"></i>
+                    <h3 class="card-title">Gurshaan's Portfolio</h3>
+                    <p class="card-description">Discover creative web development and design solutions</p>
+                </div>
+                
+                <div class="nav-card" onclick="navigateToPortfolio('newspaper')">
+                    <i class="fas fa-newspaper card-icon"></i>
+                    <h3 class="card-title">Digital Newspaper</h3>
+                    <p class="card-description">Stay updated with the latest news and articles</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Login</h2>
+                <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+            </div>
+            <form id="authForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" id="email" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-input" required>
+                </div>
+                <div class="form-group" id="nameGroup" style="display: none;">
+                    <label class="form-label" for="name">Full Name</label>
+                    <input type="text" id="name" class="form-input">
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">Login</button>
+            </form>
+            <p style="margin-top: 1rem; text-align: center; color: var(--text-secondary);">
+                <span id="authSwitch">Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Sign up</a></span>
+            </p>
         </div>
     </div>
 
     <script>
-        function navigateToHarman() {
-            // Replace with actual URL
-            window.location.href = 'https://harman-portfolio.com';
-            // Or for now: alert('Harman\'s portfolio coming soon!');
-        }
+        // In-memory storage (simulating localStorage)
+        let userData = {
+            isLoggedIn: false,
+            user: null,
+            theme: 'dark'
+        };
 
-        function navigateToGurshaan() {
-            // Replace with actual URL
-            window.location.href = 'https://gurshaan-portfolio.com';
-            // Or for now: alert('Gurshaan\'s portfolio coming soon!');
-        }
+        let isLoginMode = true;
 
-        function navigateToNewspaper() {
-            // Replace with actual URL
-            window.location.href = 'https://your-newspaper-site.com';
-            // Or for now: alert('Newspaper site coming soon!');
-        }
-
-        // Add some interactive particles on click
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('nav-button')) return;
-            
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: absolute;
-                width: 6px;
-                height: 6px;
-                background: rgba(255, 255, 255, 0.8);
-                border-radius: 50%;
-                pointer-events: none;
-                left: ${e.clientX - 3}px;
-                top: ${e.clientY - 3}px;
-                animation: particle 1s ease-out forwards;
-                z-index: 1000;
-            `;
-            
-            document.body.appendChild(particle);
-            
-            setTimeout(() => particle.remove(), 1000);
+        // Theme Management
+        const themeSelector = document.getElementById('themeSelector');
+        themeSelector.addEventListener('change', function() {
+            const theme = this.value;
+            document.documentElement.setAttribute('data-theme', theme);
+            userData.theme = theme;
         });
 
-        // Add particle animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes particle {
-                0% {
-                    transform: scale(1);
-                    opacity: 1;
+        // Set initial theme
+        document.documentElement.setAttribute('data-theme', userData.theme);
+        themeSelector.value = userData.theme;
+
+        // Auth Modal Functions
+        function showAuthModal() {
+            document.getElementById('authModal').style.display = 'block';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const modalTitle = document.getElementById('modalTitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const nameGroup = document.getElementById('nameGroup');
+            const authSwitch = document.getElementById('authSwitch');
+
+            if (isLoginMode) {
+                modalTitle.textContent = 'Login';
+                submitBtn.textContent = 'Login';
+                nameGroup.style.display = 'none';
+                authSwitch.innerHTML = `Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Sign up</a>`;
+            } else {
+                modalTitle.textContent = 'Sign Up';
+                submitBtn.textContent = 'Sign Up';
+                nameGroup.style.display = 'block';
+                authSwitch.innerHTML = `Already have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Login</a>`;
+            }
+        }
+
+        // Auth Form Handler
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value;
+
+            if (isLoginMode) {
+                // Simulate login
+                userData.isLoggedIn = true;
+                userData.user = {
+                    email: email,
+                    name: name || email.split('@')[0]
+                };
+                updateAuthUI();
+                closeAuthModal();
+                showNotification('Successfully logged in!', 'success');
+            } else {
+                // Simulate signup
+                userData.isLoggedIn = true;
+                userData.user = {
+                    email: email,
+                    name: name || email.split('@')[0]
+                };
+                updateAuthUI();
+                closeAuthModal();
+                showNotification('Account created successfully!', 'success');
+            }
+        });
+
+        function logout() {
+            userData.isLoggedIn = false;
+            userData.user = null;
+            updateAuthUI();
+            showNotification('Logged out successfully!', 'info');
+        }
+
+        function updateAuthUI() {
+            const authBtn = document.getElementById('authBtn');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+
+            if (userData.isLoggedIn && userData.user) {
+                authBtn.style.display = 'none';
+                userInfo.style.display = 'flex';
+                userName.textContent = userData.user.name;
+            } else {
+                authBtn.style.display = 'block';
+                userInfo.style.display = 'none';
+            }
+        }
+
+        // Navigation Functions
+        function navigateToPortfolio(type) {
+            if (!userData.isLoggedIn) {
+                showNotification('Please login to access portfolios!', 'warning');
+                showAuthModal();
+                return;
+            }
+
+            // Create portfolio pages dynamically
+            createPortfolioPage(type);
+        }
+
+        function createPortfolioPage(type) {
+            const portfolioData = {
+                harman: {
+                    title: "Harman's Portfolio",
+                    projects: [
+                        {
+                            title: "Data Analytics Dashboard",
+                            description: "Interactive dashboard for business intelligence",
+                            tech: ["Python", "Tableau", "SQL"],
+                            link: "#"
+                        },
+                        {
+                            title: "Machine Learning Model",
+                            description: "Predictive analytics for sales forecasting",
+                            tech: ["Python", "TensorFlow", "Pandas"],
+                            link: "#"
+                        },
+                        {
+                            title: "Financial Report Generator",
+                            description: "Automated reporting system for financial data",
+                            tech: ["Excel", "VBA", "Power BI"],
+                            link: "#"
+                        }
+                    ]
+                },
+                gurshaan: {
+                    title: "Gurshaan's Portfolio",
+                    projects: [
+                        {
+                            title: "Excel Calculator",
+                            description: "Custom Excel calculator for invoice creation",
+                            tech: ["Excel", "VBA", "Formulas"],
+                            link: "#"
+                        },
+                        {
+                            title: "Health Website",
+                            description: "Health-focused informational website",
+                            tech: ["HTML", "CSS"],
+                            link: "#"
+                        },
+                        {
+                            title: "Math Website",
+                            description: "Interactive mathematics learning platform",
+                            tech: ["HTML", "CSS"],
+                            link: "#"
+                        }
+                    ]
+                },
+                newspaper: {
+                    title: "Digital Newspaper",
+                    projects: [
+                        {
+                            title: "Breaking News Section",
+                            description: "Real-time news updates and alerts",
+                            tech: ["React", "Node.js", "API"],
+                            link: "#"
+                        },
+                        {
+                            title: "Sports Coverage",
+                            description: "Comprehensive sports news and analysis",
+                            tech: ["HTML", "CSS", "JavaScript"],
+                            link: "#"
+                        },
+                        {
+                            title: "Opinion Articles",
+                            description: "Editorial and opinion piece platform",
+                            tech: ["CMS", "WordPress"],
+                            link: "#"
+                        }
+                    ]
                 }
-                100% {
-                    transform: scale(0) translateY(-50px);
-                    opacity: 0;
-                }
+            };
+
+            const data = portfolioData[type];
+            if (!data) return;
+
+            // Create new page content
+            const newPageHTML = `
+                <div style="padding: 120px 2rem 2rem; min-height: 100vh;">
+                    <div style="max-width: 1200px; margin: 0 auto;">
+                        <button onclick="goBack()" style="background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin-bottom: 2rem; transition: all 0.3s ease;">
+                            <i class="fas fa-arrow-left"></i> Back to Home
+                        </button>
+                        <h1 style="font-size: 3rem; margin-bottom: 2rem; color: var(--text-primary);">${data.title}</h1>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                            ${data.projects.map(project => `
+                                <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all 0.3s ease; backdrop-filter: blur(20px);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px var(--shadow)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-primary);">${project.title}</h3>
+                                    <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">${project.description}</p>
+                                    <div style="margin-bottom: 1rem;">
+                                        ${project.tech.map(tech => `<span style="background: var(--accent); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block;">${tech}</span>`).join('')}
+                                    </div>
+                                    <a href="${project.link}" style="color: var(--accent); text-decoration: none; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.color='var(--accent-hover)'" onmouseout="this.style.color='var(--accent)'">
+                                        <i class="fas fa-external-link-alt"></i> View Project
+                                    </a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Replace page content
+            document.body.innerHTML = document.body.innerHTML.replace(
+                document.querySelector('.main-container').outerHTML,
+                newPageHTML
+            );
+        }
+
+        function goBack() {
+            location.reload(); // Simple way to go back to original page
+        }
+
+        // Notification System
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 2rem;
+                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                color: white;
+                border-radius: 8px;
+                z-index: 3000;
+                font-weight: 500;
+                animation: slideInRight 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Add notification animation
+        const notificationStyle = document.createElement('style');
+        notificationStyle.textContent = `
+            @keyframes slideInRight {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
             }
         `;
-        document.head.appendChild(style);
+        document.head.appendChild(notificationStyle);
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('authModal');
+            if (event.target === modal) {
+                closeAuthModal();
+            }
+        }
+
+        // Initialize
+        updateAuthUI();
     </script>
 </body>
 </html>
