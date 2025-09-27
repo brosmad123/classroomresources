@@ -793,7 +793,7 @@
 
     <script>
         // Router and App State
-        let currentRoute = '/';
+        let currentRoute = '#/';
         let currentProjectData = null;
 
         // Cookie functions
@@ -882,7 +882,7 @@
                 fullName: "Hi, I'm Gurshaan Singh",
                 subtitle: "a Professional Developer.",
                 description: "I use code as a third dimension by which to simplify experiences and guide through each and every interaction. I'm not adding features just to fill up space, but creating meaningful user experiences that matter.",
-                avatar: "https://i.ibb.co/dsZm64tJ/20082977.png",
+                avatar: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=350&h=450&fit=crop&crop=face",
                 socialLinks: [
                     { icon: "fab fa-github", url: "https://github.com/GSDhaliwal05" },
                     { icon: "fab fa-instagram", url: "https://instagram.com/gurshaan" },
@@ -957,15 +957,16 @@
 
         // Router
         function navigateTo(path) {
-            currentRoute = path;
-            history.pushState(null, null, path);
+            currentRoute = '#' + path;
+            window.location.hash = path;
             renderCurrentRoute();
         }
 
         function renderCurrentRoute() {
             const mainContent = document.getElementById('mainContent');
+            const route = currentRoute.replace('#', '');
             
-            switch(currentRoute) {
+            switch(route) {
                 case '/':
                     mainContent.innerHTML = renderHomePage();
                     break;
@@ -980,7 +981,8 @@
                     break;
                 default:
                     mainContent.innerHTML = renderHomePage();
-                    currentRoute = '/';
+                    currentRoute = '#/';
+                    window.location.hash = '/';
             }
         }
 
