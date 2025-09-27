@@ -3,88 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Hub - Modern</title>
+    <title>Portfolio Hub - Professional</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root[data-theme="dark"] {
-            --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
-            --bg-card: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --accent: #00d4ff;
-            --accent-hover: #00b8e6;
-            --border: rgba(255, 255, 255, 0.1);
-            --shadow: rgba(0, 0, 0, 0.3);
-        }
-
-        :root[data-theme="light"] {
-            --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
-            --bg-card: rgba(255, 255, 255, 0.9);
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: rgba(0, 0, 0, 0.1);
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
-
-        :root[data-theme="neon"] {
-            --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #330066 100%);
-            --bg-card: rgba(255, 0, 255, 0.1);
-            --text-primary: #ff00ff;
-            --text-secondary: #cc00cc;
-            --accent: #00ffff;
-            --accent-hover: #ff00ff;
-            --border: rgba(255, 0, 255, 0.3);
-            --shadow: rgba(255, 0, 255, 0.2);
-        }
-
-        :root[data-theme="ocean"] {
-            --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
-            --bg-card: rgba(255, 255, 255, 0.1);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.8);
-            --accent: #06b6d4;
-            --accent-hover: #0891b2;
-            --border: rgba(255, 255, 255, 0.2);
-            --shadow: rgba(0, 0, 0, 0.3);
-        }
-
-        /* Custom themes can be added dynamically */
-        :root[data-theme="custom"] {
-            --bg-primary: var(--custom-bg-primary, linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%));
-            --bg-card: var(--custom-bg-card, rgba(255, 255, 255, 0.1));
-            --text-primary: var(--custom-text-primary, #ffffff);
-            --text-secondary: var(--custom-text-secondary, rgba(255, 255, 255, 0.7));
-            --accent: var(--custom-accent, #ff6b6b);
-            --accent-hover: var(--custom-accent-hover, #ff5252);
-            --border: var(--custom-border, rgba(255, 255, 255, 0.1));
-            --shadow: var(--custom-shadow, rgba(0, 0, 0, 0.3));
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --accent: #e53e3e;
+            --accent-hover: #c53030;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
-            min-height: 100vh;
             color: var(--text-primary);
-            overflow-x: hidden;
-            transition: all 0.3s ease;
+            line-height: 1.6;
         }
 
+        /* Header */
         .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            background: var(--bg-card);
             border-bottom: 1px solid var(--border);
             padding: 1rem 2rem;
             display: flex;
@@ -93,218 +47,370 @@
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             font-size: 1.5rem;
             font-weight: 700;
-            color: var(--accent);
+            color: var(--text-primary);
             cursor: pointer;
         }
 
-        .header-nav {
+        .logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav {
             display: flex;
             gap: 2rem;
-            align-items: center;
         }
 
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
             cursor: pointer;
         }
 
         .nav-link:hover, .nav-link.active {
-            color: var(--accent);
-        }
-
-        .header-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .theme-selector, .theme-editor-btn {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
             color: var(--text-primary);
-            padding: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .theme-selector:hover, .theme-editor-btn:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .auth-btn {
+        .buy-btn {
             background: var(--accent);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
             cursor: pointer;
-            font-weight: 500;
             transition: all 0.3s ease;
         }
 
-        .auth-btn:hover {
+        .buy-btn:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
         }
 
+        /* Main Content */
         .main-container {
-            padding-top: 100px;
+            padding-top: 80px;
             min-height: 100vh;
         }
 
-        .content {
-            text-align: center;
-            max-width: 800px;
-            padding: 2rem;
-            position: relative;
-            z-index: 2;
+        /* Home Page */
+        .hero {
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .welcome-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--accent);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+
+        .social-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .social-icons {
             display: flex;
-            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            min-height: calc(100vh - 100px);
-        }
-
-        .title {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, var(--accent), var(--text-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: slideUp 1s ease-out;
-        }
-
-        .subtitle {
-            font-size: 1.3rem;
             color: var(--text-secondary);
-            margin-bottom: 3rem;
-            animation: slideUp 1s ease-out 0.2s both;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
         }
 
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-            width: 100%;
+        .social-icon:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-3px);
         }
 
-        .nav-card {
-            background: var(--bg-card);
+        .skills-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--bg-secondary);
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            animation: slideUp 1s ease-out both;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow);
         }
 
-        .nav-card:nth-child(1) { animation-delay: 0.4s; }
-        .nav-card:nth-child(2) { animation-delay: 0.6s; }
-        .nav-card:nth-child(3) { animation-delay: 0.8s; }
-
-        .nav-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .nav-card:hover::before {
-            opacity: 0.1;
-        }
-
-        .nav-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px var(--shadow);
+        .skill-icon:hover {
+            transform: translateY(-3px);
             border-color: var(--accent);
         }
 
-        .card-icon {
-            font-size: 3rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
-            display: block;
+        .hero-image {
+            display: flex;
+            justify-content: center;
         }
 
-        .card-title {
-            font-size: 1.5rem;
+        .profile-image {
+            width: 350px;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Portfolio Section */
+        .portfolio-section {
+            background: var(--bg-secondary);
+            padding: 6rem 2rem;
+        }
+
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
             color: var(--text-primary);
         }
 
-        .card-description {
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .project-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .project-category {
+            background: var(--accent);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .project-likes {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-likes i {
+            color: var(--accent);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-description {
             color: var(--text-secondary);
             line-height: 1.6;
         }
 
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+        /* Navigation Cards */
+        .nav-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 4rem auto 0;
+            padding: 0 2rem;
         }
 
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .shape:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            width: 80px;
-            height: 80px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            top: 60%;
-            right: 15%;
-            width: 60px;
-            height: 60px;
-            background: var(--text-primary);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            animation-delay: 2s;
-        }
-
-        .shape:nth-child(3) {
-            bottom: 30%;
-            left: 15%;
-            width: 100px;
-            height: 40px;
-            background: var(--accent);
+        .nav-card {
+            background: var(--bg-secondary);
             border-radius: 20px;
-            animation-delay: 4s;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
 
-        /* Modal Styles */
+        .nav-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .nav-card-icon {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .nav-card-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 2rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .back-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -322,1173 +428,562 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            padding: 2rem;
+            background: var(--bg-secondary);
             border-radius: 20px;
-            border: 1px solid var(--border);
-            max-width: 500px;
+            max-width: 800px;
             width: 90%;
-            backdrop-filter: blur(20px);
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+            position: relative;
+            height: 300px;
+            overflow: hidden;
         }
 
-        .modal-title {
-            font-size: 1.5rem;
-            font-weight: 600;
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .close-btn {
-            background: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
             border: none;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg-card);
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .user-info {
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        /* Portfolio page styles */
-        .portfolio-container {
-            padding: 0;
-            min-height: 100vh;
-        }
-
-        .portfolio-hero {
-            padding: 120px 2rem 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .portfolio-content {
-            max-width: 600px;
-        }
-
-        .portfolio-greeting {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-        }
-
-        .portfolio-name {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 2rem;
-            line-height: 1.1;
-        }
-
-        .portfolio-description {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 3rem;
-        }
-
-        .portfolio-stats {
-            display: flex;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-item {
-            text-align: left;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--accent);
-            display: block;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 0.5rem;
-        }
-
-        .portfolio-avatar {
-            width: 250px;
-            height: 250px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
-            color: white;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            justify-self: center;
         }
 
-        .back-btn {
-            position: fixed;
-            top: 120px;
-            left: 2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            cursor: pointer;
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-category {
+            color: var(--accent);
             font-size: 0.9rem;
-            font-weight: 500;
-            backdrop-filter: blur(20px);
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        .back-btn:hover {
-            background: var(--accent);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .portfolio-sections {
-            padding: 0 2rem 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px var(--shadow);
-            border-color: var(--accent);
-        }
-
-        .project-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
             font-weight: 600;
-        }
-
-        .project-description {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .tech-stack {
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-            background: var(--accent);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            margin-right: 0.5rem;
+            text-transform: uppercase;
             margin-bottom: 0.5rem;
-            display: inline-block;
-            font-weight: 500;
         }
 
-        .project-link {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .project-link:hover {
-            color: var(--accent-hover);
-        }
-
-        .contact-section {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            text-align: center;
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-        }
-
-        .contact-title {
+        .modal-title {
             font-size: 2rem;
-            font-weight: 600;
-            color: var(--text-primary);
+            font-weight: 700;
             margin-bottom: 1rem;
         }
 
-        .contact-description {
+        .modal-description {
             color: var(--text-secondary);
+            line-height: 1.8;
             margin-bottom: 2rem;
-            font-size: 1.1rem;
         }
 
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            max-width: 800px;
-            margin: 0 auto;
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
         }
 
-        .contact-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 2rem;
+        .action-btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
         }
 
-        .contact-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--shadow);
+        .like-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .like-btn:hover {
+            background: var(--accent);
+            color: white;
             border-color: var(--accent);
         }
 
-        .contact-icon {
-            font-size: 2.5rem;
-            color: var(--accent);
-            margin-bottom: 1rem;
+        .view-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
         }
 
-        .contact-label {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
+        .view-btn:hover {
+            background: var(--accent-hover);
         }
 
-        .contact-value {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .contact-value:hover {
-            color: var(--accent-hover);
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .portfolio-hero {
+            .header {
+                padding: 1rem;
+            }
+
+            .nav {
+                gap: 1rem;
+            }
+
+            .hero {
                 grid-template-columns: 1fr;
                 gap: 2rem;
                 text-align: center;
-                padding: 120px 1rem 2rem;
+                padding: 2rem 1rem;
             }
 
-            .portfolio-name {
+            .hero-title, .hero-subtitle {
                 font-size: 2.5rem;
             }
 
-            .portfolio-avatar {
-                width: 200px;
-                height: 200px;
-                font-size: 6rem;
-            }
-
-            .portfolio-stats {
-                justify-content: center;
-                gap: 2rem;
-            }
-
-            .back-btn {
-                position: static;
-                margin-bottom: 2rem;
-                display: inline-block;
-            }
-
-            .projects-grid, .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+            .profile-image {
+                width: 280px;
+                height: 350px;
             }
 
             .section-title {
                 font-size: 2rem;
             }
-        }
 
-        /* Theme Editor Styles */
-        .color-input {
-            width: 60px;
-            height: 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .theme-preview {
-            width: 100%;
-            height: 100px;
-            border-radius: 8px;
-            margin: 1rem 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-30px) rotate(180deg);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2.5rem;
-            }
-            
-            .nav-grid, .projects-grid {
+            .projects-grid, .nav-cards {
                 grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .header {
-                padding: 1rem;
-            }
-            
-            .header-controls {
-                gap: 0.5rem;
+                gap: 1.5rem;
             }
 
-            .header-nav {
-                gap: 1rem;
+            .back-btn {
+                position: static;
+                margin: 2rem auto;
+                display: inline-block;
             }
 
-            .portfolio-title {
-                font-size: 2rem;
+            .social-icons, .skills-icons {
+                justify-content: center;
             }
         }
     </style>
 </head>
-<body data-theme="dark">
+<body>
     <header class="header">
-        <div class="logo" onclick="navigateTo('/')">
-            <i class="fas fa-book"></i> Portfolio Hub
+        <div class="logo" onclick="navigateTo('home')">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Logo">
+            INBIO
         </div>
-        <nav class="header-nav">
-            <a class="nav-link active" onclick="navigateTo('/')">Home</a>
+        <nav class="nav">
+            <a class="nav-link active" onclick="navigateTo('home')">HOME</a>
+            <a class="nav-link" onclick="navigateTo('features')">FEATURES</a>
+            <a class="nav-link" onclick="navigateTo('portfolio')">PORTFOLIO</a>
+            <a class="nav-link" onclick="navigateTo('resume')">RESUME</a>
+            <a class="nav-link" onclick="navigateTo('clients')">CLIENTS</a>
+            <a class="nav-link" onclick="navigateTo('pricing')">PRICING</a>
+            <a class="nav-link" onclick="navigateTo('blog')">BLOG</a>
+            <a class="nav-link" onclick="navigateTo('contact')">CONTACT</a>
         </nav>
-        <div class="header-controls">
-            <select class="theme-selector" id="themeSelector">
-                <option value="dark">Dark</option>
-                <option value="light">Light</option>
-                <option value="neon">Neon</option>
-                <option value="ocean">Ocean</option>
-                <option value="custom">Custom</option>
-            </select>
-            <button class="theme-editor-btn" onclick="showThemeEditor()">
-                <i class="fas fa-palette"></i>
-            </button>
-            <div class="user-info" id="userInfo">
-                <i class="fas fa-user-circle"></i>
-                <span id="userName"></span>
-                <button class="auth-btn" onclick="logout()">Logout</button>
-            </div>
-            <button class="auth-btn" id="authBtn" onclick="showAuthModal()">Sign Up</button>
-        </div>
+        <button class="buy-btn">BUY NOW</button>
     </header>
 
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
+    <main class="main-container" id="mainContent">
+        <!-- Content will be rendered here -->
+    </main>
 
-    <!-- Main Content Container -->
-    <div id="mainContent">
-        <!-- Content will be rendered here dynamically -->
-    </div>
-
-    <!-- Auth Modal -->
-    <div id="authModal" class="modal">
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Sign Up</h2>
-                <button class="close-btn" onclick="closeAuthModal()">&times;</button>
+                <img id="modalImage" src="" alt="">
+                <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
-            <form id="authForm">
-                <div class="form-group">
-                    <label class="form-label" for="username">Username</label>
-                    <input type="text" id="username" class="form-input" required>
+            <div class="modal-body">
+                <div class="modal-category" id="modalCategory"></div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-description" id="modalDescription"></p>
+                <div class="modal-actions">
+                    <button class="action-btn like-btn" onclick="likeProject()">
+                        <i class="fas fa-heart"></i> LIKE THIS
+                    </button>
+                    <a href="#" class="action-btn view-btn">
+                        <i class="fas fa-external-link-alt"></i> VIEW PROJECT
+                    </a>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <input type="password" id="password" class="form-input" required>
-                </div>
-                <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <input type="checkbox" id="rememberMe" style="margin: 0;">
-                    <label for="rememberMe" style="color: var(--text-secondary); margin: 0; cursor: pointer;">Remember me for 30 days</label>
-                </div>
-                <button type="submit" class="submit-btn" id="submitBtn">Sign Up</button>
-            </form>
-            <p style="margin-top: 1rem; text-align: center; color: var(--text-secondary);">
-                <span id="authSwitch">Already have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Login</a></span>
-            </p>
-        </div>
-    </div>
-
-    <!-- Theme Editor Modal -->
-    <div id="themeModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Theme Editor</h2>
-                <button class="close-btn" onclick="closeThemeEditor()">&times;</button>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Primary Background</label>
-                <input type="color" id="bgPrimary" class="color-input" value="#1a1a3a">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Card Background</label>
-                <input type="color" id="bgCard" class="color-input" value="#2a2a4a">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Primary Text</label>
-                <input type="color" id="textPrimary" class="color-input" value="#ffffff">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Secondary Text</label>
-                <input type="color" id="textSecondary" class="color-input" value="#cccccc">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Accent Color</label>
-                <input type="color" id="accent" class="color-input" value="#00d4ff">
-            </div>
-            <div class="theme-preview" id="themePreview">Preview Theme</div>
-            <div style="display: flex; gap: 1rem;">
-                <button class="submit-btn" onclick="applyCustomTheme()">Apply Theme</button>
-                <button class="submit-btn" style="background: #6b7280;" onclick="resetTheme()">Reset</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Router and App State
-        let currentRoute = '/';
-        let userData = {
-            isLoggedIn: false,
-            user: null,
-            userId: null,
-            theme: getPlainCookie('userTheme') || 'dark',
-            rememberMe: false
+        let currentPage = 'home';
+        let currentPortfolio = null;
+
+        // Portfolio Data
+        const portfolios = {
+            jone: {
+                name: "Jone Lee",
+                title: "Professional Coder",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=350&h=450&fit=crop&crop=face",
+                description: "I use animation as a third dimension by which to simplify experiences and kuiding thro each and every interaction. I'm not adding motion just to spruce things up, but doing it in ways that.",
+                socialLinks: [
+                    { icon: "fab fa-facebook-f", url: "#" },
+                    { icon: "fab fa-instagram", url: "#" },
+                    { icon: "fab fa-linkedin-in", url: "#" }
+                ],
+                skills: ["fab fa-html5", "fab fa-css3-alt", "fab fa-js-square"],
+                projects: [
+                    {
+                        title: "The services provide for design",
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio assumenda explicabo veniam temporibus eligendi.",
+                        category: "DEVELOPMENT",
+                        likes: 600,
+                        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Mobile app landing design & app maintain",
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio assumenda explicabo veniam temporibus eligendi.",
+                        category: "APPLICATION",
+                        likes: 750,
+                        image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Logo design creativity & Application",
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio assumenda explicabo veniam temporibus eligendi.",
+                        category: "PHOTOSHOP",
+                        likes: 630,
+                        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Mobile app landing design & Services",
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio assumenda explicabo veniam temporibus eligendi.",
+                        category: "FIGMA",
+                        likes: 360,
+                        image: "https://images.unsplash.com/photo-1558655146-d09347e92766?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Design for tecnology & services",
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio assumenda explicabo veniam temporibus eligendi.",
+                        category: "WEB DESIGN",
+                        likes: 280,
+                        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "App for tecnology & services",
+                        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate distinctio assumenda explicabo veniam temporibus eligendi.",
+                        category: "WEB DESIGN",
+                        likes: 690,
+                        image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=400&h=250&fit=crop"
+                    }
+                ]
+            },
+            harman: {
+                name: "Harman Singh",
+                title: "Professional Data Analyst",
+                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=350&h=450&fit=crop&crop=face",
+                description: "I use data analysis as a third dimension by which to simplify experiences and guide through each and every insight. I'm not just processing numbers, but doing it in ways that drive meaningful business decisions.",
+                socialLinks: [
+                    { icon: "fab fa-github", url: "#" },
+                    { icon: "fab fa-linkedin-in", url: "#" },
+                    { icon: "fab fa-twitter", url: "#" }
+                ],
+                skills: ["fab fa-python", "fas fa-database", "fas fa-chart-bar"],
+                projects: [
+                    {
+                        title: "Sales Analytics Dashboard",
+                        description: "Interactive dashboard providing comprehensive sales insights with real-time data visualization and predictive analytics.",
+                        category: "ANALYTICS",
+                        likes: 245,
+                        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Customer Behavior Analysis",
+                        description: "Advanced customer segmentation and behavior analysis using machine learning algorithms.",
+                        category: "MACHINE LEARNING",
+                        likes: 180,
+                        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Financial Reporting System",
+                        description: "Automated financial reporting with dynamic charts and KPI tracking for executive decision making.",
+                        category: "REPORTING",
+                        likes: 167,
+                        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop"
+                    }
+                ]
+            },
+            gurshaan: {
+                name: "Gurshaan Singh",
+                title: "Professional Developer",
+                image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=350&h=450&fit=crop&crop=face",
+                description: "I use code as a third dimension by which to simplify experiences and guide through each and every interaction. I'm not adding features just to fill up space, but creating meaningful user experiences.",
+                socialLinks: [
+                    { icon: "fab fa-github", url: "#" },
+                    { icon: "fab fa-instagram", url: "#" },
+                    { icon: "fab fa-linkedin-in", url: "#" }
+                ],
+                skills: ["fab fa-html5", "fab fa-css3-alt", "fab fa-js-square"],
+                projects: [
+                    {
+                        title: "E-Commerce Platform",
+                        description: "Full-stack e-commerce solution with modern UI/UX design and secure payment integration.",
+                        category: "WEB DEVELOPMENT",
+                        likes: 320,
+                        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=250&fit=crop"
+                    },
+                    {
+                        title: "Task Management App",
+                        description: "Collaborative task management application with real-time updates and team collaboration features.",
+                        category: "APPLICATION",
+                        likes: 275,
+                        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=250&fit=crop"
+                    }
+                ]
+            }
         };
 
-        let isLoginMode = false;
-        let globalUserCounter = parseInt(getPlainCookie('userCounter') || '0');
-
-        // Profanity filter
-        const profanityList = [
-            'damn', 'hell', 'crap', 'shit', 'fuck', 'bitch', 'ass', 'bastard',
-            'stupid', 'idiot', 'moron', 'retard', 'gay', 'fag', 'nigger', 'nigga'
-        ];
-
-        function filterProfanity(text) {
-            let filtered = text;
-            profanityList.forEach(word => {
-                const regex = new RegExp(`\\b${word}\\b`, 'gi');
-                filtered = filtered.replace(regex, '*'.repeat(word.length));
-            });
-            return filtered;
-        }
-
-        // Simple cookie functions for non-sensitive data
-        function setPlainCookie(name, value, days = 30) {
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
-        }
-
-        function getPlainCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) {
-                    return c.substring(nameEQ.length, c.length);
-                }
-            }
-            return null;
-        }
-
-        // Router
-        function navigateTo(path) {
-            currentRoute = path;
-            history.pushState(null, null, path);
-            renderCurrentRoute();
-            updateNavigation();
-        }
-
-        function updateNavigation() {
+        // Navigation
+        function navigateTo(page, portfolio = null) {
+            currentPage = page;
+            currentPortfolio = portfolio;
+            
+            // Update nav links
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
             
-            // Only highlight Home link when on home page
-            if (currentRoute === '/') {
+            if (page === 'home') {
                 document.querySelector('.nav-link').classList.add('active');
             }
+            
+            renderContent();
         }
 
-        function renderCurrentRoute() {
+        // Render Content
+        function renderContent() {
             const mainContent = document.getElementById('mainContent');
             
-            switch(currentRoute) {
-                case '/':
-                    mainContent.innerHTML = renderHomePage();
-                    break;
-                case '/harman':
-                    mainContent.innerHTML = renderPortfolioPage('harman');
-                    break;
-                case '/gurshaan':
-                    mainContent.innerHTML = renderPortfolioPage('gurshaan');
-                    break;
-                case '/newspaper':
-                    mainContent.innerHTML = renderPortfolioPage('newspaper');
-                    break;
-                default:
-                    mainContent.innerHTML = renderHomePage();
-                    currentRoute = '/';
+            if (currentPage === 'home') {
+                mainContent.innerHTML = renderHome();
+            } else if (currentPage === 'portfolio' && currentPortfolio) {
+                mainContent.innerHTML = renderPortfolio(currentPortfolio);
+            } else {
+                mainContent.innerHTML = renderHome();
             }
         }
 
-        function renderHomePage() {
+        // Render Home Page
+        function renderHome() {
+            const portfolio = portfolios.jone;
             return `
-                <main class="main-container">
-                    <div class="content">
-                        <h1 class="title">Portfolio Universe</h1>
-                        <p class="subtitle">Discover amazing work from talented creators</p>
+                <div class="hero">
+                    <div class="hero-content">
+                        <div class="welcome-text">WELCOME TO MY WORLD</div>
+                        <h1 class="hero-title">Hi, I'm ${portfolio.name.split(' ')[0]} ${portfolio.name.split(' ')[1]}</h1>
+                        <h2 class="hero-subtitle">a ${portfolio.title}.</h2>
+                        <p class="hero-description">${portfolio.description}</p>
                         
-                        <div class="nav-grid">
-                            <div class="nav-card" onclick="navigateTo('/harman')">
-                                <i class="fas fa-chart-line card-icon"></i>
-                                <h3 class="card-title">Harman's Portfolio</h3>
-                                <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
-                            </div>
-                            
-                            <div class="nav-card" onclick="navigateTo('/gurshaan')">
-                                <i class="fas fa-laptop-code card-icon"></i>
-                                <h3 class="card-title">Gurshaan's Portfolio</h3>
-                                <p class="card-description">Discover creative web development and design solutions</p>
-                            </div>
-                            
-                            <div class="nav-card" onclick="navigateTo('/newspaper')">
-                                <i class="fas fa-newspaper card-icon"></i>
-                                <h3 class="card-title">Digital Newspaper</h3>
-                                <p class="card-description">Stay updated with the latest news and articles</p>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            `;
-        }
-
-        function renderPortfolioPage(type) {
-            const portfolioData = {
-                harman: {
-                    title: "Harman's Portfolio",
-                    name: "Harman",
-                    greeting: "Nice to meet you,",
-                    fullName: "I'm Harman",
-                    description: "I'm a data enthusiast and aspiring analyst with a passion for turning numbers into insights. With 2+ years of experience in Python and SQL, I love uncovering patterns and creating data-driven solutions.",
-                    yearsExp: "2+",
-                    projectsCount: "6+",
-                    avatar: "H",
-                    email: "harman@example.com",
-                    github: "github.com/harman",
-                    linkedin: "linkedin.com/in/harman",
-                    projects: [
-                        {
-                            title: "Data Analytics Dashboard",
-                            description: "Interactive dashboard for business intelligence and data visualization with real-time updates and comprehensive reporting features.",
-                            tech: ["Python", "Tableau", "SQL", "Pandas"],
-                            link: "#"
-                        },
-                        {
-                            title: "Machine Learning Model",
-                            description: "Predictive analytics for sales forecasting using advanced ML techniques including regression analysis and time series forecasting.",
-                            tech: ["Python", "TensorFlow", "Scikit-learn", "Pandas"],
-                            link: "#"
-                        },
-                        {
-                            title: "Financial Report Generator",
-                            description: "Automated reporting system for financial data analysis and insights with customizable templates and scheduling.",
-                            tech: ["Excel", "VBA", "Power BI", "SQL"],
-                            link: "#"
-                        },
-                        {
-                            title: "Customer Segmentation Analysis",
-                            description: "Advanced customer segmentation using clustering algorithms to identify target demographics and behavior patterns.",
-                            tech: ["Python", "Matplotlib", "Seaborn", "K-means"],
-                            link: "#"
-                        }
-                    ]
-                },
-                gurshaan: {
-                    title: "Gurshaan's Portfolio",
-                    name: "Gurshaan",
-                    greeting: "Nice to meet you,",
-                    fullName: "I'm Gurshaan",
-                    description: "I'm a Grade 8 student and aspiring developer with a passion for creating awesome websites. With 2 years of experience in HTML and CSS, I love teaching others and bringing creative ideas to life!",
-                    yearsExp: "2+",
-                    projectsCount: "5+",
-                    avatar: "G",
-                    email: "gurshaan007@gmail.com",
-                    github: "github.com/GSDhaliwal05",
-                    school: "861250@pdsb.net",
-                    projects: [
-                        {
-                            title: "Excel Calculator",
-                            description: "Custom Excel calculator for invoice creation and financial calculations with automated formulas and professional formatting.",
-                            tech: ["Excel", "VBA", "Formulas", "Macros"],
-                            link: "#"
-                        },
-                        {
-                            title: "Health & Wellness Website",
-                            description: "Health-focused informational website with interactive features, nutrition guides, and wellness tracking tools.",
-                            tech: ["HTML", "CSS", "JavaScript", "Bootstrap"],
-                            link: "#"
-                        },
-                        {
-                            title: "Interactive Math Learning Platform",
-                            description: "Educational platform for mathematics with interactive problem solving, progress tracking, and gamification elements.",
-                            tech: ["HTML", "CSS", "JavaScript", "Chart.js"],
-                            link: "#"
-                        },
-                        {
-                            title: "Personal Finance Tracker",
-                            description: "Web-based application for tracking personal expenses and budgets with visual analytics and goal setting features.",
-                            tech: ["HTML", "CSS", "JavaScript", "Local Storage"],
-                            link: "#"
-                        }
-                    ]
-                },
-                newspaper: {
-                    title: "Digital Newspaper",
-                    name: "Digital News",
-                    greeting: "Welcome to",
-                    fullName: "Digital Newspaper",
-                    description: "Your trusted source for breaking news, in-depth analysis, and local stories. We deliver comprehensive coverage across multiple categories with real-time updates.",
-                    yearsExp: "3+",
-                    projectsCount: "8+",
-                    avatar: "📰",
-                    email: "editor@digitalnews.com",
-                    website: "digitalnews.com",
-                    social: "@DigitalNews",
-                    projects: [
-                        {
-                            title: "Breaking News Section",
-                            description: "Real-time news updates and alerts with live feed integration, push notifications, and emergency broadcasting system.",
-                            tech: ["React", "Node.js", "WebSocket", "API"],
-                            link: "#"
-                        },
-                        {
-                            title: "Sports Coverage Platform",
-                            description: "Comprehensive sports news and live score tracking system with match analysis, player statistics, and team profiles.",
-                            tech: ["HTML", "CSS", "JavaScript", "Sports API"],
-                            link: "#"
-                        },
-                        {
-                            title: "Opinion & Editorial Hub",
-                            description: "Editorial and opinion piece platform with comment system, author profiles, and reader engagement features.",
-                            tech: ["CMS", "WordPress", "PHP", "MySQL"],
-                            link: "#"
-                        },
-                        {
-                            title: "Weather & Local News",
-                            description: "Local weather integration with community news updates, event listings, and location-based content delivery.",
-                            tech: ["JavaScript", "Weather API", "Geolocation", "CSS"],
-                            link: "#"
-                        }
-                    ]
-                }
-            };
-
-            const data = portfolioData[type];
-            if (!data) return renderHomePage();
-
-            return `
-                <div class="portfolio-container">
-                    <button class="back-btn" onclick="navigateTo('/')">
-                        <i class="fas fa-arrow-left"></i> Back to Home
-                    </button>
-                    
-                    <div class="portfolio-hero">
-                        <div class="portfolio-content">
-                            <div class="portfolio-greeting">${data.greeting}</div>
-                            <h1 class="portfolio-name">${data.fullName}</h1>
-                            <p class="portfolio-description">${data.description}</p>
-                            
-                            <div class="portfolio-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number">${data.yearsExp}</span>
-                                    <div class="stat-label">Years of Experience</div>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-number">${data.projectsCount}</span>
-                                    <div class="stat-label">Projects Completed</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="portfolio-avatar">
-                            ${data.avatar}
-                        </div>
-                    </div>
-
-                    <div class="portfolio-sections">
-                        <h2 class="section-title">My Projects</h2>
-                        <div class="projects-grid">
-                            ${data.projects.map(project => `
-                                <div class="project-card">
-                                    <h3 class="project-title">${project.title}</h3>
-                                    <p class="project-description">${project.description}</p>
-                                    <div class="tech-stack">
-                                        ${project.tech.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
-                                    </div>
-                                    <a href="${project.link}" class="project-link">
-                                        <i class="fas fa-external-link-alt"></i> View Project
+                        <div class="social-section">
+                            <div class="section-label">FIND WITH ME</div>
+                            <div class="social-icons">
+                                ${portfolio.socialLinks.map(social => `
+                                    <a href="${social.url}" class="social-icon">
+                                        <i class="${social.icon}"></i>
                                     </a>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="skills-section">
+                            <div class="section-label">BEST SKILL ON</div>
+                            <div class="skills-icons">
+                                ${portfolio.skills.map(skill => `
+                                    <div class="skill-icon">
+                                        <i class="${skill}"></i>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-image">
+                        <img src="${portfolio.image}" alt="${portfolio.name}" class="profile-image">
+                    </div>
+                </div>
+
+                <div class="portfolio-section">
+                    <div class="portfolio-container">
+                        <div class="portfolio-header">
+                            <div class="section-subtitle">VISIT MY PORTFOLIO AND KEEP YOUR FEEDBACK</div>
+                            <h2 class="section-title">My Portfolio</h2>
+                        </div>
+                        
+                        <div class="projects-grid">
+                            ${portfolio.projects.map((project, index) => `
+                                <div class="project-card" onclick="openModal('${project.title}', '${project.description}', '${project.category}', '${project.image}', ${project.likes})">
+                                    <div class="project-image">
+                                        <img src="${project.image}" alt="${project.title}">
+                                        <div class="project-overlay">
+                                            <div class="project-category">${project.category}</div>
+                                            <div class="project-likes">
+                                                <i class="fas fa-heart"></i> ${project.likes}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-content">
+                                        <h3 class="project-title">${project.title}</h3>
+                                        <p class="project-description">${project.description}</p>
+                                    </div>
                                 </div>
                             `).join('')}
                         </div>
+                    </div>
+                </div>
 
-                        <div class="contact-section">
-                            <h2 class="contact-title">Contact Me</h2>
-                            <p class="contact-description">Feel free to reach out! I'm always excited to connect with fellow developers and discuss new opportunities.</p>
-                            
-                            <div class="contact-grid">
-                                ${data.email ? `
-                                    <div class="contact-card">
-                                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                                        <div class="contact-label">Email</div>
-                                        <a href="mailto:${data.email}" class="contact-value">${data.email}</a>
-                                    </div>
-                                ` : ''}
-                                ${data.github ? `
-                                    <div class="contact-card">
-                                        <div class="contact-icon"><i class="fab fa-github"></i></div>
-                                        <div class="contact-label">GitHub</div>
-                                        <a href="https://${data.github}" class="contact-value" target="_blank">${data.github}</a>
-                                    </div>
-                                ` : ''}
-                                ${data.school ? `
-                                    <div class="contact-card">
-                                        <div class="contact-icon"><i class="fas fa-school"></i></div>
-                                        <div class="contact-label">School Email</div>
-                                        <a href="mailto:${data.school}" class="contact-value">${data.school}</a>
-                                    </div>
-                                ` : ''}
-                                ${data.linkedin ? `
-                                    <div class="contact-card">
-                                        <div class="contact-icon"><i class="fab fa-linkedin"></i></div>
-                                        <div class="contact-label">LinkedIn</div>
-                                        <a href="https://${data.linkedin}" class="contact-value" target="_blank">${data.linkedin}</a>
-                                    </div>
-                                ` : ''}
-                                ${data.website ? `
-                                    <div class="contact-card">
-                                        <div class="contact-icon"><i class="fas fa-globe"></i></div>
-                                        <div class="contact-label">Website</div>
-                                        <a href="https://${data.website}" class="contact-value" target="_blank">${data.website}</a>
-                                    </div>
-                                ` : ''}
-                                ${data.social ? `
-                                    <div class="contact-card">
-                                        <div class="contact-icon"><i class="fas fa-hashtag"></i></div>
-                                        <div class="contact-label">Social</div>
-                                        <span class="contact-value">${data.social}</span>
-                                    </div>
-                                ` : ''}
+                <div class="nav-cards">
+                    <div class="nav-card" onclick="navigateTo('portfolio', 'harman')">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="nav-card-title">Harman's Portfolio</h3>
+                        <p class="nav-card-description">Explore data-driven insights and innovative analytics projects</p>
+                    </div>
+                    
+                    <div class="nav-card" onclick="navigateTo('portfolio', 'gurshaan')">
+                        <div class="nav-card-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3 class="nav-card-title">Gurshaan's Portfolio</h3>
+                        <p class="nav-card-description">Discover creative web development and design solutions</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render Portfolio Page
+        function renderPortfolio(portfolioKey) {
+            const portfolio = portfolios[portfolioKey];
+            return `
+                <button class="back-btn" onclick="navigateTo('home')">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+                
+                <div class="hero">
+                    <div class="hero-content">
+                        <div class="welcome-text">WELCOME TO MY WORLD</div>
+                        <h1 class="hero-title">Hi, I'm ${portfolio.name}</h1>
+                        <h2 class="hero-subtitle">a ${portfolio.title}.</h2>
+                        <p class="hero-description">${portfolio.description}</p>
+                        
+                        <div class="social-section">
+                            <div class="section-label">FIND WITH ME</div>
+                            <div class="social-icons">
+                                ${portfolio.socialLinks.map(social => `
+                                    <a href="${social.url}" class="social-icon">
+                                        <i class="${social.icon}"></i>
+                                    </a>
+                                `).join('')}
                             </div>
+                        </div>
+                        
+                        <div class="skills-section">
+                            <div class="section-label">BEST SKILL ON</div>
+                            <div class="skills-icons">
+                                ${portfolio.skills.map(skill => `
+                                    <div class="skill-icon">
+                                        <i class="${skill}"></i>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-image">
+                        <img src="${portfolio.image}" alt="${portfolio.name}" class="profile-image">
+                    </div>
+                </div>
+
+                <div class="portfolio-section">
+                    <div class="portfolio-container">
+                        <div class="portfolio-header">
+                            <div class="section-subtitle">VISIT MY PORTFOLIO AND KEEP YOUR FEEDBACK</div>
+                            <h2 class="section-title">My Portfolio</h2>
+                        </div>
+                        
+                        <div class="projects-grid">
+                            ${portfolio.projects.map((project, index) => `
+                                <div class="project-card" onclick="openModal('${project.title}', '${project.description}', '${project.category}', '${project.image}', ${project.likes})">
+                                    <div class="project-image">
+                                        <img src="${project.image}" alt="${project.title}">
+                                        <div class="project-overlay">
+                                            <div class="project-category">${project.category}</div>
+                                            <div class="project-likes">
+                                                <i class="fas fa-heart"></i> ${project.likes}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-content">
+                                        <h3 class="project-title">${project.title}</h3>
+                                        <p class="project-description">${project.description}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        // Theme Management
-        const themeSelector = document.getElementById('themeSelector');
-        themeSelector.addEventListener('change', function() {
-            const theme = this.value;
-            document.documentElement.setAttribute('data-theme', theme);
-            userData.theme = theme;
+        // Modal Functions
+        function openModal(title, description, category, image, likes) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalDescription').textContent = description;
+            document.getElementById('modalCategory').textContent = `Featured - ${category}`;
+            document.getElementById('modalImage').src = image;
+            document.getElementById('projectModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function likeProject() {
+            // Simple like animation
+            const btn = event.target.closest('.like-btn');
+            btn.style.background = 'var(--accent)';
+            btn.style.color = 'white';
+            btn.style.transform = 'scale(0.95)';
             
-            setPlainCookie('userTheme', theme, 30);
-            showNotification(`Theme changed to ${theme}!`, 'success');
-        });
-
-        function loadSavedTheme() {
-            const savedTheme = getPlainCookie('userTheme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            themeSelector.value = savedTheme;
-            userData.theme = savedTheme;
-        }
-
-        // Theme Editor Functions
-        function showThemeEditor() {
-            document.getElementById('themeModal').style.display = 'block';
-        }
-
-        function closeThemeEditor() {
-            document.getElementById('themeModal').style.display = 'none';
-        }
-
-        function applyCustomTheme() {
-            const bgPrimary = document.getElementById('bgPrimary').value;
-            const bgCard = document.getElementById('bgCard').value;
-            const textPrimary = document.getElementById('textPrimary').value;
-            const textSecondary = document.getElementById('textSecondary').value;
-            const accent = document.getElementById('accent').value;
-
-            // Apply custom theme
-            const root = document.documentElement;
-            root.style.setProperty('--custom-bg-primary', `linear-gradient(135deg, ${bgPrimary} 0%, ${bgCard} 100%)`);
-            root.style.setProperty('--custom-bg-card', `${bgCard}aa`);
-            root.style.setProperty('--custom-text-primary', textPrimary);
-            root.style.setProperty('--custom-text-secondary', textSecondary);
-            root.style.setProperty('--custom-accent', accent);
-            root.style.setProperty('--custom-accent-hover', accent + 'dd');
-            root.style.setProperty('--custom-border', textPrimary + '22');
-            root.style.setProperty('--custom-shadow', '0, 0, 0');
-
-            // Set theme to custom
-            document.documentElement.setAttribute('data-theme', 'custom');
-            themeSelector.value = 'custom';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 150);
             
-            // Save custom theme
-            const customTheme = {
-                bgPrimary, bgCard, textPrimary, textSecondary, accent
-            };
-            setPlainCookie('customTheme', JSON.stringify(customTheme), 30);
-            setPlainCookie('userTheme', 'custom', 30);
-
-            closeThemeEditor();
-            showNotification('Custom theme applied!', 'success');
+            // Show notification
+            showNotification('Thanks for the like!');
         }
 
-        function resetTheme() {
-            document.getElementById('bgPrimary').value = '#1a1a3a';
-            document.getElementById('bgCard').value = '#2a2a4a';
-            document.getElementById('textPrimary').value = '#ffffff';
-            document.getElementById('textSecondary').value = '#cccccc';
-            document.getElementById('accent').value = '#00d4ff';
-            updateThemePreview();
-        }
-
-        function updateThemePreview() {
-            const preview = document.getElementById('themePreview');
-            const bgPrimary = document.getElementById('bgPrimary').value;
-            const textPrimary = document.getElementById('textPrimary').value;
-            const accent = document.getElementById('accent').value;
-            
-            preview.style.background = `linear-gradient(135deg, ${bgPrimary}, ${accent}22)`;
-            preview.style.color = textPrimary;
-        }
-
-        // Add event listeners for theme editor inputs
-        ['bgPrimary', 'bgCard', 'textPrimary', 'textSecondary', 'accent'].forEach(id => {
-            document.getElementById(id).addEventListener('input', updateThemePreview);
-        });
-
-        // Auth Modal Functions
-        function showAuthModal() {
-            document.getElementById('authModal').style.display = 'block';
-        }
-
-        function closeAuthModal() {
-            document.getElementById('authModal').style.display = 'none';
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            const modalTitle = document.getElementById('modalTitle');
-            const submitBtn = document.getElementById('submitBtn');
-            const authSwitch = document.getElementById('authSwitch');
-
-            if (isLoginMode) {
-                modalTitle.textContent = 'Login';
-                submitBtn.textContent = 'Login';
-                authSwitch.innerHTML = `Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Sign up</a>`;
-            } else {
-                modalTitle.textContent = 'Sign Up';
-                submitBtn.textContent = 'Sign Up';
-                authSwitch.innerHTML = `Already have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Login</a>`;
-            }
-        }
-
-        // Password hashing
-        async function hashPassword(password) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(password + 'portfolio_hub_salt');
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            return hashHex;
-        }
-
-        // Simple secure storage using localStorage (for demo purposes)
-        function setSecureData(key, data, days = 30) {
-            const item = {
-                data: data,
-                expiry: new Date().getTime() + (days * 24 * 60 * 60 * 1000)
-            };
-            localStorage.setItem(key, JSON.stringify(item));
-        }
-
-        function getSecureData(key) {
-            try {
-                const item = JSON.parse(localStorage.getItem(key));
-                if (!item) return null;
-                
-                if (new Date().getTime() > item.expiry) {
-                    localStorage.removeItem(key);
-                    return null;
-                }
-                
-                return item.data;
-            } catch (error) {
-                return null;
-            }
-        }
-
-        function deleteSecureData(key) {
-            localStorage.removeItem(key);
-        }
-
-        // Auth Form Handler
-        document.getElementById('authForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const username = filterProfanity(document.getElementById('username').value.trim());
-            const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
-
-            if (username.length < 3) {
-                showNotification('Username must be at least 3 characters!', 'warning');
-                return;
-            }
-
-            if (password.length < 6) {
-                showNotification('Password must be at least 6 characters!', 'warning');
-                return;
-            }
-
-            const hashedPassword = await hashPassword(password);
-
-            if (isLoginMode) {
-                // Login
-                const registeredUsers = getSecureData('registeredUsers') || {};
-                
-                if (registeredUsers[username] && registeredUsers[username].password === hashedPassword) {
-                    // Successful login
-                    userData.isLoggedIn = true;
-                    userData.user = { name: username, loginTime: new Date().toISOString() };
-                    userData.userId = registeredUsers[username].userId;
-                    userData.rememberMe = rememberMe;
-                    
-                    const cookieDays = rememberMe ? 30 : 1;
-                    setSecureData('isLoggedIn', true, cookieDays);
-                    setSecureData('userData', userData.user, cookieDays);
-                    setSecureData('userId', userData.userId, cookieDays);
-                    setSecureData('rememberMe', rememberMe, cookieDays);
-                    
-                    updateAuthUI();
-                    closeAuthModal();
-                    showNotification(`Welcome back, ${username}!`, 'success');
-                } else {
-                    showNotification('Invalid username or password!', 'warning');
-                }
-            } else {
-                // Sign up
-                let registeredUsers = getSecureData('registeredUsers') || {};
-                
-                if (registeredUsers[username]) {
-                    showNotification('Username already taken! Please choose another.', 'warning');
-                    return;
-                }
-                
-                // Assign user ID
-                globalUserCounter++;
-                const userId = globalUserCounter;
-                setPlainCookie('userCounter', globalUserCounter.toString(), 365);
-                
-                // Save new user
-                registeredUsers[username] = {
-                    password: hashedPassword,
-                    userId: userId,
-                    registrationDate: new Date().toISOString()
-                };
-                
-                setSecureData('registeredUsers', registeredUsers, 365);
-                
-                // Auto-login after signup
-                userData.isLoggedIn = true;
-                userData.user = { name: username, loginTime: new Date().toISOString() };
-                userData.userId = userId;
-                userData.rememberMe = rememberMe;
-                
-                const cookieDays = rememberMe ? 30 : 1;
-                setSecureData('isLoggedIn', true, cookieDays);
-                setSecureData('userData', userData.user, cookieDays);
-                setSecureData('userId', userId, cookieDays);
-                setSecureData('rememberMe', rememberMe, cookieDays);
-                
-                updateAuthUI();
-                closeAuthModal();
-                showNotification(`Welcome to Portfolio Hub, ${username}!`, 'success');
-            }
-            
-            document.getElementById('authForm').reset();
-        });
-
-        async function logout() {
-            userData.isLoggedIn = false;
-            userData.user = null;
-            userData.userId = null;
-            userData.rememberMe = false;
-            
-            deleteSecureData('isLoggedIn');
-            deleteSecureData('userData');
-            deleteSecureData('userId');
-            deleteSecureData('rememberMe');
-            
-            updateAuthUI();
-            showNotification('Logged out successfully!', 'info');
-            
-            if (currentRoute !== '/') {
-                navigateTo('/');
-            }
-        }
-
-        function updateAuthUI() {
-            const authBtn = document.getElementById('authBtn');
-            const userInfo = document.getElementById('userInfo');
-            const userName = document.getElementById('userName');
-
-            if (userData.isLoggedIn && userData.user) {
-                authBtn.style.display = 'none';
-                userInfo.style.display = 'flex';
-                userName.textContent = userData.user.name;
-            } else {
-                authBtn.style.display = 'block';
-                userInfo.style.display = 'none';
-            }
-        }
-
-        // Notification System
-        function showNotification(message, type = 'info') {
+        function showNotification(message) {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                padding: 1rem 2rem;
-                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
+                background: var(--accent);
                 color: white;
+                padding: 1rem 2rem;
                 border-radius: 8px;
                 z-index: 3000;
                 font-weight: 500;
-                animation: slideInRight 0.3s ease-out;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                animation: slideIn 0.3s ease-out;
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
@@ -1498,81 +993,32 @@
             }, 3000);
         }
 
-        const notificationStyle = document.createElement('style');
-        notificationStyle.textContent = `
-            @keyframes slideInRight {
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
                 from { transform: translateX(100%); opacity: 0; }
                 to { transform: translateX(0); opacity: 1; }
             }
         `;
-        document.head.appendChild(notificationStyle);
+        document.head.appendChild(style);
 
-        // Browser back/forward handling
-        window.addEventListener('popstate', function(e) {
-            currentRoute = location.pathname;
-            renderCurrentRoute();
-            updateNavigation();
+        // Close modal on outside click
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'projectModal') {
+                closeModal();
+            }
         });
 
-        // Initialize app
-        function initializeApp() {
-            try {
-                const isLoggedIn = getSecureData('isLoggedIn');
-                const userData_storage = getSecureData('userData');
-                const userId_storage = getSecureData('userId');
-                
-                if (isLoggedIn && userData_storage && userId_storage) {
-                    userData.isLoggedIn = true;
-                    userData.user = userData_storage;
-                    userData.userId = userId_storage;
-                    
-                    const loginTime = new Date(userData_storage.loginTime || Date.now());
-                    const now = new Date();
-                    const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
-                    
-                    const rememberMe = getSecureData('rememberMe');
-                    if (hoursSinceLogin > 24 && !rememberMe) {
-                        logout();
-                        showNotification('Session expired. Please login again.', 'info');
-                    }
-                }
-                
-                loadSavedTheme();
-                updateAuthUI();
-                
-                // Initialize route from URL
-                currentRoute = location.pathname;
-                renderCurrentRoute();
-                updateNavigation();
-                
-                // Load custom theme if saved
-                const savedCustomTheme = getPlainCookie('customTheme');
-                if (savedCustomTheme && userData.theme === 'custom') {
-                    const customTheme = JSON.parse(savedCustomTheme);
-                    Object.entries(customTheme).forEach(([key, value]) => {
-                        document.getElementById(key).value = value;
-                    });
-                    applyCustomTheme();
-                }
-                
-            } catch (error) {
-                console.error('Failed to initialize app:', error);
-                userData.isLoggedIn = false;
-                userData.user = null;
-                updateAuthUI();
-                renderCurrentRoute();
+        // ESC key to close modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
             }
-        }
+        });
 
-        // Initialize theme
-        loadSavedTheme();
-
-        // Initialize app when DOM loads
-        document.addEventListener('DOMContentLoaded', initializeApp);
-        initializeApp();
-
-        console.log('🚀 Portfolio Hub loaded with routing system!');
-        console.log('📍 Available routes: /, /harman, /gurshaan, /newspaper');
+        // Initialize
+        renderContent();
     </script>
 </body>
 </html>
