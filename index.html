@@ -919,8 +919,144 @@
         let isLoginMode = false; // Default to sign up mode
         let currentSection = 'home';
 
-        // Global user counter for assigning unique IDs
-        let globalUserCounter = parseInt(getPlainCookie('userCounter') || '0');
+        // Simulate server-side storage using a combination of localStorage and cookies
+        // This creates a more persistent "database" that simulates server behavior
+        
+        class PersistentUserDatabase {
+            constructor() {
+                this.dbKey = 'portfolioHubGlobalDB';
+                this.initialize();
+            }
+
+            initialize() {
+                // Try to get existing database from localStorage
+                let globalDB = localStorage.getItem(this.dbKey);
+                
+                if (!globalDB) {
+                    // Create initial database structure
+                    globalDB = {
+                        users: {},
+                        userCounter: 0,
+                        editedContent: {},
+                        version: '1.0',
+                        created: new Date().toISOString()
+                    };
+                    this.saveDatabase(globalDB);
+                } else {
+                    try {
+                        globalDB = JSON.parse(globalDB);
+                    } catch (e) {
+                        // If parsing fails, create new database
+                        globalDB = {
+                            users: {},
+                            userCounter: 0,
+                            editedContent: {},
+                            version: '1.0',
+                            created: new Date().toISOString()
+                        };
+                        this.saveDatabase(globalDB);
+                    }
+                }
+                
+                this.database = globalDB;
+            }
+
+            saveDatabase(db = null) {
+                const dbToSave = db || this.database;
+                localStorage.setItem(this.dbKey, JSON.stringify(dbToSave));
+                
+                // Also save a backup in cookies for cross-session persistence
+                setPlainCookie('dbBackup', JSON.stringify(dbToSave), 365);
+            }
+
+            getDatabase() {
+                // Always get fresh data from localStorage
+                try {
+                    const freshDB = localStorage.getItem(this.dbKey);
+                    if (freshDB) {
+                        this.database = JSON.parse(freshDB);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load fresh database, using cached version');
+                }
+                return this.database;
+            }
+
+            async addUser(username, hashedPassword) {
+                const db = this.getDatabase();
+                
+                // Check if user already exists
+                if (db.users[username]) {
+                    return null; // User exists
+                }
+
+                // Increment user counter
+                db.userCounter++;
+                const userId = db.userCounter;
+
+                // Add user to database
+                db.users[username] = {
+                    password: hashedPassword,
+                    userId: userId,
+                    registrationDate: new Date().toISOString(),
+                    isActive: true
+                };
+
+                this.saveDatabase(db);
+                return userId;
+            }
+
+            async getUser(username) {
+                const db = this.getDatabase();
+                return db.users[username] || null;
+            }
+
+            async getAllUsers() {
+                const db = this.getDatabase();
+                return db.users;
+            }
+
+            async updateContent(key, content) {
+                const db = this.getDatabase();
+                db.editedContent[key] = content;
+                this.saveDatabase(db);
+            }
+
+            async getEditedContent() {
+                const db = this.getDatabase();
+                return db.editedContent || {};
+            }
+
+            async getUserCount() {
+                const db = this.getDatabase();
+                return Object.keys(db.users).length;
+            }
+
+            async getCurrentUserCounter() {
+                const db = this.getDatabase();
+                return db.userCounter;
+            }
+
+            // Method to sync with other tabs/windows
+            syncWithOtherTabs() {
+                // Listen for localStorage changes from other tabs
+                window.addEventListener('storage', (e) => {
+                    if (e.key === this.dbKey) {
+                        // Refresh our local database when another tab updates it
+                        this.initialize();
+                        if (currentSection === 'users') {
+                            loadUsersList();
+                        }
+                        // Reload edited content
+                        loadEditedContent();
+                    }
+                });
+            }
+        }
+
+        // Initialize global database
+        const globalDB = new PersistentUserDatabase();
+        globalDB.syncWithOtherTabs();
 
         // Section Management
         function showSection(section) {
@@ -945,24 +1081,35 @@
             currentSection = section;
         }
 
-        // User Management
+        // User Management - Updated to use global database
         async function loadUsersList() {
             const usersGrid = document.getElementById('usersGrid');
-            const registeredUsers = await getSecureCookie('registeredUsers') || {};
+            const allUsers = await globalDB.getAllUsers();
             
             usersGrid.innerHTML = '';
 
-            // Create user cards
-            Object.entries(registeredUsers).forEach(([username, userInfo]) => {
+            if (Object.keys(allUsers).length === 0) {
+                usersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">No registered users yet. Be the first to sign up!</p>';
+                return;
+            }
+
+            // Create user cards for all registered users
+            Object.entries(allUsers).forEach(([username, userInfo]) => {
                 const userCard = document.createElement('div');
                 userCard.className = 'user-card';
                 
                 const isAdmin = userInfo.userId === 1;
+                const isCurrentUser = userData.isLoggedIn && userData.user && userData.user.name === username;
                 const avatar = username.charAt(0).toUpperCase();
                 
+                if (isCurrentUser) {
+                    userCard.style.borderColor = 'var(--accent)';
+                    userCard.style.boxShadow = '0 0 20px var(--accent)22';
+                }
+                
                 userCard.innerHTML = `
-                    <div class="user-avatar">${avatar}</div>
-                    <div class="user-name">${filterProfanity(username)}</div>
+                    <div class="user-avatar" ${isCurrentUser ? 'style="background: var(--accent);"' : ''}>${avatar}</div>
+                    <div class="user-name">${filterProfanity(username)}${isCurrentUser ? ' (You)' : ''}</div>
                     ${isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
                     <p style="color: var(--text-secondary); font-size: 0.9rem;">
                         Joined: ${new Date(userInfo.registrationDate).toLocaleDateString()}
@@ -970,43 +1117,38 @@
                     <p style="color: var(--text-secondary); font-size: 0.9rem;">
                         User ID: ${userInfo.userId}
                     </p>
+                    <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.5rem;">
+                        ${userInfo.isActive ? '🟢 Active' : '⚫ Inactive'}
+                    </p>
                 `;
                 
                 usersGrid.appendChild(userCard);
             });
 
-            // Add current user if logged in and not in the list
-            if (userData.isLoggedIn && userData.user) {
-                const currentUserExists = Object.keys(registeredUsers).some(username => 
-                    registeredUsers[username].userId === userData.userId
-                );
-                
-                if (!currentUserExists) {
-                    const userCard = document.createElement('div');
-                    userCard.className = 'user-card';
-                    userCard.style.borderColor = 'var(--accent)';
-                    
-                    const avatar = userData.user.name.charAt(0).toUpperCase();
-                    
-                    userCard.innerHTML = `
-                        <div class="user-avatar" style="background: var(--accent);">${avatar}</div>
-                        <div class="user-name">${filterProfanity(userData.user.name)} (You)</div>
-                        ${userData.isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
-                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                            Current Session
-                        </p>
-                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                            User ID: ${userData.userId}
-                        </p>
-                    `;
-                    
-                    usersGrid.insertBefore(userCard, usersGrid.firstChild);
-                }
-            }
-
-            if (usersGrid.children.length === 0) {
-                usersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">No registered users yet. Be the first to sign up!</p>';
-            }
+            // Show total user count
+            const userCount = await globalDB.getUserCount();
+            const totalCounter = await globalDB.getCurrentUserCounter();
+            
+            const statsCard = document.createElement('div');
+            statsCard.className = 'user-card';
+            statsCard.style.background = 'linear-gradient(135deg, var(--accent)22, var(--accent)11)';
+            statsCard.style.borderColor = 'var(--accent)';
+            statsCard.innerHTML = `
+                <div class="user-avatar" style="background: var(--accent);"><i class="fas fa-chart-bar"></i></div>
+                <div class="user-name">Community Stats</div>
+                <div class="user-badge" style="background: var(--accent);">Statistics</div>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                    Active Users: ${userCount}
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                    Total Signups: ${totalCounter}
+                </p>
+                <p style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.5rem;">
+                    ${userData.isAdmin ? '👑 You have admin powers!' : ''}
+                </p>
+            `;
+            
+            usersGrid.insertBefore(statsCard, usersGrid.firstChild);
         }
 
         // Theme Management
@@ -1129,7 +1271,7 @@
             return hashHex;
         }
 
-        // Auth Form Handler
+        // Auth Form Handler - Updated to use global database
         document.getElementById('authForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1150,14 +1292,14 @@
             const hashedPassword = await hashPassword(password);
 
             if (isLoginMode) {
-                // Login
-                const registeredUsers = await getSecureCookie('registeredUsers') || {};
+                // Login - check global database
+                const userInfo = await globalDB.getUser(username);
                 
-                if (registeredUsers[username] && registeredUsers[username].password === hashedPassword) {
+                if (userInfo && userInfo.password === hashedPassword) {
                     // Successful login
                     userData.isLoggedIn = true;
                     userData.user = { name: username, loginTime: new Date().toISOString() };
-                    userData.userId = registeredUsers[username].userId;
+                    userData.userId = userInfo.userId;
                     userData.isAdmin = userData.userId === 1;
                     userData.rememberMe = rememberMe;
                     
@@ -1170,31 +1312,30 @@
                     updateAuthUI();
                     closeAuthModal();
                     showNotification(`Welcome back, ${username}!${userData.isAdmin ? ' (Admin)' : ''}`, 'success');
+                    
+                    // Refresh users list if on users page
+                    if (currentSection === 'users') {
+                        loadUsersList();
+                    }
                 } else {
                     showNotification('Invalid username or password!', 'warning');
                 }
             } else {
-                // Sign up
-                let registeredUsers = await getSecureCookie('registeredUsers') || {};
+                // Sign up - use global database
+                const existingUser = await globalDB.getUser(username);
                 
-                if (registeredUsers[username]) {
+                if (existingUser) {
                     showNotification('Username already taken! Please choose another.', 'warning');
                     return;
                 }
                 
-                // Assign user ID
-                globalUserCounter++;
-                const userId = globalUserCounter;
-                setPlainCookie('userCounter', globalUserCounter.toString(), 365);
+                // Add user to global database
+                const userId = await globalDB.addUser(username, hashedPassword);
                 
-                // Save new user
-                registeredUsers[username] = {
-                    password: hashedPassword,
-                    userId: userId,
-                    registrationDate: new Date().toISOString()
-                };
-                
-                await setSecureCookie('registeredUsers', registeredUsers, 365);
+                if (!userId) {
+                    showNotification('Failed to create account. Please try again.', 'warning');
+                    return;
+                }
                 
                 // Auto-login after signup
                 userData.isLoggedIn = true;
@@ -1211,7 +1352,17 @@
                 
                 updateAuthUI();
                 closeAuthModal();
-                showNotification(`Welcome to Portfolio Hub, ${username}!${userData.isAdmin ? ' You are the admin!' : ''}`, 'success');
+                
+                const welcomeMessage = userId === 1 
+                    ? `Welcome to Portfolio Hub, ${username}! You are the admin! 👑`
+                    : `Welcome to Portfolio Hub, ${username}! You are user #${userId}.`;
+                
+                showNotification(welcomeMessage, 'success');
+                
+                // Refresh users list if on users page
+                if (currentSection === 'users') {
+                    loadUsersList();
+                }
             }
             
             document.getElementById('authForm').reset();
@@ -1267,7 +1418,7 @@
             }
         }
 
-        // Admin Content Editing
+        // Admin Content Editing - Updated to use global database
         async function enableEditing(event) {
             if (!userData.isAdmin) return;
             
@@ -1283,18 +1434,16 @@
                 // Update the element
                 element.childNodes[0].textContent = filteredText;
                 
-                // Save to secure storage
-                let editedContent = await getSecureCookie('editedContent') || {};
-                editedContent[key] = filteredText;
-                await setSecureCookie('editedContent', editedContent, 365);
+                // Save to global database
+                await globalDB.updateContent(key, filteredText);
                 
-                showNotification('Content updated!', 'success');
+                showNotification('Content updated globally!', 'success');
             }
         }
 
-        // Load edited content
+        // Load edited content - Updated to use global database
         async function loadEditedContent() {
-            const editedContent = await getSecureCookie('editedContent') || {};
+            const editedContent = await globalDB.getEditedContent();
             
             Object.entries(editedContent).forEach(([key, text]) => {
                 const element = document.querySelector(`[data-key="${key}"]`);
