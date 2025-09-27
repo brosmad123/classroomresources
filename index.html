@@ -96,6 +96,7 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--accent);
+            cursor: pointer;
         }
 
         .header-nav {
@@ -404,62 +405,98 @@
             color: var(--text-primary);
         }
 
-        /* Users page styles */
-        .users-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
+        /* Portfolio page styles */
+        .portfolio-container {
+            padding: 120px 2rem 2rem;
+            min-height: 100vh;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .user-card {
+        .back-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .portfolio-title {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 15px;
-            padding: 1.5rem;
+            border-radius: 20px;
+            padding: 2rem;
             transition: all 0.3s ease;
             backdrop-filter: blur(20px);
         }
 
-        .user-card:hover {
+        .project-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 30px var(--shadow);
             border-color: var(--accent);
         }
 
-        .user-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+        .project-title {
             font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
             margin-bottom: 1rem;
         }
 
-        .user-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .user-badge {
+        .tech-tag {
             background: var(--accent);
             color: white;
             padding: 0.25rem 0.5rem;
-            border-radius: 12px;
+            border-radius: 4px;
             font-size: 0.8rem;
-            display: inline-block;
+            margin-right: 0.5rem;
             margin-bottom: 0.5rem;
+            display: inline-block;
+            font-weight: 500;
         }
 
-        .admin-badge {
-            background: #ff6b6b;
+        .project-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            color: var(--accent-hover);
         }
 
         /* Theme Editor Styles */
@@ -480,56 +517,6 @@
             align-items: center;
             justify-content: center;
             font-weight: 600;
-        }
-
-        /* Admin Panel Styles */
-        .admin-panel {
-            background: var(--bg-card);
-            border: 2px solid #ff6b6b;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .admin-title {
-            color: #ff6b6b;
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .editable-content {
-            position: relative;
-            cursor: text;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .editable-content:hover {
-            background: var(--bg-card);
-        }
-
-        .edit-indicator {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #ff6b6b;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 0.8rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .editable-content:hover .edit-indicator {
-            display: flex;
         }
 
         @keyframes slideUp {
@@ -557,7 +544,7 @@
                 font-size: 2.5rem;
             }
             
-            .nav-grid {
+            .nav-grid, .projects-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
@@ -573,17 +560,23 @@
             .header-nav {
                 gap: 1rem;
             }
+
+            .portfolio-title {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body data-theme="dark">
     <header class="header">
-        <div class="logo">
+        <div class="logo" onclick="navigateTo('/')">
             <i class="fas fa-code"></i> Portfolio Hub
         </div>
         <nav class="header-nav">
-            <a class="nav-link active" onclick="showSection('home')">Home</a>
-            <a class="nav-link" onclick="showSection('users')">Users</a>
+            <a class="nav-link" onclick="navigateTo('/')">Home</a>
+            <a class="nav-link" onclick="navigateTo('/harman')">Harman</a>
+            <a class="nav-link" onclick="navigateTo('/gurshaan')">Gurshaan</a>
+            <a class="nav-link" onclick="navigateTo('/newspaper')">Newspaper</a>
         </nav>
         <div class="header-controls">
             <select class="theme-selector" id="themeSelector">
@@ -611,66 +604,9 @@
         <div class="shape"></div>
     </div>
 
-    <!-- Home Section -->
-    <main class="main-container" id="homeSection">
-        <div class="content">
-            <h1 class="title editable-content" data-key="main-title">
-                Portfolio Universe
-                <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-            </h1>
-            <p class="subtitle editable-content" data-key="main-subtitle">
-                Discover amazing work from talented creators
-                <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-            </p>
-            
-            <div class="nav-grid">
-                <div class="nav-card" onclick="navigateToPortfolio('harman')">
-                    <i class="fas fa-chart-line card-icon"></i>
-                    <h3 class="card-title editable-content" data-key="harman-title">
-                        Harman's Portfolio
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </h3>
-                    <p class="card-description editable-content" data-key="harman-desc">
-                        Explore data-driven insights and innovative analytics projects
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </p>
-                </div>
-                
-                <div class="nav-card" onclick="navigateToPortfolio('gurshaan')">
-                    <i class="fas fa-laptop-code card-icon"></i>
-                    <h3 class="card-title editable-content" data-key="gurshaan-title">
-                        Gurshaan's Portfolio
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </h3>
-                    <p class="card-description editable-content" data-key="gurshaan-desc">
-                        Discover creative web development and design solutions
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </p>
-                </div>
-                
-                <div class="nav-card" onclick="navigateToPortfolio('newspaper')">
-                    <i class="fas fa-newspaper card-icon"></i>
-                    <h3 class="card-title editable-content" data-key="newspaper-title">
-                        Digital Newspaper
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </h3>
-                    <p class="card-description editable-content" data-key="newspaper-desc">
-                        Stay updated with the latest news and articles
-                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Users Section -->
-    <div class="main-container" id="usersSection" style="display: none;">
-        <div style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
-            <h1 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; color: var(--text-primary);">User Community</h1>
-            <div class="users-grid" id="usersGrid">
-                <!-- Users will be populated dynamically -->
-            </div>
-        </div>
+    <!-- Main Content Container -->
+    <div id="mainContent">
+        <!-- Content will be rendered here dynamically -->
     </div>
 
     <!-- Auth Modal -->
@@ -737,6 +673,19 @@
     </div>
 
     <script>
+        // Router and App State
+        let currentRoute = '/';
+        let userData = {
+            isLoggedIn: false,
+            user: null,
+            userId: null,
+            theme: getPlainCookie('userTheme') || 'dark',
+            rememberMe: false
+        };
+
+        let isLoginMode = false;
+        let globalUserCounter = parseInt(getPlainCookie('userCounter') || '0');
+
         // Profanity filter
         const profanityList = [
             'damn', 'hell', 'crap', 'shit', 'fuck', 'bitch', 'ass', 'bastard',
@@ -752,141 +701,7 @@
             return filtered;
         }
 
-        // Encryption/Decryption utility functions using Web Crypto API
-        class CookieEncryption {
-            constructor() {
-                this.algorithm = 'AES-GCM';
-                this.keyLength = 256;
-                this.ivLength = 12;
-                this.initKey();
-            }
-
-            async initKey() {
-                const keyData = localStorage.getItem('encryptionKey');
-                if (keyData) {
-                    const keyBuffer = this.base64ToArrayBuffer(keyData);
-                    this.cryptoKey = await crypto.subtle.importKey(
-                        'raw',
-                        keyBuffer,
-                        { name: this.algorithm },
-                        false,
-                        ['encrypt', 'decrypt']
-                    );
-                } else {
-                    this.cryptoKey = await crypto.subtle.generateKey(
-                        { name: this.algorithm, length: this.keyLength },
-                        true,
-                        ['encrypt', 'decrypt']
-                    );
-                    
-                    const keyBuffer = await crypto.subtle.exportKey('raw', this.cryptoKey);
-                    localStorage.setItem('encryptionKey', this.arrayBufferToBase64(keyBuffer));
-                }
-            }
-
-            async encrypt(data) {
-                if (!this.cryptoKey) await this.initKey();
-                
-                const encoder = new TextEncoder();
-                const dataBuffer = encoder.encode(JSON.stringify(data));
-                const iv = crypto.getRandomValues(new Uint8Array(this.ivLength));
-                
-                const encryptedBuffer = await crypto.subtle.encrypt(
-                    { name: this.algorithm, iv: iv },
-                    this.cryptoKey,
-                    dataBuffer
-                );
-                
-                const combined = new Uint8Array(iv.length + encryptedBuffer.byteLength);
-                combined.set(iv);
-                combined.set(new Uint8Array(encryptedBuffer), iv.length);
-                
-                return this.arrayBufferToBase64(combined.buffer);
-            }
-
-            async decrypt(encryptedData) {
-                if (!this.cryptoKey) await this.initKey();
-                
-                try {
-                    const combined = this.base64ToArrayBuffer(encryptedData);
-                    const iv = combined.slice(0, this.ivLength);
-                    const encrypted = combined.slice(this.ivLength);
-                    
-                    const decryptedBuffer = await crypto.subtle.decrypt(
-                        { name: this.algorithm, iv: iv },
-                        this.cryptoKey,
-                        encrypted
-                    );
-                    
-                    const decoder = new TextDecoder();
-                    const decryptedText = decoder.decode(decryptedBuffer);
-                    
-                    return JSON.parse(decryptedText);
-                } catch (error) {
-                    console.warn('Failed to decrypt cookie:', error);
-                    return null;
-                }
-            }
-
-            arrayBufferToBase64(buffer) {
-                const bytes = new Uint8Array(buffer);
-                let binary = '';
-                for (let i = 0; i < bytes.byteLength; i++) {
-                    binary += String.fromCharCode(bytes[i]);
-                }
-                return btoa(binary);
-            }
-
-            base64ToArrayBuffer(base64) {
-                const binary = atob(base64);
-                const bytes = new Uint8Array(binary.length);
-                for (let i = 0; i < binary.length; i++) {
-                    bytes[i] = binary.charCodeAt(i);
-                }
-                return bytes.buffer;
-            }
-        }
-
-        // Initialize encryption instance
-        const cookieEncryption = new CookieEncryption();
-
-        // Encrypted Cookie Management Functions
-        async function setSecureCookie(name, value, days = 30) {
-            try {
-                const encryptedValue = await cookieEncryption.encrypt(value);
-                const expires = new Date();
-                expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-                document.cookie = `${name}=${encryptedValue};expires=${expires.toUTCString()};path=/;SameSite=Lax;Secure`;
-            } catch (error) {
-                console.error('Failed to set secure cookie:', error);
-                showNotification('Failed to save user data securely', 'warning');
-            }
-        }
-
-        async function getSecureCookie(name) {
-            try {
-                const nameEQ = name + "=";
-                const ca = document.cookie.split(';');
-                for (let i = 0; i < ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                    if (c.indexOf(nameEQ) === 0) {
-                        const encryptedValue = c.substring(nameEQ.length, c.length);
-                        return await cookieEncryption.decrypt(encryptedValue);
-                    }
-                }
-                return null;
-            } catch (error) {
-                console.warn('Failed to get secure cookie:', error);
-                return null;
-            }
-        }
-
-        function deleteSecureCookie(name) {
-            document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
-        }
-
-        // Plain cookie functions for non-sensitive data
+        // Simple cookie functions for non-sensitive data
         function setPlainCookie(name, value, days = 30) {
             const expires = new Date();
             expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -906,107 +721,200 @@
             return null;
         }
 
-        // Initialize user data
-        let userData = {
-            isLoggedIn: false,
-            user: null,
-            userId: null,
-            isAdmin: false,
-            theme: getPlainCookie('userTheme') || 'dark',
-            rememberMe: false
-        };
+        // Router
+        function navigateTo(path) {
+            currentRoute = path;
+            history.pushState(null, null, path);
+            renderCurrentRoute();
+            updateNavigation();
+        }
 
-        let isLoginMode = false; // Default to sign up mode
-        let currentSection = 'home';
-
-        // Global user counter for assigning unique IDs
-        let globalUserCounter = parseInt(getPlainCookie('userCounter') || '0');
-
-        // Section Management
-        function showSection(section) {
-            // Update nav links
+        function updateNavigation() {
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            event.target.classList.add('active');
-
-            // Hide all sections
-            document.getElementById('homeSection').style.display = 'none';
-            document.getElementById('usersSection').style.display = 'none';
-
-            // Show selected section
-            if (section === 'home') {
-                document.getElementById('homeSection').style.display = 'block';
-            } else if (section === 'users') {
-                document.getElementById('usersSection').style.display = 'block';
-                loadUsersList();
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            if (currentRoute === '/') {
+                navLinks[0].classList.add('active');
+            } else if (currentRoute === '/harman') {
+                navLinks[1].classList.add('active');
+            } else if (currentRoute === '/gurshaan') {
+                navLinks[2].classList.add('active');
+            } else if (currentRoute === '/newspaper') {
+                navLinks[3].classList.add('active');
             }
-
-            currentSection = section;
         }
 
-        // User Management
-        async function loadUsersList() {
-            const usersGrid = document.getElementById('usersGrid');
-            const registeredUsers = await getSecureCookie('registeredUsers') || {};
+        function renderCurrentRoute() {
+            const mainContent = document.getElementById('mainContent');
             
-            usersGrid.innerHTML = '';
+            switch(currentRoute) {
+                case '/':
+                    mainContent.innerHTML = renderHomePage();
+                    break;
+                case '/harman':
+                    mainContent.innerHTML = renderPortfolioPage('harman');
+                    break;
+                case '/gurshaan':
+                    mainContent.innerHTML = renderPortfolioPage('gurshaan');
+                    break;
+                case '/newspaper':
+                    mainContent.innerHTML = renderPortfolioPage('newspaper');
+                    break;
+                default:
+                    mainContent.innerHTML = renderHomePage();
+                    currentRoute = '/';
+            }
+        }
 
-            // Create user cards
-            Object.entries(registeredUsers).forEach(([username, userInfo]) => {
-                const userCard = document.createElement('div');
-                userCard.className = 'user-card';
-                
-                const isAdmin = userInfo.userId === 1;
-                const avatar = username.charAt(0).toUpperCase();
-                
-                userCard.innerHTML = `
-                    <div class="user-avatar">${avatar}</div>
-                    <div class="user-name">${filterProfanity(username)}</div>
-                    ${isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        Joined: ${new Date(userInfo.registrationDate).toLocaleDateString()}
-                    </p>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                        User ID: ${userInfo.userId}
-                    </p>
-                `;
-                
-                usersGrid.appendChild(userCard);
-            });
+        function renderHomePage() {
+            return `
+                <main class="main-container">
+                    <div class="content">
+                        <h1 class="title">Portfolio Universe</h1>
+                        <p class="subtitle">Discover amazing work from talented creators</p>
+                        
+                        <div class="nav-grid">
+                            <div class="nav-card" onclick="navigateTo('/harman')">
+                                <i class="fas fa-chart-line card-icon"></i>
+                                <h3 class="card-title">Harman's Portfolio</h3>
+                                <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
+                            </div>
+                            
+                            <div class="nav-card" onclick="navigateTo('/gurshaan')">
+                                <i class="fas fa-laptop-code card-icon"></i>
+                                <h3 class="card-title">Gurshaan's Portfolio</h3>
+                                <p class="card-description">Discover creative web development and design solutions</p>
+                            </div>
+                            
+                            <div class="nav-card" onclick="navigateTo('/newspaper')">
+                                <i class="fas fa-newspaper card-icon"></i>
+                                <h3 class="card-title">Digital Newspaper</h3>
+                                <p class="card-description">Stay updated with the latest news and articles</p>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            `;
+        }
 
-            // Add current user if logged in and not in the list
-            if (userData.isLoggedIn && userData.user) {
-                const currentUserExists = Object.keys(registeredUsers).some(username => 
-                    registeredUsers[username].userId === userData.userId
-                );
-                
-                if (!currentUserExists) {
-                    const userCard = document.createElement('div');
-                    userCard.className = 'user-card';
-                    userCard.style.borderColor = 'var(--accent)';
-                    
-                    const avatar = userData.user.name.charAt(0).toUpperCase();
-                    
-                    userCard.innerHTML = `
-                        <div class="user-avatar" style="background: var(--accent);">${avatar}</div>
-                        <div class="user-name">${filterProfanity(userData.user.name)} (You)</div>
-                        ${userData.isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
-                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                            Current Session
-                        </p>
-                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                            User ID: ${userData.userId}
-                        </p>
-                    `;
-                    
-                    usersGrid.insertBefore(userCard, usersGrid.firstChild);
+        function renderPortfolioPage(type) {
+            const portfolioData = {
+                harman: {
+                    title: "Harman's Portfolio",
+                    projects: [
+                        {
+                            title: "Data Analytics Dashboard",
+                            description: "Interactive dashboard for business intelligence and data visualization",
+                            tech: ["Python", "Tableau", "SQL", "Pandas"],
+                            link: "#"
+                        },
+                        {
+                            title: "Machine Learning Model",
+                            description: "Predictive analytics for sales forecasting using advanced ML techniques",
+                            tech: ["Python", "TensorFlow", "Scikit-learn", "Pandas"],
+                            link: "#"
+                        },
+                        {
+                            title: "Financial Report Generator",
+                            description: "Automated reporting system for financial data analysis and insights",
+                            tech: ["Excel", "VBA", "Power BI", "SQL"],
+                            link: "#"
+                        },
+                        {
+                            title: "Customer Segmentation Analysis",
+                            description: "Advanced customer segmentation using clustering algorithms",
+                            tech: ["Python", "Matplotlib", "Seaborn", "K-means"],
+                            link: "#"
+                        }
+                    ]
+                },
+                gurshaan: {
+                    title: "Gurshaan's Portfolio",
+                    projects: [
+                        {
+                            title: "Excel Calculator",
+                            description: "Custom Excel calculator for invoice creation and financial calculations",
+                            tech: ["Excel", "VBA", "Formulas", "Macros"],
+                            link: "#"
+                        },
+                        {
+                            title: "Health & Wellness Website",
+                            description: "Health-focused informational website with interactive features",
+                            tech: ["HTML", "CSS", "JavaScript", "Bootstrap"],
+                            link: "#"
+                        },
+                        {
+                            title: "Interactive Math Learning Platform",
+                            description: "Educational platform for mathematics with interactive problem solving",
+                            tech: ["HTML", "CSS", "JavaScript", "Chart.js"],
+                            link: "#"
+                        },
+                        {
+                            title: "Personal Finance Tracker",
+                            description: "Web-based application for tracking personal expenses and budgets",
+                            tech: ["HTML", "CSS", "JavaScript", "Local Storage"],
+                            link: "#"
+                        }
+                    ]
+                },
+                newspaper: {
+                    title: "Digital Newspaper",
+                    projects: [
+                        {
+                            title: "Breaking News Section",
+                            description: "Real-time news updates and alerts with live feed integration",
+                            tech: ["React", "Node.js", "WebSocket", "API"],
+                            link: "#"
+                        },
+                        {
+                            title: "Sports Coverage Platform",
+                            description: "Comprehensive sports news and live score tracking system",
+                            tech: ["HTML", "CSS", "JavaScript", "Sports API"],
+                            link: "#"
+                        },
+                        {
+                            title: "Opinion & Editorial Hub",
+                            description: "Editorial and opinion piece platform with comment system",
+                            tech: ["CMS", "WordPress", "PHP", "MySQL"],
+                            link: "#"
+                        },
+                        {
+                            title: "Weather & Local News",
+                            description: "Local weather integration with community news updates",
+                            tech: ["JavaScript", "Weather API", "Geolocation", "CSS"],
+                            link: "#"
+                        }
+                    ]
                 }
-            }
+            };
 
-            if (usersGrid.children.length === 0) {
-                usersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">No registered users yet. Be the first to sign up!</p>';
-            }
+            const data = portfolioData[type];
+            if (!data) return renderHomePage();
+
+            return `
+                <div class="portfolio-container">
+                    <button class="back-btn" onclick="navigateTo('/')">
+                        <i class="fas fa-arrow-left"></i> Back to Home
+                    </button>
+                    <h1 class="portfolio-title">${data.title}</h1>
+                    <div class="projects-grid">
+                        ${data.projects.map(project => `
+                            <div class="project-card">
+                                <h3 class="project-title">${project.title}</h3>
+                                <p class="project-description">${project.description}</p>
+                                <div class="tech-stack">
+                                    ${project.tech.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                                </div>
+                                <a href="${project.link}" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i> View Project
+                                </a>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
         // Theme Management
@@ -1129,6 +1037,35 @@
             return hashHex;
         }
 
+        // Simple secure storage using localStorage (for demo purposes)
+        function setSecureData(key, data, days = 30) {
+            const item = {
+                data: data,
+                expiry: new Date().getTime() + (days * 24 * 60 * 60 * 1000)
+            };
+            localStorage.setItem(key, JSON.stringify(item));
+        }
+
+        function getSecureData(key) {
+            try {
+                const item = JSON.parse(localStorage.getItem(key));
+                if (!item) return null;
+                
+                if (new Date().getTime() > item.expiry) {
+                    localStorage.removeItem(key);
+                    return null;
+                }
+                
+                return item.data;
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function deleteSecureData(key) {
+            localStorage.removeItem(key);
+        }
+
         // Auth Form Handler
         document.getElementById('authForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1151,31 +1088,30 @@
 
             if (isLoginMode) {
                 // Login
-                const registeredUsers = await getSecureCookie('registeredUsers') || {};
+                const registeredUsers = getSecureData('registeredUsers') || {};
                 
                 if (registeredUsers[username] && registeredUsers[username].password === hashedPassword) {
                     // Successful login
                     userData.isLoggedIn = true;
                     userData.user = { name: username, loginTime: new Date().toISOString() };
                     userData.userId = registeredUsers[username].userId;
-                    userData.isAdmin = userData.userId === 1;
                     userData.rememberMe = rememberMe;
                     
                     const cookieDays = rememberMe ? 30 : 1;
-                    await setSecureCookie('isLoggedIn', true, cookieDays);
-                    await setSecureCookie('userData', userData.user, cookieDays);
-                    await setSecureCookie('userId', userData.userId, cookieDays);
-                    await setSecureCookie('rememberMe', rememberMe, cookieDays);
+                    setSecureData('isLoggedIn', true, cookieDays);
+                    setSecureData('userData', userData.user, cookieDays);
+                    setSecureData('userId', userData.userId, cookieDays);
+                    setSecureData('rememberMe', rememberMe, cookieDays);
                     
                     updateAuthUI();
                     closeAuthModal();
-                    showNotification(`Welcome back, ${username}!${userData.isAdmin ? ' (Admin)' : ''}`, 'success');
+                    showNotification(`Welcome back, ${username}!`, 'success');
                 } else {
                     showNotification('Invalid username or password!', 'warning');
                 }
             } else {
                 // Sign up
-                let registeredUsers = await getSecureCookie('registeredUsers') || {};
+                let registeredUsers = getSecureData('registeredUsers') || {};
                 
                 if (registeredUsers[username]) {
                     showNotification('Username already taken! Please choose another.', 'warning');
@@ -1194,24 +1130,23 @@
                     registrationDate: new Date().toISOString()
                 };
                 
-                await setSecureCookie('registeredUsers', registeredUsers, 365);
+                setSecureData('registeredUsers', registeredUsers, 365);
                 
                 // Auto-login after signup
                 userData.isLoggedIn = true;
                 userData.user = { name: username, loginTime: new Date().toISOString() };
                 userData.userId = userId;
-                userData.isAdmin = userId === 1; // First user is admin
                 userData.rememberMe = rememberMe;
                 
                 const cookieDays = rememberMe ? 30 : 1;
-                await setSecureCookie('isLoggedIn', true, cookieDays);
-                await setSecureCookie('userData', userData.user, cookieDays);
-                await setSecureCookie('userId', userId, cookieDays);
-                await setSecureCookie('rememberMe', rememberMe, cookieDays);
+                setSecureData('isLoggedIn', true, cookieDays);
+                setSecureData('userData', userData.user, cookieDays);
+                setSecureData('userId', userId, cookieDays);
+                setSecureData('rememberMe', rememberMe, cookieDays);
                 
                 updateAuthUI();
                 closeAuthModal();
-                showNotification(`Welcome to Portfolio Hub, ${username}!${userData.isAdmin ? ' You are the admin!' : ''}`, 'success');
+                showNotification(`Welcome to Portfolio Hub, ${username}!`, 'success');
             }
             
             document.getElementById('authForm').reset();
@@ -1221,20 +1156,18 @@
             userData.isLoggedIn = false;
             userData.user = null;
             userData.userId = null;
-            userData.isAdmin = false;
             userData.rememberMe = false;
             
-            deleteSecureCookie('isLoggedIn');
-            deleteSecureCookie('userData');
-            deleteSecureCookie('userId');
-            deleteSecureCookie('rememberMe');
+            deleteSecureData('isLoggedIn');
+            deleteSecureData('userData');
+            deleteSecureData('userId');
+            deleteSecureData('rememberMe');
             
             updateAuthUI();
             showNotification('Logged out successfully!', 'info');
             
-            if (currentSection !== 'home') {
-                showSection('home');
-                document.querySelector('.nav-link').click();
+            if (currentRoute !== '/') {
+                navigateTo('/');
             }
         }
 
@@ -1246,178 +1179,11 @@
             if (userData.isLoggedIn && userData.user) {
                 authBtn.style.display = 'none';
                 userInfo.style.display = 'flex';
-                userName.textContent = `${userData.user.name}${userData.isAdmin ? ' (Admin)' : ''}`;
-                
-                // Show admin edit indicators
-                if (userData.isAdmin) {
-                    document.querySelectorAll('.editable-content').forEach(el => {
-                        el.style.cursor = 'pointer';
-                        el.addEventListener('click', enableEditing);
-                    });
-                }
+                userName.textContent = userData.user.name;
             } else {
                 authBtn.style.display = 'block';
                 userInfo.style.display = 'none';
-                
-                // Hide admin edit indicators
-                document.querySelectorAll('.editable-content').forEach(el => {
-                    el.style.cursor = 'default';
-                    el.removeEventListener('click', enableEditing);
-                });
             }
-        }
-
-        // Admin Content Editing
-        async function enableEditing(event) {
-            if (!userData.isAdmin) return;
-            
-            event.stopPropagation();
-            const element = event.currentTarget;
-            const key = element.getAttribute('data-key');
-            const currentText = element.childNodes[0].textContent.trim();
-            
-            const newText = prompt('Edit content:', currentText);
-            if (newText && newText.trim() !== currentText) {
-                const filteredText = filterProfanity(newText.trim());
-                
-                // Update the element
-                element.childNodes[0].textContent = filteredText;
-                
-                // Save to secure storage
-                let editedContent = await getSecureCookie('editedContent') || {};
-                editedContent[key] = filteredText;
-                await setSecureCookie('editedContent', editedContent, 365);
-                
-                showNotification('Content updated!', 'success');
-            }
-        }
-
-        // Load edited content
-        async function loadEditedContent() {
-            const editedContent = await getSecureCookie('editedContent') || {};
-            
-            Object.entries(editedContent).forEach(([key, text]) => {
-                const element = document.querySelector(`[data-key="${key}"]`);
-                if (element && element.childNodes[0]) {
-                    element.childNodes[0].textContent = text;
-                }
-            });
-        }
-
-        // Navigation Functions - Now public access
-        function navigateToPortfolio(type) {
-            createPortfolioPage(type);
-        }
-
-        function createPortfolioPage(type) {
-            const portfolioData = {
-                harman: {
-                    title: "Harman's Portfolio",
-                    projects: [
-                        {
-                            title: "Data Analytics Dashboard",
-                            description: "Interactive dashboard for business intelligence",
-                            tech: ["Python", "Tableau", "SQL"],
-                            link: "#"
-                        },
-                        {
-                            title: "Machine Learning Model",
-                            description: "Predictive analytics for sales forecasting",
-                            tech: ["Python", "TensorFlow", "Pandas"],
-                            link: "#"
-                        },
-                        {
-                            title: "Financial Report Generator",
-                            description: "Automated reporting system for financial data",
-                            tech: ["Excel", "VBA", "Power BI"],
-                            link: "#"
-                        }
-                    ]
-                },
-                gurshaan: {
-                    title: "Gurshaan's Portfolio",
-                    projects: [
-                        {
-                            title: "Excel Calculator",
-                            description: "Custom Excel calculator for invoice creation",
-                            tech: ["Excel", "VBA", "Formulas"],
-                            link: "#"
-                        },
-                        {
-                            title: "Health Website",
-                            description: "Health-focused informational website",
-                            tech: ["HTML", "CSS"],
-                            link: "#"
-                        },
-                        {
-                            title: "Math Website",
-                            description: "Interactive mathematics learning platform",
-                            tech: ["HTML", "CSS"],
-                            link: "#"
-                        }
-                    ]
-                },
-                newspaper: {
-                    title: "Digital Newspaper",
-                    projects: [
-                        {
-                            title: "Breaking News Section",
-                            description: "Real-time news updates and alerts",
-                            tech: ["React", "Node.js", "API"],
-                            link: "#"
-                        },
-                        {
-                            title: "Sports Coverage",
-                            description: "Comprehensive sports news and analysis",
-                            tech: ["HTML", "CSS", "JavaScript"],
-                            link: "#"
-                        },
-                        {
-                            title: "Opinion Articles",
-                            description: "Editorial and opinion piece platform",
-                            tech: ["CMS", "WordPress"],
-                            link: "#"
-                        }
-                    ]
-                }
-            };
-
-            const data = portfolioData[type];
-            if (!data) return;
-
-            const newPageHTML = `
-                <div style="padding: 120px 2rem 2rem; min-height: 100vh;">
-                    <div style="max-width: 1200px; margin: 0 auto;">
-                        <button onclick="goBack()" style="background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; margin-bottom: 2rem; transition: all 0.3s ease;">
-                            <i class="fas fa-arrow-left"></i> Back to Home
-                        </button>
-                        <h1 style="font-size: 3rem; margin-bottom: 2rem; color: var(--text-primary);">${data.title}</h1>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
-                            ${data.projects.map(project => `
-                                <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all 0.3s ease; backdrop-filter: blur(20px);" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 10px 30px var(--shadow)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                                    <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--text-primary);">${project.title}</h3>
-                                    <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.6;">${project.description}</p>
-                                    <div style="margin-bottom: 1rem;">
-                                        ${project.tech.map(tech => `<span style="background: var(--accent); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 0.5rem; display: inline-block;">${tech}</span>`).join('')}
-                                    </div>
-                                    <a href="${project.link}" style="color: var(--accent); text-decoration: none; font-weight: 500; transition: all 0.3s ease;" onmouseover="this.style.color='var(--accent-hover)'" onmouseout="this.style.color='var(--accent)'">
-                                        <i class="fas fa-external-link-alt"></i> View Project
-                                    </a>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.innerHTML = document.body.innerHTML.replace(
-                document.querySelector('.main-container').outerHTML,
-                newPageHTML
-            );
-        }
-
-        function goBack() {
-            location.reload();
         }
 
         // Notification System
@@ -1434,6 +1200,7 @@
                 z-index: 3000;
                 font-weight: 500;
                 animation: slideInRight 0.3s ease-out;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
@@ -1452,33 +1219,43 @@
         `;
         document.head.appendChild(notificationStyle);
 
+        // Browser back/forward handling
+        window.addEventListener('popstate', function(e) {
+            currentRoute = location.pathname;
+            renderCurrentRoute();
+            updateNavigation();
+        });
+
         // Initialize app
-        async function initializeApp() {
+        function initializeApp() {
             try {
-                const isLoggedIn = await getSecureCookie('isLoggedIn');
-                const userData_cookie = await getSecureCookie('userData');
-                const userId_cookie = await getSecureCookie('userId');
+                const isLoggedIn = getSecureData('isLoggedIn');
+                const userData_storage = getSecureData('userData');
+                const userId_storage = getSecureData('userId');
                 
-                if (isLoggedIn && userData_cookie && userId_cookie) {
+                if (isLoggedIn && userData_storage && userId_storage) {
                     userData.isLoggedIn = true;
-                    userData.user = userData_cookie;
-                    userData.userId = userId_cookie;
-                    userData.isAdmin = userId_cookie === 1;
+                    userData.user = userData_storage;
+                    userData.userId = userId_storage;
                     
-                    const loginTime = new Date(userData_cookie.loginTime || Date.now());
+                    const loginTime = new Date(userData_storage.loginTime || Date.now());
                     const now = new Date();
                     const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
                     
-                    const rememberMe = await getSecureCookie('rememberMe');
+                    const rememberMe = getSecureData('rememberMe');
                     if (hoursSinceLogin > 24 && !rememberMe) {
-                        await logout();
+                        logout();
                         showNotification('Session expired. Please login again.', 'info');
                     }
                 }
                 
                 loadSavedTheme();
-                await loadEditedContent();
                 updateAuthUI();
+                
+                // Initialize route from URL
+                currentRoute = location.pathname;
+                renderCurrentRoute();
+                updateNavigation();
                 
                 // Load custom theme if saved
                 const savedCustomTheme = getPlainCookie('customTheme');
@@ -1495,6 +1272,7 @@
                 userData.isLoggedIn = false;
                 userData.user = null;
                 updateAuthUI();
+                renderCurrentRoute();
             }
         }
 
@@ -1505,8 +1283,8 @@
         document.addEventListener('DOMContentLoaded', initializeApp);
         initializeApp();
 
-        console.log('🔒 Portfolio Hub loaded with all new features!');
-        console.log('✨ Features: Theme Editor, User Profiles, Admin Controls, Content Filtering, Public Access');
+        console.log('🚀 Portfolio Hub loaded with routing system!');
+        console.log('📍 Available routes: /, /harman, /gurshaan, /newspaper');
     </script>
 </body>
 </html>
