@@ -50,6 +50,18 @@
             --shadow: rgba(0, 0, 0, 0.3);
         }
 
+        /* Custom themes can be added dynamically */
+        :root[data-theme="custom"] {
+            --bg-primary: var(--custom-bg-primary, linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%));
+            --bg-card: var(--custom-bg-card, rgba(255, 255, 255, 0.1));
+            --text-primary: var(--custom-text-primary, #ffffff);
+            --text-secondary: var(--custom-text-secondary, rgba(255, 255, 255, 0.7));
+            --accent: var(--custom-accent, #ff6b6b);
+            --accent-hover: var(--custom-accent-hover, #ff5252);
+            --border: var(--custom-border, rgba(255, 255, 255, 0.1));
+            --shadow: var(--custom-shadow, rgba(0, 0, 0, 0.3));
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -86,13 +98,31 @@
             color: var(--accent);
         }
 
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent);
+        }
+
         .header-controls {
             display: flex;
             gap: 1rem;
             align-items: center;
         }
 
-        .theme-selector {
+        .theme-selector, .theme-editor-btn {
             background: var(--bg-card);
             border: 1px solid var(--border);
             color: var(--text-primary);
@@ -102,7 +132,7 @@
             transition: all 0.3s ease;
         }
 
-        .theme-selector:hover {
+        .theme-selector:hover, .theme-editor-btn:hover {
             background: var(--accent);
             color: white;
         }
@@ -126,9 +156,6 @@
         .main-container {
             padding-top: 100px;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .content {
@@ -137,6 +164,12 @@
             padding: 2rem;
             position: relative;
             z-index: 2;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 100px);
         }
 
         .title {
@@ -162,6 +195,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            width: 100%;
         }
 
         .nav-card {
@@ -291,9 +325,11 @@
             padding: 2rem;
             border-radius: 20px;
             border: 1px solid var(--border);
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
             backdrop-filter: blur(20px);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
         .modal-header {
@@ -368,6 +404,134 @@
             color: var(--text-primary);
         }
 
+        /* Users page styles */
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .user-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-badge {
+            background: #ff6b6b;
+        }
+
+        /* Theme Editor Styles */
+        .color-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Admin Panel Styles */
+        .admin-panel {
+            background: var(--bg-card);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .admin-title {
+            color: #ff6b6b;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .editable-content {
+            position: relative;
+            cursor: text;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .editable-content:hover {
+            background: var(--bg-card);
+        }
+
+        .edit-indicator {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .editable-content:hover .edit-indicator {
+            display: flex;
+        }
+
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -405,6 +569,10 @@
             .header-controls {
                 gap: 0.5rem;
             }
+
+            .header-nav {
+                gap: 1rem;
+            }
         }
     </style>
 </head>
@@ -413,19 +581,27 @@
         <div class="logo">
             <i class="fas fa-code"></i> Portfolio Hub
         </div>
+        <nav class="header-nav">
+            <a class="nav-link active" onclick="showSection('home')">Home</a>
+            <a class="nav-link" onclick="showSection('users')">Users</a>
+        </nav>
         <div class="header-controls">
             <select class="theme-selector" id="themeSelector">
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
                 <option value="neon">Neon</option>
                 <option value="ocean">Ocean</option>
+                <option value="custom">Custom</option>
             </select>
+            <button class="theme-editor-btn" onclick="showThemeEditor()">
+                <i class="fas fa-palette"></i>
+            </button>
             <div class="user-info" id="userInfo">
                 <i class="fas fa-user-circle"></i>
                 <span id="userName"></span>
                 <button class="auth-btn" onclick="logout()">Logout</button>
             </div>
-            <button class="auth-btn" id="authBtn" onclick="showAuthModal()">Login</button>
+            <button class="auth-btn" id="authBtn" onclick="showAuthModal()">Sign Up</button>
         </div>
     </header>
 
@@ -435,80 +611,159 @@
         <div class="shape"></div>
     </div>
 
-    <main class="main-container">
+    <!-- Home Section -->
+    <main class="main-container" id="homeSection">
         <div class="content">
-            <h1 class="title">Portfolio Universe</h1>
-            <p class="subtitle">Discover amazing work from talented creators</p>
+            <h1 class="title editable-content" data-key="main-title">
+                Portfolio Universe
+                <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+            </h1>
+            <p class="subtitle editable-content" data-key="main-subtitle">
+                Discover amazing work from talented creators
+                <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+            </p>
             
             <div class="nav-grid">
                 <div class="nav-card" onclick="navigateToPortfolio('harman')">
                     <i class="fas fa-chart-line card-icon"></i>
-                    <h3 class="card-title">Harman's Portfolio</h3>
-                    <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
+                    <h3 class="card-title editable-content" data-key="harman-title">
+                        Harman's Portfolio
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </h3>
+                    <p class="card-description editable-content" data-key="harman-desc">
+                        Explore data-driven insights and innovative analytics projects
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </p>
                 </div>
                 
                 <div class="nav-card" onclick="navigateToPortfolio('gurshaan')">
                     <i class="fas fa-laptop-code card-icon"></i>
-                    <h3 class="card-title">Gurshaan's Portfolio</h3>
-                    <p class="card-description">Discover creative web development and design solutions</p>
+                    <h3 class="card-title editable-content" data-key="gurshaan-title">
+                        Gurshaan's Portfolio
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </h3>
+                    <p class="card-description editable-content" data-key="gurshaan-desc">
+                        Discover creative web development and design solutions
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </p>
                 </div>
                 
                 <div class="nav-card" onclick="navigateToPortfolio('newspaper')">
                     <i class="fas fa-newspaper card-icon"></i>
-                    <h3 class="card-title">Digital Newspaper</h3>
-                    <p class="card-description">Stay updated with the latest news and articles</p>
+                    <h3 class="card-title editable-content" data-key="newspaper-title">
+                        Digital Newspaper
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </h3>
+                    <p class="card-description editable-content" data-key="newspaper-desc">
+                        Stay updated with the latest news and articles
+                        <span class="edit-indicator"><i class="fas fa-edit"></i></span>
+                    </p>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- Users Section -->
+    <div class="main-container" id="usersSection" style="display: none;">
+        <div style="padding: 2rem; max-width: 1200px; margin: 0 auto;">
+            <h1 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; color: var(--text-primary);">User Community</h1>
+            <div class="users-grid" id="usersGrid">
+                <!-- Users will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
     <!-- Auth Modal -->
     <div id="authModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Login</h2>
+                <h2 class="modal-title" id="modalTitle">Sign Up</h2>
                 <button class="close-btn" onclick="closeAuthModal()">&times;</button>
             </div>
             <form id="authForm">
                 <div class="form-group">
-                    <label class="form-label" for="email">Email</label>
-                    <input type="email" id="email" class="form-input" required>
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-input" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="password">Password</label>
                     <input type="password" id="password" class="form-input" required>
                 </div>
-                <div class="form-group" id="nameGroup" style="display: none;">
-                    <label class="form-label" for="name">Full Name</label>
-                    <input type="text" id="name" class="form-input">
-                </div>
                 <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
                     <input type="checkbox" id="rememberMe" style="margin: 0;">
                     <label for="rememberMe" style="color: var(--text-secondary); margin: 0; cursor: pointer;">Remember me for 30 days</label>
                 </div>
-                <button type="submit" class="submit-btn" id="submitBtn">Login</button>
+                <button type="submit" class="submit-btn" id="submitBtn">Sign Up</button>
             </form>
             <p style="margin-top: 1rem; text-align: center; color: var(--text-secondary);">
-                <span id="authSwitch">Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Sign up</a></span>
+                <span id="authSwitch">Already have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Login</a></span>
             </p>
         </div>
     </div>
 
+    <!-- Theme Editor Modal -->
+    <div id="themeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Theme Editor</h2>
+                <button class="close-btn" onclick="closeThemeEditor()">&times;</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Primary Background</label>
+                <input type="color" id="bgPrimary" class="color-input" value="#1a1a3a">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Card Background</label>
+                <input type="color" id="bgCard" class="color-input" value="#2a2a4a">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Primary Text</label>
+                <input type="color" id="textPrimary" class="color-input" value="#ffffff">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Secondary Text</label>
+                <input type="color" id="textSecondary" class="color-input" value="#cccccc">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Accent Color</label>
+                <input type="color" id="accent" class="color-input" value="#00d4ff">
+            </div>
+            <div class="theme-preview" id="themePreview">Preview Theme</div>
+            <div style="display: flex; gap: 1rem;">
+                <button class="submit-btn" onclick="applyCustomTheme()">Apply Theme</button>
+                <button class="submit-btn" style="background: #6b7280;" onclick="resetTheme()">Reset</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Profanity filter
+        const profanityList = [
+            'damn', 'hell', 'crap', 'shit', 'fuck', 'bitch', 'ass', 'bastard',
+            'stupid', 'idiot', 'moron', 'retard', 'gay', 'fag', 'nigger', 'nigga'
+        ];
+
+        function filterProfanity(text) {
+            let filtered = text;
+            profanityList.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, 'gi');
+                filtered = filtered.replace(regex, '*'.repeat(word.length));
+            });
+            return filtered;
+        }
+
         // Encryption/Decryption utility functions using Web Crypto API
         class CookieEncryption {
             constructor() {
                 this.algorithm = 'AES-GCM';
                 this.keyLength = 256;
-                this.ivLength = 12; // 96 bits for GCM
+                this.ivLength = 12;
                 this.initKey();
             }
 
             async initKey() {
-                // Generate or retrieve encryption key
                 const keyData = localStorage.getItem('encryptionKey');
                 if (keyData) {
-                    // Import existing key
                     const keyBuffer = this.base64ToArrayBuffer(keyData);
                     this.cryptoKey = await crypto.subtle.importKey(
                         'raw',
@@ -518,14 +773,12 @@
                         ['encrypt', 'decrypt']
                     );
                 } else {
-                    // Generate new key
                     this.cryptoKey = await crypto.subtle.generateKey(
                         { name: this.algorithm, length: this.keyLength },
                         true,
                         ['encrypt', 'decrypt']
                     );
                     
-                    // Export and store key
                     const keyBuffer = await crypto.subtle.exportKey('raw', this.cryptoKey);
                     localStorage.setItem('encryptionKey', this.arrayBufferToBase64(keyBuffer));
                 }
@@ -536,18 +789,14 @@
                 
                 const encoder = new TextEncoder();
                 const dataBuffer = encoder.encode(JSON.stringify(data));
-                
-                // Generate random IV
                 const iv = crypto.getRandomValues(new Uint8Array(this.ivLength));
                 
-                // Encrypt data
                 const encryptedBuffer = await crypto.subtle.encrypt(
                     { name: this.algorithm, iv: iv },
                     this.cryptoKey,
                     dataBuffer
                 );
                 
-                // Combine IV and encrypted data
                 const combined = new Uint8Array(iv.length + encryptedBuffer.byteLength);
                 combined.set(iv);
                 combined.set(new Uint8Array(encryptedBuffer), iv.length);
@@ -560,12 +809,9 @@
                 
                 try {
                     const combined = this.base64ToArrayBuffer(encryptedData);
-                    
-                    // Extract IV and encrypted data
                     const iv = combined.slice(0, this.ivLength);
                     const encrypted = combined.slice(this.ivLength);
                     
-                    // Decrypt data
                     const decryptedBuffer = await crypto.subtle.decrypt(
                         { name: this.algorithm, iv: iv },
                         this.cryptoKey,
@@ -640,7 +886,7 @@
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
         }
 
-        // Fallback functions for non-encrypted cookies (for themes, etc.)
+        // Plain cookie functions for non-sensitive data
         function setPlainCookie(name, value, days = 30) {
             const expires = new Date();
             expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -664,25 +910,116 @@
         let userData = {
             isLoggedIn: false,
             user: null,
+            userId: null,
+            isAdmin: false,
             theme: getPlainCookie('userTheme') || 'dark',
             rememberMe: false
         };
 
-        let isLoginMode = true;
+        let isLoginMode = false; // Default to sign up mode
+        let currentSection = 'home';
 
-        // Theme Management (can remain unencrypted as it's not sensitive)
+        // Global user counter for assigning unique IDs
+        let globalUserCounter = parseInt(getPlainCookie('userCounter') || '0');
+
+        // Section Management
+        function showSection(section) {
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Hide all sections
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('usersSection').style.display = 'none';
+
+            // Show selected section
+            if (section === 'home') {
+                document.getElementById('homeSection').style.display = 'block';
+            } else if (section === 'users') {
+                document.getElementById('usersSection').style.display = 'block';
+                loadUsersList();
+            }
+
+            currentSection = section;
+        }
+
+        // User Management
+        async function loadUsersList() {
+            const usersGrid = document.getElementById('usersGrid');
+            const registeredUsers = await getSecureCookie('registeredUsers') || {};
+            
+            usersGrid.innerHTML = '';
+
+            // Create user cards
+            Object.entries(registeredUsers).forEach(([username, userInfo]) => {
+                const userCard = document.createElement('div');
+                userCard.className = 'user-card';
+                
+                const isAdmin = userInfo.userId === 1;
+                const avatar = username.charAt(0).toUpperCase();
+                
+                userCard.innerHTML = `
+                    <div class="user-avatar">${avatar}</div>
+                    <div class="user-name">${filterProfanity(username)}</div>
+                    ${isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        Joined: ${new Date(userInfo.registrationDate).toLocaleDateString()}
+                    </p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                        User ID: ${userInfo.userId}
+                    </p>
+                `;
+                
+                usersGrid.appendChild(userCard);
+            });
+
+            // Add current user if logged in and not in the list
+            if (userData.isLoggedIn && userData.user) {
+                const currentUserExists = Object.keys(registeredUsers).some(username => 
+                    registeredUsers[username].userId === userData.userId
+                );
+                
+                if (!currentUserExists) {
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+                    userCard.style.borderColor = 'var(--accent)';
+                    
+                    const avatar = userData.user.name.charAt(0).toUpperCase();
+                    
+                    userCard.innerHTML = `
+                        <div class="user-avatar" style="background: var(--accent);">${avatar}</div>
+                        <div class="user-name">${filterProfanity(userData.user.name)} (You)</div>
+                        ${userData.isAdmin ? '<div class="user-badge admin-badge">Admin</div>' : '<div class="user-badge">User</div>'}
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                            Current Session
+                        </p>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                            User ID: ${userData.userId}
+                        </p>
+                    `;
+                    
+                    usersGrid.insertBefore(userCard, usersGrid.firstChild);
+                }
+            }
+
+            if (usersGrid.children.length === 0) {
+                usersGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--text-secondary);">No registered users yet. Be the first to sign up!</p>';
+            }
+        }
+
+        // Theme Management
         const themeSelector = document.getElementById('themeSelector');
         themeSelector.addEventListener('change', function() {
             const theme = this.value;
             document.documentElement.setAttribute('data-theme', theme);
             userData.theme = theme;
             
-            // Save theme to plain cookies (30 days)
             setPlainCookie('userTheme', theme, 30);
             showNotification(`Theme changed to ${theme}!`, 'success');
         });
 
-        // Load saved theme
         function loadSavedTheme() {
             const savedTheme = getPlainCookie('userTheme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -690,8 +1027,71 @@
             userData.theme = savedTheme;
         }
 
-        // Initialize theme
-        loadSavedTheme();
+        // Theme Editor Functions
+        function showThemeEditor() {
+            document.getElementById('themeModal').style.display = 'block';
+        }
+
+        function closeThemeEditor() {
+            document.getElementById('themeModal').style.display = 'none';
+        }
+
+        function applyCustomTheme() {
+            const bgPrimary = document.getElementById('bgPrimary').value;
+            const bgCard = document.getElementById('bgCard').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const textSecondary = document.getElementById('textSecondary').value;
+            const accent = document.getElementById('accent').value;
+
+            // Apply custom theme
+            const root = document.documentElement;
+            root.style.setProperty('--custom-bg-primary', `linear-gradient(135deg, ${bgPrimary} 0%, ${bgCard} 100%)`);
+            root.style.setProperty('--custom-bg-card', `${bgCard}aa`);
+            root.style.setProperty('--custom-text-primary', textPrimary);
+            root.style.setProperty('--custom-text-secondary', textSecondary);
+            root.style.setProperty('--custom-accent', accent);
+            root.style.setProperty('--custom-accent-hover', accent + 'dd');
+            root.style.setProperty('--custom-border', textPrimary + '22');
+            root.style.setProperty('--custom-shadow', '0, 0, 0');
+
+            // Set theme to custom
+            document.documentElement.setAttribute('data-theme', 'custom');
+            themeSelector.value = 'custom';
+            
+            // Save custom theme
+            const customTheme = {
+                bgPrimary, bgCard, textPrimary, textSecondary, accent
+            };
+            setPlainCookie('customTheme', JSON.stringify(customTheme), 30);
+            setPlainCookie('userTheme', 'custom', 30);
+
+            closeThemeEditor();
+            showNotification('Custom theme applied!', 'success');
+        }
+
+        function resetTheme() {
+            document.getElementById('bgPrimary').value = '#1a1a3a';
+            document.getElementById('bgCard').value = '#2a2a4a';
+            document.getElementById('textPrimary').value = '#ffffff';
+            document.getElementById('textSecondary').value = '#cccccc';
+            document.getElementById('accent').value = '#00d4ff';
+            updateThemePreview();
+        }
+
+        function updateThemePreview() {
+            const preview = document.getElementById('themePreview');
+            const bgPrimary = document.getElementById('bgPrimary').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const accent = document.getElementById('accent').value;
+            
+            preview.style.background = `linear-gradient(135deg, ${bgPrimary}, ${accent}22)`;
+            preview.style.color = textPrimary;
+        }
+
+        // Add event listeners for theme editor inputs
+        ['bgPrimary', 'bgCard', 'textPrimary', 'textSecondary', 'accent'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updateThemePreview);
+        });
 
         // Auth Modal Functions
         function showAuthModal() {
@@ -706,90 +1106,91 @@
             isLoginMode = !isLoginMode;
             const modalTitle = document.getElementById('modalTitle');
             const submitBtn = document.getElementById('submitBtn');
-            const nameGroup = document.getElementById('nameGroup');
             const authSwitch = document.getElementById('authSwitch');
 
             if (isLoginMode) {
                 modalTitle.textContent = 'Login';
                 submitBtn.textContent = 'Login';
-                nameGroup.style.display = 'none';
                 authSwitch.innerHTML = `Don't have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Sign up</a>`;
             } else {
                 modalTitle.textContent = 'Sign Up';
                 submitBtn.textContent = 'Sign Up';
-                nameGroup.style.display = 'block';
                 authSwitch.innerHTML = `Already have an account? <a href="#" onclick="toggleAuthMode()" style="color: var(--accent);">Login</a>`;
             }
         }
 
-        // Secure password hashing (simple implementation - use stronger hashing in production)
+        // Password hashing
         async function hashPassword(password) {
             const encoder = new TextEncoder();
-            const data = encoder.encode(password + 'salt_string_for_security');
+            const data = encoder.encode(password + 'portfolio_hub_salt');
             const hashBuffer = await crypto.subtle.digest('SHA-256', data);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             return hashHex;
         }
 
-        // Auth Form Handler with Encrypted Cookie Persistence
+        // Auth Form Handler
         document.getElementById('authForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const username = filterProfanity(document.getElementById('username').value.trim());
             const password = document.getElementById('password').value;
-            const name = document.getElementById('name').value;
             const rememberMe = document.getElementById('rememberMe').checked;
 
-            // Simple validation
+            if (username.length < 3) {
+                showNotification('Username must be at least 3 characters!', 'warning');
+                return;
+            }
+
             if (password.length < 6) {
                 showNotification('Password must be at least 6 characters!', 'warning');
                 return;
             }
 
-            const userInfo = {
-                email: email,
-                name: name || email.split('@')[0],
-                loginTime: new Date().toISOString()
-            };
+            const hashedPassword = await hashPassword(password);
 
             if (isLoginMode) {
-                // Login - check encrypted user data
-                const existingUsers = await getSecureCookie('registeredUsers') || {};
-                const hashedPassword = await hashPassword(password);
+                // Login
+                const registeredUsers = await getSecureCookie('registeredUsers') || {};
                 
-                if (existingUsers[email] && existingUsers[email].password === hashedPassword) {
+                if (registeredUsers[username] && registeredUsers[username].password === hashedPassword) {
                     // Successful login
                     userData.isLoggedIn = true;
-                    userData.user = userInfo;
+                    userData.user = { name: username, loginTime: new Date().toISOString() };
+                    userData.userId = registeredUsers[username].userId;
+                    userData.isAdmin = userData.userId === 1;
                     userData.rememberMe = rememberMe;
                     
-                    // Save encrypted login state
                     const cookieDays = rememberMe ? 30 : 1;
                     await setSecureCookie('isLoggedIn', true, cookieDays);
-                    await setSecureCookie('userData', userInfo, cookieDays);
+                    await setSecureCookie('userData', userData.user, cookieDays);
+                    await setSecureCookie('userId', userData.userId, cookieDays);
                     await setSecureCookie('rememberMe', rememberMe, cookieDays);
                     
                     updateAuthUI();
                     closeAuthModal();
-                    showNotification(`Welcome back, ${userInfo.name}!`, 'success');
+                    showNotification(`Welcome back, ${username}!${userData.isAdmin ? ' (Admin)' : ''}`, 'success');
                 } else {
-                    showNotification('Invalid email or password!', 'warning');
+                    showNotification('Invalid username or password!', 'warning');
                 }
             } else {
-                // Signup - save encrypted user data
+                // Sign up
                 let registeredUsers = await getSecureCookie('registeredUsers') || {};
                 
-                if (registeredUsers[email]) {
-                    showNotification('User already exists! Please login.', 'warning');
+                if (registeredUsers[username]) {
+                    showNotification('Username already taken! Please choose another.', 'warning');
                     return;
                 }
                 
-                // Save new user with hashed password
-                const hashedPassword = await hashPassword(password);
-                registeredUsers[email] = {
+                // Assign user ID
+                globalUserCounter++;
+                const userId = globalUserCounter;
+                setPlainCookie('userCounter', globalUserCounter.toString(), 365);
+                
+                // Save new user
+                registeredUsers[username] = {
                     password: hashedPassword,
-                    name: userInfo.name,
+                    userId: userId,
                     registrationDate: new Date().toISOString()
                 };
                 
@@ -797,39 +1198,43 @@
                 
                 // Auto-login after signup
                 userData.isLoggedIn = true;
-                userData.user = userInfo;
+                userData.user = { name: username, loginTime: new Date().toISOString() };
+                userData.userId = userId;
+                userData.isAdmin = userId === 1; // First user is admin
                 userData.rememberMe = rememberMe;
                 
                 const cookieDays = rememberMe ? 30 : 1;
                 await setSecureCookie('isLoggedIn', true, cookieDays);
-                await setSecureCookie('userData', userInfo, cookieDays);
+                await setSecureCookie('userData', userData.user, cookieDays);
+                await setSecureCookie('userId', userId, cookieDays);
                 await setSecureCookie('rememberMe', rememberMe, cookieDays);
                 
                 updateAuthUI();
                 closeAuthModal();
-                showNotification(`Welcome to Portfolio Hub, ${userInfo.name}!`, 'success');
+                showNotification(`Welcome to Portfolio Hub, ${username}!${userData.isAdmin ? ' You are the admin!' : ''}`, 'success');
             }
             
-            // Clear form
             document.getElementById('authForm').reset();
         });
 
         async function logout() {
             userData.isLoggedIn = false;
             userData.user = null;
+            userData.userId = null;
+            userData.isAdmin = false;
             userData.rememberMe = false;
             
-            // Clear encrypted login cookies
             deleteSecureCookie('isLoggedIn');
             deleteSecureCookie('userData');
+            deleteSecureCookie('userId');
             deleteSecureCookie('rememberMe');
             
             updateAuthUI();
             showNotification('Logged out successfully!', 'info');
             
-            // Redirect to home if on a portfolio page
-            if (!document.querySelector('.main-container')) {
-                location.reload();
+            if (currentSection !== 'home') {
+                showSection('home');
+                document.querySelector('.nav-link').click();
             }
         }
 
@@ -841,22 +1246,66 @@
             if (userData.isLoggedIn && userData.user) {
                 authBtn.style.display = 'none';
                 userInfo.style.display = 'flex';
-                userName.textContent = userData.user.name;
+                userName.textContent = `${userData.user.name}${userData.isAdmin ? ' (Admin)' : ''}`;
+                
+                // Show admin edit indicators
+                if (userData.isAdmin) {
+                    document.querySelectorAll('.editable-content').forEach(el => {
+                        el.style.cursor = 'pointer';
+                        el.addEventListener('click', enableEditing);
+                    });
+                }
             } else {
                 authBtn.style.display = 'block';
                 userInfo.style.display = 'none';
+                
+                // Hide admin edit indicators
+                document.querySelectorAll('.editable-content').forEach(el => {
+                    el.style.cursor = 'default';
+                    el.removeEventListener('click', enableEditing);
+                });
             }
         }
 
-        // Navigation Functions
-        function navigateToPortfolio(type) {
-            if (!userData.isLoggedIn) {
-                showNotification('Please login to access portfolios!', 'warning');
-                showAuthModal();
-                return;
+        // Admin Content Editing
+        async function enableEditing(event) {
+            if (!userData.isAdmin) return;
+            
+            event.stopPropagation();
+            const element = event.currentTarget;
+            const key = element.getAttribute('data-key');
+            const currentText = element.childNodes[0].textContent.trim();
+            
+            const newText = prompt('Edit content:', currentText);
+            if (newText && newText.trim() !== currentText) {
+                const filteredText = filterProfanity(newText.trim());
+                
+                // Update the element
+                element.childNodes[0].textContent = filteredText;
+                
+                // Save to secure storage
+                let editedContent = await getSecureCookie('editedContent') || {};
+                editedContent[key] = filteredText;
+                await setSecureCookie('editedContent', editedContent, 365);
+                
+                showNotification('Content updated!', 'success');
             }
+        }
 
-            // Create portfolio pages dynamically
+        // Load edited content
+        async function loadEditedContent() {
+            const editedContent = await getSecureCookie('editedContent') || {};
+            
+            Object.entries(editedContent).forEach(([key, text]) => {
+                const element = document.querySelector(`[data-key="${key}"]`);
+                if (element && element.childNodes[0]) {
+                    element.childNodes[0].textContent = text;
+                }
+            });
+        }
+
+        // Navigation Functions - Now public access
+        function navigateToPortfolio(type) {
             createPortfolioPage(type);
         }
 
@@ -936,7 +1385,6 @@
             const data = portfolioData[type];
             if (!data) return;
 
-            // Create new page content
             const newPageHTML = `
                 <div style="padding: 120px 2rem 2rem; min-height: 100vh;">
                     <div style="max-width: 1200px; margin: 0 auto;">
@@ -962,7 +1410,6 @@
                 </div>
             `;
 
-            // Replace page content
             document.body.innerHTML = document.body.innerHTML.replace(
                 document.querySelector('.main-container').outerHTML,
                 newPageHTML
@@ -970,7 +1417,7 @@
         }
 
         function goBack() {
-            location.reload(); // Simple way to go back to original page
+            location.reload();
         }
 
         // Notification System
@@ -996,7 +1443,6 @@
             }, 3000);
         }
 
-        // Add notification animation
         const notificationStyle = document.createElement('style');
         notificationStyle.textContent = `
             @keyframes slideInRight {
@@ -1006,105 +1452,61 @@
         `;
         document.head.appendChild(notificationStyle);
 
-        // Initialize the app when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-        });
-
-        // Also initialize immediately in case DOMContentLoaded already fired
-        initializeApp();
-
-        // Initialize - Load encrypted user data from cookies on page load
+        // Initialize app
         async function initializeApp() {
             try {
-                // Check if user should be logged in based on encrypted cookies
                 const isLoggedIn = await getSecureCookie('isLoggedIn');
                 const userData_cookie = await getSecureCookie('userData');
+                const userId_cookie = await getSecureCookie('userId');
                 
-                if (isLoggedIn && userData_cookie) {
+                if (isLoggedIn && userData_cookie && userId_cookie) {
                     userData.isLoggedIn = true;
                     userData.user = userData_cookie;
-                    updateAuthUI();
+                    userData.userId = userId_cookie;
+                    userData.isAdmin = userId_cookie === 1;
                     
-                    // Check if login is expired (optional security feature)
                     const loginTime = new Date(userData_cookie.loginTime || Date.now());
                     const now = new Date();
                     const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
                     
-                    // If more than 24 hours and not "remember me", log out
                     const rememberMe = await getSecureCookie('rememberMe');
                     if (hoursSinceLogin > 24 && !rememberMe) {
                         await logout();
                         showNotification('Session expired. Please login again.', 'info');
                     }
-                } else {
-                    updateAuthUI();
                 }
                 
                 loadSavedTheme();
+                await loadEditedContent();
+                updateAuthUI();
+                
+                // Load custom theme if saved
+                const savedCustomTheme = getPlainCookie('customTheme');
+                if (savedCustomTheme && userData.theme === 'custom') {
+                    const customTheme = JSON.parse(savedCustomTheme);
+                    Object.entries(customTheme).forEach(([key, value]) => {
+                        document.getElementById(key).value = value;
+                    });
+                    applyCustomTheme();
+                }
+                
             } catch (error) {
                 console.error('Failed to initialize app:', error);
-                // Fallback to logged out state if encryption fails
                 userData.isLoggedIn = false;
                 userData.user = null;
                 updateAuthUI();
             }
         }
 
-        // User Preferences Management with Encryption
-        async function saveUserPreferences() {
-            try {
-                const preferences = {
-                    theme: userData.theme,
-                    lastVisit: new Date().toISOString(),
-                    version: '1.0'
-                };
-                await setSecureCookie('userPreferences', preferences, 365);
-            } catch (error) {
-                console.warn('Failed to save user preferences:', error);
-            }
-        }
+        // Initialize theme
+        loadSavedTheme();
 
-        // Call when theme changes
-        async function onThemeChange(theme) {
-            userData.theme = theme;
-            await saveUserPreferences();
-        }
+        // Initialize app when DOM loads
+        document.addEventListener('DOMContentLoaded', initializeApp);
+        initializeApp();
 
-        // Security utility functions
-        function generateSecureToken() {
-            const array = new Uint8Array(32);
-            crypto.getRandomValues(array);
-            return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-        }
-
-        // Session management
-        async function refreshUserSession() {
-            if (userData.isLoggedIn && userData.user) {
-                userData.user.loginTime = new Date().toISOString();
-                const rememberMe = await getSecureCookie('rememberMe') || false;
-                const cookieDays = rememberMe ? 30 : 1;
-                await setSecureCookie('userData', userData.user, cookieDays);
-            }
-        }
-
-        // Refresh session every 30 minutes if user is active
-        setInterval(async () => {
-            if (userData.isLoggedIn) {
-                await refreshUserSession();
-            }
-        }, 30 * 60 * 1000);
-
-        // Clear encryption key on page unload for added security (optional)
-        window.addEventListener('beforeunload', function() {
-            if (!userData.rememberMe) {
-                // Only clear if user didn't choose "remember me"
-                // localStorage.removeItem('encryptionKey');
-            }
-        });
-
-        console.log('🔒 Portfolio Hub loaded with encrypted cookie security!');
-        console.log('🔐 User data is now encrypted and secure from prying eyes.');
+        console.log('🔒 Portfolio Hub loaded with all new features!');
+        console.log('✨ Features: Theme Editor, User Profiles, Admin Controls, Content Filtering, Public Access');
     </script>
 </body>
 </html>
