@@ -1,22 +1,10 @@
-// Close modal when clicking outside and initialize app
-        window.onclick = function(event) {
-            const modal = document.getElementById('authModal');
-            if (event.target === modal) {
-                closeAuthModal();
-            }
-        };
-
-        // Initialize the app when page loads
+// Initialize the app when page loads
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
         });
 
         // Also initialize immediately in case DOMContentLoaded already fired
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }<!DOCTYPE html>
+        initializeApp();<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -24,10 +12,7 @@
     <title>Portfolio Hub - Modern</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* Theme Variables - Simplified approach */
-        :root, 
-        [data-theme="dark"],
-        .theme-dark {
+        :root[data-theme="dark"] {
             --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
             --bg-card: rgba(255, 255, 255, 0.08);
             --text-primary: #ffffff;
@@ -38,40 +23,37 @@
             --shadow: rgba(0, 0, 0, 0.3);
         }
 
-        [data-theme="light"],
-        .theme-light {
-            --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%) !important;
-            --bg-card: rgba(255, 255, 255, 0.9) !important;
-            --text-primary: #1e293b !important;
-            --text-secondary: #64748b !important;
-            --accent: #3b82f6 !important;
-            --accent-hover: #2563eb !important;
-            --border: rgba(0, 0, 0, 0.1) !important;
-            --shadow: rgba(0, 0, 0, 0.1) !important;
+        :root[data-theme="light"] {
+            --bg-primary: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: rgba(0, 0, 0, 0.1);
+            --shadow: rgba(0, 0, 0, 0.1);
         }
 
-        [data-theme="neon"],
-        .theme-neon {
-            --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #330066 100%) !important;
-            --bg-card: rgba(255, 0, 255, 0.1) !important;
-            --text-primary: #ff00ff !important;
-            --text-secondary: #cc00cc !important;
-            --accent: #00ffff !important;
-            --accent-hover: #ff00ff !important;
-            --border: rgba(255, 0, 255, 0.3) !important;
-            --shadow: rgba(255, 0, 255, 0.2) !important;
+        :root[data-theme="neon"] {
+            --bg-primary: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #330066 100%);
+            --bg-card: rgba(255, 0, 255, 0.1);
+            --text-primary: #ff00ff;
+            --text-secondary: #cc00cc;
+            --accent: #00ffff;
+            --accent-hover: #ff00ff;
+            --border: rgba(255, 0, 255, 0.3);
+            --shadow: rgba(255, 0, 255, 0.2);
         }
 
-        [data-theme="ocean"],
-        .theme-ocean {
-            --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%) !important;
-            --bg-card: rgba(255, 255, 255, 0.1) !important;
-            --text-primary: #ffffff !important;
-            --text-secondary: rgba(255, 255, 255, 0.8) !important;
-            --accent: #06b6d4 !important;
-            --accent-hover: #0891b2 !important;
-            --border: rgba(255, 255, 255, 0.2) !important;
-            --shadow: rgba(0, 0, 0, 0.3) !important;
+        :root[data-theme="ocean"] {
+            --bg-primary: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+            --bg-card: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --border: rgba(255, 255, 255, 0.2);
+            --shadow: rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -124,20 +106,11 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            font-size: 0.9rem;
         }
 
         .theme-selector:hover {
             background: var(--accent);
             color: white;
-            transform: translateY(-1px);
-        }
-
-        .theme-selector:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
         }
 
         .auth-btn {
@@ -556,69 +529,38 @@
             document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;`;
         }
 
-        // Initialize user data from secure cookies
+        // Initialize user data from cookies or defaults
         let userData = {
-            isLoggedIn: getSecureCookie('secureAuth')?.isLoggedIn || false,
-            user: getSecureCookie('secureAuth')?.user || null,
-            sessionId: getSecureCookie('secureAuth')?.sessionId || null,
+            isLoggedIn: getCookie('isLoggedIn') || false,
+            user: getCookie('userData') || null,
             theme: getCookie('userTheme') || 'dark',
-            rememberMe: getSecureCookie('secureAuth')?.rememberMe || false
+            rememberMe: getCookie('rememberMe') || false
         };
 
         let isLoginMode = true;
 
-        // Theme Management - Simplified and Fixed
-        function initializeThemeSystem() {
-            console.log('Initializing theme system...');
+        // Theme Management with Cookie Persistence
+        const themeSelector = document.getElementById('themeSelector');
+        themeSelector.addEventListener('change', function() {
+            const theme = this.value;
+            document.documentElement.setAttribute('data-theme', theme);
+            userData.theme = theme;
             
-            // Apply default theme immediately
-            applyTheme('dark');
-            
-            // Wait for DOM to be ready
-            const checkThemeSelector = () => {
-                const themeSelector = document.getElementById('themeSelector');
-                if (!themeSelector) {
-                    setTimeout(checkThemeSelector, 50);
-                    return;
-                }
-                
-                // Load saved theme
-                const savedTheme = getCookie('userTheme') || 'dark';
-                console.log('Loading saved theme:', savedTheme);
-                applyTheme(savedTheme);
-                themeSelector.value = savedTheme;
-                
-                // Add event listener
-                themeSelector.addEventListener('change', function() {
-                    const theme = this.value;
-                    console.log('Theme changed to:', theme);
-                    applyTheme(theme);
-                    setCookie('userTheme', theme, 30);
-                    showNotification(`Theme: ${theme.charAt(0).toUpperCase() + theme.slice(1)}`, 'success');
-                });
-            };
-            
-            checkThemeSelector();
+            // Save theme to cookies (30 days)
+            setCookie('userTheme', theme, 30);
+            showNotification(`Theme changed to ${theme}!`, 'success');
+        });
+
+        // Load saved theme from cookies
+        function loadSavedTheme() {
+            const savedTheme = getCookie('userTheme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeSelector.value = savedTheme;
+            userData.theme = savedTheme;
         }
 
-        function applyTheme(themeName) {
-            console.log('Applying theme:', themeName);
-            
-            const root = document.documentElement;
-            
-            // Remove all theme classes first
-            root.removeAttribute('data-theme');
-            root.classList.remove('theme-dark', 'theme-light', 'theme-neon', 'theme-ocean');
-            
-            // Apply new theme
-            root.setAttribute('data-theme', themeName);
-            root.classList.add('theme-' + themeName);
-            
-            // Force style recalculation
-            root.style.setProperty('--force-update', Math.random());
-            
-            userData.theme = themeName;
-        }
+        // Initialize theme
+        loadSavedTheme();
 
         // Auth Modal Functions
         function showAuthModal() {
@@ -649,165 +591,95 @@
             }
         }
 
-        // Enhanced Auth Form Handler with Advanced Security
+        // Auth Form Handler with Cookie Persistence
         document.getElementById('authForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value.toLowerCase().trim();
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const name = document.getElementById('name').value.trim();
+            const name = document.getElementById('name').value;
             const rememberMe = document.getElementById('rememberMe').checked;
 
-            // Security validations
-            if (password.length < 8) {
-                showNotification('Password must be at least 8 characters!', 'warning');
+            // Simple validation (in real app, you'd validate against server)
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters!', 'warning');
                 return;
             }
 
-            if (security.isAccountLocked(email)) {
-                const lockTime = getCookie(`locked_${email}`);
-                const remainingTime = Math.ceil((security.lockoutDuration - (Date.now() - lockTime)) / 60000);
-                showNotification(`Account locked. Try again in ${remainingTime} minutes.`, 'warning');
-                return;
-            }
+            const userInfo = {
+                email: email,
+                name: name || email.split('@')[0],
+                loginTime: new Date().toISOString()
+            };
 
             if (isLoginMode) {
-                // Enhanced login process
-                const registeredUsers = getSecureCookie('secureUserDB') || {};
-                const userRecord = registeredUsers[email];
+                // Simulate login - check if user exists in cookies
+                const existingUser = getCookie('registeredUsers') || {};
                 
-                if (userRecord && security.validatePasswordHash(password, userRecord.passwordHash)) {
+                if (existingUser[email] && existingUser[email].password === password) {
                     // Successful login
-                    security.clearFailedAttempts(email);
-                    
-                    const userInfo = {
-                        email: email,
-                        name: userRecord.name,
-                        isAdmin: security.isAdmin(email),
-                        loginTime: new Date().toISOString()
-                    };
-
-                    // Create secure session
-                    const sessionId = security.createSession(userInfo);
-                    
                     userData.isLoggedIn = true;
                     userData.user = userInfo;
-                    userData.sessionId = sessionId;
                     userData.rememberMe = rememberMe;
                     
-                    // Save encrypted session data
-                    const sessionData = {
-                        isLoggedIn: true,
-                        user: userInfo,
-                        sessionId: sessionId,
-                        rememberMe: rememberMe
-                    };
-                    
-                    const cookieDays = rememberMe ? 30 : 1;
-                    setSecureCookie('secureAuth', sessionData, cookieDays);
+                    // Save login state to cookies
+                    const cookieDays = rememberMe ? 30 : 1; // 30 days if remember me, 1 day otherwise
+                    setCookie('isLoggedIn', true, cookieDays);
+                    setCookie('userData', userInfo, cookieDays);
+                    setCookie('rememberMe', rememberMe, cookieDays);
                     
                     updateAuthUI();
                     closeAuthModal();
-                    
-                    if (userInfo.isAdmin) {
-                        showNotification(`Welcome back, Admin ${userInfo.name}! 👑`, 'success');
-                        showAdminPanel();
-                    } else {
-                        showNotification(`Welcome back, ${userInfo.name}!`, 'success');
-                    }
+                    showNotification(`Welcome back, ${userInfo.name}!`, 'success');
                 } else {
-                    // Failed login
-                    const attempts = security.recordFailedAttempt(email);
-                    const remaining = security.maxLoginAttempts - attempts;
-                    
-                    if (remaining > 0) {
-                        showNotification(`Invalid credentials! ${remaining} attempts remaining.`, 'warning');
-                    } else {
-                        showNotification('Too many failed attempts! Account locked for 15 minutes.', 'warning');
-                    }
+                    showNotification('Invalid email or password!', 'warning');
                 }
             } else {
-                // Enhanced signup process
-                if (!name || name.length < 2) {
-                    showNotification('Please enter a valid name!', 'warning');
-                    return;
-                }
-
-                let registeredUsers = getSecureCookie('secureUserDB') || {};
+                // Simulate signup - save user to cookies
+                let registeredUsers = getCookie('registeredUsers') || {};
                 
                 if (registeredUsers[email]) {
                     showNotification('User already exists! Please login.', 'warning');
-                    toggleAuthMode(); // Switch to login mode
                     return;
                 }
                 
-                // Create secure user record
-                const passwordHash = security.hashPassword(password);
-                const userRecord = {
-                    passwordHash: passwordHash,
-                    name: name,
-                    isAdmin: security.isAdmin(email),
-                    registrationDate: new Date().toISOString(),
-                    userId: security.generateSecureToken().substring(0, 12)
+                // Save new user
+                registeredUsers[email] = {
+                    password: password,
+                    name: userInfo.name,
+                    registrationDate: new Date().toISOString()
                 };
                 
-                registeredUsers[email] = userRecord;
-                setSecureCookie('secureUserDB', registeredUsers, 365);
+                setCookie('registeredUsers', registeredUsers, 365); // Save for 1 year
                 
                 // Auto-login after signup
-                const userInfo = {
-                    email: email,
-                    name: name,
-                    isAdmin: security.isAdmin(email),
-                    loginTime: new Date().toISOString()
-                };
-
-                const sessionId = security.createSession(userInfo);
-                
                 userData.isLoggedIn = true;
                 userData.user = userInfo;
-                userData.sessionId = sessionId;
                 userData.rememberMe = rememberMe;
                 
-                const sessionData = {
-                    isLoggedIn: true,
-                    user: userInfo,
-                    sessionId: sessionId,
-                    rememberMe: rememberMe
-                };
-                
                 const cookieDays = rememberMe ? 30 : 1;
-                setSecureCookie('secureAuth', sessionData, cookieDays);
+                setCookie('isLoggedIn', true, cookieDays);
+                setCookie('userData', userInfo, cookieDays);
+                setCookie('rememberMe', rememberMe, cookieDays);
                 
                 updateAuthUI();
                 closeAuthModal();
-                
-                if (userInfo.isAdmin) {
-                    showNotification(`Welcome Admin ${userInfo.name}! Account created with admin privileges! 👑`, 'success');
-                    showAdminPanel();
-                } else {
-                    showNotification(`Welcome to Portfolio Hub, ${userInfo.name}!`, 'success');
-                }
+                showNotification(`Welcome to Portfolio Hub, ${userInfo.name}!`, 'success');
             }
             
             // Clear form
             document.getElementById('authForm').reset();
         });
 
-        // Enhanced logout with session cleanup
         function logout() {
-            if (userData.sessionId) {
-                security.sessionTokens.delete(userData.sessionId);
-            }
-            
             userData.isLoggedIn = false;
             userData.user = null;
-            userData.sessionId = null;
             userData.rememberMe = false;
             
-            // Clear all authentication cookies
-            deleteCookie('secureAuth');
-            hideAdminPanel();
+            // Clear login cookies
+            deleteCookie('isLoggedIn');
+            deleteCookie('userData');
+            deleteCookie('rememberMe');
             
             updateAuthUI();
             showNotification('Logged out successfully!', 'info');
@@ -999,158 +871,30 @@
         // Also initialize immediately in case DOMContentLoaded already fired
         initializeApp();
 
-        // Add password hashing method to SecurityManager
-        SecurityManager.prototype.hashPassword = function(password) {
-            // Simple hash function (in production, use bcrypt or similar)
-            let hash = 0;
-            const salt = 'portfolioHub2024_secureHash';
-            const saltedPassword = password + salt;
-            
-            for (let i = 0; i < saltedPassword.length; i++) {
-                const char = saltedPassword.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-            
-            return Math.abs(hash).toString(16) + '_' + this.generateSecureToken().substring(0, 8);
-        };
-
-        SecurityManager.prototype.validatePasswordHash = function(password, storedHash) {
-            if (!storedHash || !password) return false;
-            
-            const parts = storedHash.split('_');
-            if (parts.length !== 2) return false;
-            
-            const expectedHash = this.hashPassword(password).split('_')[0];
-            return expectedHash === parts[0];
-        };
-
-        // Admin Panel Functions
-        function showAdminPanel() {
-            if (!userData.user?.isAdmin) return;
-            
-            const adminPanel = document.createElement('div');
-            adminPanel.id = 'adminPanel';
-            adminPanel.style.cssText = `
-                position: fixed;
-                top: 80px;
-                right: 20px;
-                background: var(--bg-card);
-                border: 2px solid var(--accent);
-                border-radius: 15px;
-                padding: 1rem;
-                z-index: 1500;
-                backdrop-filter: blur(20px);
-                min-width: 200px;
-                box-shadow: 0 10px 30px var(--shadow);
-            `;
-            
-            adminPanel.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                    <i class="fas fa-crown" style="color: gold;"></i>
-                    <strong style="color: var(--accent);">Admin Panel</strong>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                    <button onclick="viewAllUsers()" style="background: var(--accent); color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">
-                        <i class="fas fa-users"></i> View Users
-                    </button>
-                    <button onclick="clearAllSessions()" style="background: #ef4444; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">
-                        <i class="fas fa-ban"></i> Clear Sessions
-                    </button>
-                    <button onclick="viewSystemStats()" style="background: #10b981; color: white; border: none; padding: 0.5rem; border-radius: 5px; cursor: pointer;">
-                        <i class="fas fa-chart-bar"></i> System Stats
-                    </button>
-                </div>
-            `;
-            
-            document.body.appendChild(adminPanel);
-        }
-
-        function hideAdminPanel() {
-            const adminPanel = document.getElementById('adminPanel');
-            if (adminPanel) {
-                adminPanel.remove();
-            }
-        }
-
-        function viewAllUsers() {
-            const users = getSecureCookie('secureUserDB') || {};
-            const userCount = Object.keys(users).length;
-            const adminCount = Object.values(users).filter(u => u.isAdmin).length;
-            
-            let userList = 'Registered Users:\\n\\n';
-            Object.entries(users).forEach(([email, data]) => {
-                const adminStatus = data.isAdmin ? ' 👑 (Admin)' : '';
-                userList += `• ${data.name} (${email})${adminStatus}\\n`;
-            });
-            
-            userList += `\\nTotal Users: ${userCount}\\nAdmins: ${adminCount}`;
-            alert(userList);
-        }
-
-        function clearAllSessions() {
-            if (confirm('Are you sure you want to clear all user sessions?')) {
-                security.sessionTokens.clear();
-                showNotification('All sessions cleared!', 'info');
-            }
-        }
-
-        function viewSystemStats() {
-            const activeSessions = security.sessionTokens.size;
-            const totalUsers = Object.keys(getSecureCookie('secureUserDB') || {}).length;
-            
-            const stats = `System Statistics:\\n\\nActive Sessions: ${activeSessions}\\nTotal Registered Users: ${totalUsers}\\nYour Session ID: ${userData.sessionId?.substring(0, 12)}...\\nLogin Time: ${userData.user?.loginTime}`;
-            alert(stats);
-        }
-
-        // Initialize - Enhanced session validation
+        // Initialize - Load user data from cookies on page load
         function initializeApp() {
-            // Initialize theme system first
-            initializeThemeSystem();
+            // Check if user should be logged in based on cookies
+            const isLoggedIn = getCookie('isLoggedIn');
+            const userData_cookie = getCookie('userData');
             
-            const authData = getSecureCookie('secureAuth');
-            
-            if (authData && authData.isLoggedIn && authData.sessionId) {
-                // Validate session integrity
-                if (security.validateSession(authData.sessionId)) {
-                    userData.isLoggedIn = true;
-                    userData.user = authData.user;
-                    userData.sessionId = authData.sessionId;
-                    userData.rememberMe = authData.rememberMe;
-                    
-                    // Check session age
-                    const sessionData = security.sessionTokens.get(authData.sessionId);
-                    if (sessionData) {
-                        const hoursSinceLogin = (Date.now() - sessionData.createdAt) / (1000 * 60 * 60);
-                        
-                        // Auto-logout if session too old and not "remember me"
-                        if (hoursSinceLogin > 24 && !authData.rememberMe) {
-                            logout();
-                            showNotification('Session expired. Please login again.', 'info');
-                            return;
-                        }
-                        
-                        // Update last activity
-                        sessionData.lastActivity = Date.now();
-                        
-                        updateAuthUI();
-                        
-                        // Show admin panel if admin
-                        if (userData.user?.isAdmin) {
-                            showAdminPanel();
-                        }
-                    } else {
-                        // Session not found in memory, invalid
-                        logout();
-                        showNotification('Invalid session. Please login again.', 'info');
-                    }
-                } else {
-                    // Invalid session
+            if (isLoggedIn && userData_cookie) {
+                userData.isLoggedIn = true;
+                userData.user = userData_cookie;
+                updateAuthUI();
+                
+                // Check if login is expired (optional security feature)
+                const loginTime = new Date(userData_cookie.loginTime || Date.now());
+                const now = new Date();
+                const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+                
+                // If more than 24 hours and not "remember me", log out
+                if (hoursSinceLogin > 24 && !getCookie('rememberMe')) {
                     logout();
-                    showNotification('Session validation failed. Please login again.', 'warning');
+                    showNotification('Session expired. Please login again.', 'info');
                 }
             }
             
+            loadSavedTheme();
             updateAuthUI();
         }
 
@@ -1163,20 +907,10 @@
             setCookie('userPreferences', preferences, 365);
         }
 
-        // Enhanced navigation with admin privileges
-        function navigateToPortfolio(type) {
-            if (!userData.isLoggedIn) {
-                showNotification('Please login to access portfolios!', 'warning');
-                showAuthModal();
-                return;
-            }
-
-            // Admin gets access to admin-only sections
-            if (userData.user?.isAdmin) {
-                showNotification(`Admin access granted to ${type} portfolio! 👑`, 'success');
-            }
-
-            createPortfolioPage(type);
+        // Call when theme changes
+        function onThemeChange(theme) {
+            userData.theme = theme;
+            saveUserPreferences();
         }
     </script>
 </body>
