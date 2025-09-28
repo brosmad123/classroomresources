@@ -156,6 +156,10 @@
             color: var(--text-primary);
             font-size: 0.9rem;
             margin-bottom: 0.2rem;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .track-artist {
@@ -327,6 +331,96 @@
             font-size: 1.2rem;
             cursor: pointer;
             z-index: 10;
+        }
+
+        /* Project Modal Styles */
+        .project-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            backdrop-filter: blur(10px);
+        }
+
+        .project-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            max-width: 500px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+        }
+
+        .project-modal-header {
+            background: linear-gradient(135deg, var(--accent), #00b8e6);
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .project-modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-modal-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .project-modal-body {
+            padding: 2rem;
+            background: #1a1a1a;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .project-modal-description {
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .project-modal-button, .project-modal-buttons {
+            display: block;
+            width: 100%;
+        }
+
+        .project-modal-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .project-modal-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .project-modal-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
         }
 
         /* History Modal Styles */
@@ -850,6 +944,23 @@
         <!-- Content will be loaded here -->
     </div>
 
+    <!-- Project Modal -->
+    <div id="projectModal" class="project-modal">
+        <div class="project-modal-content">
+            <button class="close-btn" onclick="closeProjectModal()">&times;</button>
+            <div class="project-modal-header">
+                <h2 class="project-modal-title" id="projectModalTitle">Project Title</h2>
+                <p class="project-modal-subtitle" id="projectModalSubtitle">Project subtitle</p>
+            </div>
+            <div class="project-modal-body">
+                <p class="project-modal-description" id="projectModalDescription">Project description goes here.</p>
+                <div id="projectModalActions">
+                    <!-- Actions will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- History Project Modal -->
     <div id="historyModal" class="modal">
         <div class="history-content">
@@ -931,11 +1042,35 @@
     </div>
 
     <audio id="backgroundMusic" loop>
-        <!-- You'll need to add your music file URL here -->
-        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/background-music.mp3" type="audio/mpeg">
+        <!-- Multiple music sources -->
+        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3" type="audio/mpeg">
     </audio>
 
     <script>
+        // Music playlist
+        const musicTracks = [
+            {
+                title: "Ambient Track 1",
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3"
+            },
+            {
+                title: "Ambient Track 2", 
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3"
+            },
+            {
+                title: "Ambient Track 3",
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music3.mp3"
+            },
+            {
+                title: "Ambient Track 4",
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music4.mp3"
+            },
+            {
+                title: "Ambient Track 5",
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music5.mp3"
+            }
+        ];
+
         // Portfolio Data
         const portfolioData = {
             gurshaan: {
@@ -1006,7 +1141,6 @@
         let musicPlaying = false;
         let musicPlayerVisible = false;
         let currentTrack = 0;
-        let tracks = ["Background Music"]; // You can add more track names here
 
         // Router functionality
         class Router {
@@ -1124,7 +1258,7 @@
                                 
                                 <div class="projects-grid">
                                     ${data.projects.map(project => `
-                                        <div class="project-card">
+                                        <div class="project-card" onclick="openProjectModal('${project.id}', '${type}')">
                                             <div class="project-image">
                                                 <img src="${project.image}" alt="${project.title}" />
                                                 <div class="project-overlay">
@@ -1137,9 +1271,6 @@
                                             <div class="project-content">
                                                 <h3 class="project-title">${project.title}</h3>
                                                 <p class="project-description">${project.description}</p>
-                                                <button class="project-button" onclick="${project.isHistoryProject ? 'openHistoryModal()' : `window.open('${project.url}', '_blank')`}">
-                                                    View Project
-                                                </button>
                                             </div>
                                         </div>
                                     `).join('')}
@@ -1158,6 +1289,23 @@
         const router = new Router();
 
         // Music Player Functions
+        function loadTrack(trackIndex) {
+            const audio = document.getElementById('backgroundMusic');
+            const trackTitle = document.querySelector('.track-title');
+            
+            if (trackIndex >= 0 && trackIndex < musicTracks.length) {
+                currentTrack = trackIndex;
+                audio.src = musicTracks[currentTrack].src;
+                trackTitle.textContent = musicTracks[currentTrack].title;
+                
+                if (musicPlaying) {
+                    audio.play().catch(() => {
+                        console.log(`Track ${currentTrack + 1} not found: ${musicTracks[currentTrack].src}`);
+                    });
+                }
+            }
+        }
+
         function toggleMusicPlayer() {
             const player = document.getElementById('musicPlayer');
             musicPlayerVisible = !musicPlayerVisible;
@@ -1165,6 +1313,7 @@
             if (musicPlayerVisible) {
                 player.classList.add('visible');
                 document.getElementById('musicToggle').innerHTML = '<i class="fas fa-times"></i>';
+                loadTrack(currentTrack); // Load current track when player is shown
             } else {
                 player.classList.remove('visible');
                 document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
@@ -1176,12 +1325,18 @@
             const playButton = document.getElementById('playButton');
             
             if (!musicPlaying) {
+                if (!audio.src) {
+                    loadTrack(currentTrack);
+                }
+                
                 audio.play().then(() => {
                     musicPlaying = true;
                     playButton.innerHTML = '<i class="fas fa-pause"></i>';
                     startProgressUpdate();
                 }).catch(() => {
-                    alert('Music file not found. Please add a music file to your GitHub repository at the specified URL.');
+                    console.log(`Music file not found: ${musicTracks[currentTrack].src}`);
+                    // Try next track
+                    nextTrack();
                 });
             } else {
                 audio.pause();
@@ -1191,13 +1346,56 @@
         }
 
         function previousTrack() {
-            // Placeholder for previous track functionality
-            console.log('Previous track');
+            currentTrack = (currentTrack - 1 + musicTracks.length) % musicTracks.length;
+            loadTrack(currentTrack);
         }
 
         function nextTrack() {
-            // Placeholder for next track functionality
-            console.log('Next track');
+            currentTrack = (currentTrack + 1) % musicTracks.length;
+            loadTrack(currentTrack);
+        }
+
+        // Project Modal Functions
+        function openProjectModal(projectId, portfolioType) {
+            const portfolio = portfolioData[portfolioType];
+            const project = portfolio.projects.find(p => p.id === projectId);
+            
+            if (!project) return;
+            
+            const modal = document.getElementById('projectModal');
+            const title = document.getElementById('projectModalTitle');
+            const subtitle = document.getElementById('projectModalSubtitle');
+            const description = document.getElementById('projectModalDescription');
+            const actions = document.getElementById('projectModalActions');
+            
+            title.textContent = project.title;
+            subtitle.textContent = project.category;
+            description.textContent = project.description;
+            
+            // Different actions based on project type
+            if (project.isHistoryProject) {
+                actions.innerHTML = `
+                    <div class="project-modal-buttons">
+                        <a href="https://github.com/GSDhaliwal05/clarkpass/raw/main/brochure.pdf" class="project-modal-btn" target="_blank">Brochure</a>
+                        <a href="https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit?utm_content=DAG0H8hKWsI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" class="project-modal-btn" target="_blank">Presentation</a>
+                        <a href="https://github.com/brosmad123/classroomresources/blob/main/canadian-history-merged.pdf" class="project-modal-btn" target="_blank">Worksheet</a>
+                    </div>
+                `;
+            } else {
+                actions.innerHTML = `
+                    <button class="project-modal-btn project-modal-button" onclick="window.open('${project.url}', '_blank')">
+                        VIEW PROJECT
+                    </button>
+                `;
+            }
+            
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         function setVolume(value) {
@@ -1451,7 +1649,7 @@
 
         // Event listeners
         document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
+            if (e.target.classList.contains('modal') || e.target.classList.contains('project-modal')) {
                 e.target.style.display = 'none';
                 document.body.style.overflow = 'auto';
             }
@@ -1459,7 +1657,7 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                const modals = document.querySelectorAll('.modal');
+                const modals = document.querySelectorAll('.modal, .project-modal');
                 modals.forEach(modal => {
                     modal.style.display = 'none';
                 });
@@ -1472,6 +1670,11 @@
             changeTheme(this.value);
         });
 
+        // Audio event listeners for auto-next track
+        document.getElementById('backgroundMusic').addEventListener('ended', function() {
+            nextTrack();
+        });
+
         // Load saved theme
         const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
         document.getElementById('themeSelector').value = savedTheme;
@@ -1479,6 +1682,7 @@
 
         // Set up music
         document.getElementById('backgroundMusic').volume = 0.3;
+        loadTrack(0); // Load first track
 
         console.log('Portfolio Hub loaded successfully!');
     </script>
