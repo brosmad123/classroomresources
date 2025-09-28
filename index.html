@@ -1478,13 +1478,10 @@
             
             // Different actions based on project type
             if (project.isHistoryProject) {
-                actions.innerHTML = `
-                    <div class="project-modal-buttons">
-                        <a href="https://github.com/GSDhaliwal05/clarkpass/raw/main/brochure.pdf" class="project-modal-btn" target="_blank">Brochure</a>
-                        <a href="https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit?utm_content=DAG0H8hKWsI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" class="project-modal-btn" target="_blank">Presentation</a>
-                        <a href="https://github.com/brosmad123/classroomresources/blob/main/canadian-history-merged.pdf" class="project-modal-btn" target="_blank">Worksheet</a>
-                    </div>
-                `;
+                // Use original history modal instead of project modal
+                closeProjectModal();
+                openHistoryModal();
+                return;
             } else {
                 actions.innerHTML = `
                     <button class="project-modal-btn project-modal-button" onclick="window.open('${project.url}', '_blank')">
@@ -1793,12 +1790,27 @@
         });
 
         // Autoplay attempt on user interaction
+        let userInteracted = false;
         document.addEventListener('click', function() {
-            if (!autoplayAttempted && !musicPlaying) {
-                autoplayAttempted = true;
-                startAutoplay();
+            if (!userInteracted) {
+                userInteracted = true;
+                if (!autoplayAttempted && !musicPlaying) {
+                    autoplayAttempted = true;
+                    startAutoplay();
+                }
             }
-        }, { once: true });
+        });
+
+        // Also try on any user interaction
+        document.addEventListener('keydown', function() {
+            if (!userInteracted) {
+                userInteracted = true;
+                if (!autoplayAttempted && !musicPlaying) {
+                    autoplayAttempted = true;
+                    startAutoplay();
+                }
+            }
+        });
 
         // Load saved theme
         const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
@@ -1816,9 +1828,12 @@
         audio2.src = musicTracks[0].src;
         document.querySelector('.track-title').textContent = musicTracks[0].title;
 
-        // Try autoplay immediately (will likely fail due to browser policies)
+        // Show music player by default and try autoplay
         setTimeout(() => {
-            startAutoplay();
+            toggleMusicPlayer(); // Show the music player
+            setTimeout(() => {
+                startAutoplay(); // Try autoplay after showing player
+            }, 500);
         }, 1000);
 
         console.log('Portfolio Hub loaded successfully!');
