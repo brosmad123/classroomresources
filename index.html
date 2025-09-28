@@ -6,21 +6,6 @@
     <title>Portfolio Hub - Modern</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- GitHub Pages SPA routing handler -->
-    <script type="text/javascript">
-        // Handle GitHub Pages SPA routing
-        (function(l) {
-            if (l.search[1] === '/' ) {
-                var decoded = l.search.slice(1).split('&').map(function(s) { 
-                    return s.replace(/~and~/g, '&')
-                }).join('?');
-                window.history.replaceState(null, null,
-                    l.pathname.slice(0, -1) + decoded + l.hash
-                );
-            }
-        }(window.location))
-    </script>
-    
     <style>
         :root[data-theme="dark"] {
             --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
@@ -81,7 +66,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Theme Controls - Fixed position */
+        /* Theme Controls */
         .theme-controls {
             position: fixed;
             top: 20px;
@@ -119,13 +104,8 @@
             transition: all 0.3s ease;
         }
 
-        .theme-creator-btn:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-
-        /* Theme Creator Modal */
-        .theme-creator-modal {
+        /* Modals */
+        .modal {
             display: none;
             position: fixed;
             top: 0;
@@ -137,7 +117,7 @@
             backdrop-filter: blur(10px);
         }
 
-        .theme-creator-content {
+        .modal-content, .history-content, .theme-creator-content {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -145,14 +125,102 @@
             background: var(--bg-card);
             border-radius: 20px;
             border: 1px solid var(--border);
-            padding: 2rem;
-            max-width: 600px;
+            max-width: 800px;
             width: 90%;
             max-height: 80vh;
             overflow-y: auto;
             backdrop-filter: blur(20px);
         }
 
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* History Modal Styles */
+        .history-header {
+            background: linear-gradient(135deg, var(--accent), var(--text-primary));
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .history-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .history-body {
+            padding: 2rem;
+        }
+
+        .history-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .history-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .history-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .history-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .history-btn-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .history-btn-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-btn-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Theme Creator Styles */
         .color-input-group {
             margin-bottom: 1.5rem;
         }
@@ -181,13 +249,6 @@
             text-align: center;
         }
 
-        .custom-theme-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            margin-top: 2rem;
-        }
-
         .btn {
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
@@ -208,124 +269,11 @@
             border: 1px solid var(--border);
         }
 
-        /* History Project Modal */
-        .history-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 3000;
-            backdrop-filter: blur(10px);
-        }
-
-        .history-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            max-width: 800px;
-            width: 90%;
-            backdrop-filter: blur(20px);
-            overflow: hidden;
-        }
-
-        .history-header {
-            background: linear-gradient(135deg, var(--accent), var(--text-primary));
-            padding: 2rem;
-            text-align: center;
-            color: white;
-            position: relative;
-        }
-
-        .history-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .history-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .history-body {
-            padding: 2rem;
-        }
-
-        .history-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-            text-align: center;
-        }
-
-        .history-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .custom-theme-actions {
+            display: flex;
             gap: 1rem;
-        }
-
-        .history-btn {
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .history-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .history-btn:hover::before {
-            opacity: 0.1;
-        }
-
-        .history-btn:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 25px var(--shadow);
-        }
-
-        .history-btn-icon {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .history-btn-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .history-btn-desc {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
+            justify-content: flex-end;
+            margin-top: 2rem;
         }
 
         /* Home Page Styles */
@@ -337,7 +285,6 @@
             justify-content: center;
             text-align: center;
             padding: 2rem;
-            position: relative;
         }
 
         .title {
@@ -348,21 +295,18 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: slideUp 1s ease-out;
         }
 
         .subtitle {
             font-size: 1.3rem;
             color: var(--text-secondary);
             margin-bottom: 3rem;
-            animation: slideUp 1s ease-out 0.2s both;
         }
 
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
             width: 100%;
             max-width: 1000px;
         }
@@ -373,32 +317,8 @@
             border-radius: 20px;
             padding: 2rem;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.4s ease;
             backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            animation: slideUp 1s ease-out both;
-        }
-
-        .nav-card:nth-child(1) { animation-delay: 0.4s; }
-        .nav-card:nth-child(2) { animation-delay: 0.6s; }
-        .nav-card:nth-child(3) { animation-delay: 0.8s; }
-
-        .nav-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .nav-card:hover::before {
-            opacity: 0.1;
         }
 
         .nav-card:hover {
@@ -411,14 +331,12 @@
             font-size: 3rem;
             color: var(--accent);
             margin-bottom: 1rem;
-            display: block;
         }
 
         .card-title {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--text-primary);
         }
 
         .card-description {
@@ -442,9 +360,6 @@
             padding: 0.75rem 1rem;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            backdrop-filter: blur(20px);
             transition: all 0.3s ease;
             z-index: 100;
         }
@@ -452,7 +367,6 @@
         .back-btn:hover {
             background: var(--accent);
             color: white;
-            transform: translateY(-2px);
         }
 
         .portfolio-hero {
@@ -493,7 +407,6 @@
             margin-bottom: 2rem;
             line-height: 1.1;
             min-height: 4.5rem;
-            position: relative;
         }
 
         .portfolio-subtitle::after {
@@ -514,26 +427,13 @@
             margin-bottom: 3rem;
         }
 
-        .portfolio-social {
-            margin-bottom: 3rem;
-        }
-
-        .find-label, .skills-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 1rem;
-        }
-
         .social-icons, .skills-icons {
             display: flex;
             gap: 1rem;
+            margin-top: 1rem;
         }
 
-        .social-icon {
+        .social-icon, .skill-icon {
             width: 60px;
             height: 60px;
             background: var(--bg-card);
@@ -542,45 +442,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-secondary);
+            color: var(--accent);
             text-decoration: none;
             transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
         }
 
-        .social-icon:hover {
-            color: var(--accent);
-            border-color: var(--accent);
+        .social-icon:hover, .skill-icon:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px var(--shadow);
-        }
-
-        .skill-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent);
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            cursor: pointer;
-        }
-
-        .skill-icon:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--shadow);
-            border-color: var(--accent);
-        }
-
-        .portfolio-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .profile-photo {
@@ -589,12 +458,6 @@
             object-fit: cover;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .profile-photo:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
         }
 
         .portfolio-sections {
@@ -603,32 +466,18 @@
             margin: 0 auto;
         }
 
-        .portfolio-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-subtitle {
-            font-size: 0.9rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 1rem;
-        }
-
         .section-title {
             font-size: 3rem;
             font-weight: 700;
             color: var(--text-primary);
+            text-align: center;
+            margin-bottom: 3rem;
         }
 
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 2rem;
-            margin-bottom: 4rem;
         }
 
         .project-card {
@@ -636,33 +485,25 @@
             border: 1px solid var(--border);
             border-radius: 20px;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
             cursor: pointer;
-            position: relative;
         }
 
         .project-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px var(--shadow);
-            border-color: var(--accent);
         }
 
         .project-image {
-            position: relative;
             height: 250px;
             overflow: hidden;
+            position: relative;
         }
 
         .project-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover .project-image img {
-            transform: scale(1.05);
         }
 
         .project-overlay {
@@ -692,32 +533,14 @@
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .project-likes {
             color: white;
             font-size: 0.9rem;
-            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .project-likes:hover {
-            transform: scale(1.1);
-        }
-
-        .project-likes i {
-            color: #ff6b6b;
-            transition: all 0.3s ease;
-        }
-
-        .project-likes.liked i {
-            color: #ff4757;
-            animation: heartBeat 0.6s ease-in-out;
         }
 
         .project-content {
@@ -729,271 +552,26 @@
             margin-bottom: 1rem;
             color: var(--text-primary);
             font-weight: 600;
-            line-height: 1.3;
         }
 
         .project-description {
             color: var(--text-secondary);
             line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 3000;
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            max-width: 800px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            backdrop-filter: blur(20px);
-        }
-
-        .modal-header {
-            position: relative;
-            height: 300px;
-            overflow: hidden;
-        }
-
-        .modal-header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(0, 0, 0, 0.7);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .modal-category {
-            color: var(--accent);
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        .modal-description {
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-size: 1rem;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .action-btn {
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            font-weight: 500;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-        }
-
-        .like-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-        }
-
-        .like-btn:hover {
-            background: #ff6b6b;
-            color: white;
-            border-color: #ff6b6b;
-        }
-
-        .like-btn.liked {
-            background: #ff6b6b;
-            color: white;
-            border-color: #ff6b6b;
-        }
-
-        .view-btn {
-            background: var(--accent);
-            color: white;
-        }
-
-        .view-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        /* Floating shapes */
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .shape:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            width: 80px;
-            height: 80px;
-            background: var(--accent);
-            border-radius: 50%;
-            animation-delay: 0s;
-        }
-
-        .shape:nth-child(2) {
-            top: 60%;
-            right: 15%;
-            width: 60px;
-            height: 60px;
-            background: var(--text-primary);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            animation-delay: 2s;
-        }
-
-        .shape:nth-child(3) {
-            bottom: 30%;
-            left: 15%;
-            width: 100px;
-            height: 40px;
-            background: var(--accent);
-            border-radius: 20px;
-            animation-delay: 4s;
-        }
-
-        /* Animations */
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-30px) rotate(180deg);
-            }
-        }
-
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            14% { transform: scale(1.3); }
-            28% { transform: scale(1); }
-            42% { transform: scale(1.3); }
-            70% { transform: scale(1); }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .title {
-                font-size: 2.5rem;
-            }
-            
-            .nav-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .portfolio-hero {
-                grid-template-columns: 1fr;
+            .title { font-size: 2.5rem; }
+            .nav-grid { grid-template-columns: 1fr; }
+            .portfolio-hero { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
                 gap: 2rem;
-                text-align: center;
-                padding: 2rem 1rem;
             }
-
-            .portfolio-name, .portfolio-subtitle {
-                font-size: 2.5rem;
-            }
-
-            .profile-photo {
-                width: 280px;
-                height: 350px;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .back-btn {
-                position: static;
-                margin-bottom: 2rem;
-                display: inline-block;
-            }
-
-            .social-icons, .skills-icons {
-                justify-content: center;
-            }
-
-            .theme-controls {
-                top: 10px;
-                right: 10px;
-            }
+            .portfolio-name, .portfolio-subtitle { font-size: 2.5rem; }
+            .profile-photo { width: 280px; height: 350px; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
         }
     </style>
 </head>
@@ -1012,42 +590,35 @@
         </button>
     </div>
 
-    <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div>
-
-    <!-- Main Content Container -->
     <div id="mainContent">
-        <!-- Content will be rendered here dynamically -->
-    </div>
-
-    <!-- Project Modal -->
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <img id="modalImage" src="" alt="">
-                <button class="close-btn" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-category" id="modalCategory"></div>
-                <h2 class="modal-title" id="modalTitle"></h2>
-                <p class="modal-description" id="modalDescription"></p>
-                <div class="modal-actions">
-                    <button class="action-btn like-btn" id="modalLikeBtn" onclick="likeProjectModal()">
-                        <i class="fas fa-heart"></i> LIKE THIS <span id="modalLikeCount"></span>
-                    </button>
-                    <a href="#" class="action-btn view-btn">
-                        <i class="fas fa-external-link-alt"></i> VIEW PROJECT
-                    </a>
+        <div class="home-container">
+            <h1 class="title">Portfolio Universe</h1>
+            <p class="subtitle">Discover amazing work from talented creators</p>
+            
+            <div class="nav-grid">
+                <div class="nav-card" onclick="showPortfolio('gurshaan')">
+                    <i class="fas fa-laptop-code card-icon"></i>
+                    <h3 class="card-title">Gurshaan's Portfolio</h3>
+                    <p class="card-description">Discover creative web development and design solutions</p>
+                </div>
+                
+                <div class="nav-card" onclick="showPortfolio('harman')">
+                    <i class="fas fa-chart-line card-icon"></i>
+                    <h3 class="card-title">Harman's Portfolio</h3>
+                    <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
+                </div>
+                
+                <div class="nav-card" onclick="showPortfolio('newspaper')">
+                    <i class="fas fa-newspaper card-icon"></i>
+                    <h3 class="card-title">Digital Newspaper</h3>
+                    <p class="card-description">Stay updated with the latest news and articles</p>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- History Project Modal -->
-    <div id="historyModal" class="history-modal">
+    <div id="historyModal" class="modal">
         <div class="history-content">
             <div class="history-header">
                 <button class="close-btn" onclick="closeHistoryModal()">&times;</button>
@@ -1082,347 +653,173 @@
     </div>
 
     <!-- Theme Creator Modal -->
-    <div id="themeCreatorModal" class="theme-creator-modal">
+    <div id="themeCreatorModal" class="modal">
         <div class="theme-creator-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h2 style="color: var(--text-primary); margin: 0;">Create Custom Theme</h2>
-                <button class="close-btn" onclick="closeThemeCreator()">&times;</button>
-            </div>
-            
-            <div class="color-input-group">
-                <label for="bgPrimary">Background Gradient Start:</label>
-                <input type="color" id="bgPrimary" class="color-input" value="#0f0f23">
-            </div>
-            
-            <div class="color-input-group">
-                <label for="bgSecondary">Background Gradient End:</label>
-                <input type="color" id="bgSecondary" class="color-input" value="#2d1b69">
-            </div>
-            
-            <div class="color-input-group">
-                <label for="textPrimary">Primary Text Color:</label>
-                <input type="color" id="textPrimary" class="color-input" value="#ffffff">
-            </div>
-            
-            <div class="color-input-group">
-                <label for="textSecondary">Secondary Text Color:</label>
-                <input type="color" id="textSecondary" class="color-input" value="#b3b3b3">
-            </div>
-            
-            <div class="color-input-group">
-                <label for="accentColor">Accent Color:</label>
-                <input type="color" id="accentColor" class="color-input" value="#00d4ff">
-            </div>
-            
-            <div class="theme-preview" id="themePreview">
-                <h3 style="margin: 0 0 0.5rem 0;">Theme Preview</h3>
-                <p style="margin: 0; opacity: 0.7;">This is how your theme will look</p>
-            </div>
-            
-            <div class="custom-theme-actions">
-                <button class="btn btn-secondary" onclick="closeThemeCreator()">Cancel</button>
-                <button class="btn btn-primary" onclick="applyCustomTheme()">Apply Theme</button>
+            <button class="close-btn" onclick="closeThemeCreator()">&times;</button>
+            <div style="padding: 2rem;">
+                <h2 style="color: var(--text-primary); margin-bottom: 2rem;">Create Custom Theme</h2>
+                
+                <div class="color-input-group">
+                    <label for="bgPrimary">Background Start Color:</label>
+                    <input type="color" id="bgPrimary" class="color-input" value="#0f0f23">
+                </div>
+                
+                <div class="color-input-group">
+                    <label for="bgSecondary">Background End Color:</label>
+                    <input type="color" id="bgSecondary" class="color-input" value="#2d1b69">
+                </div>
+                
+                <div class="color-input-group">
+                    <label for="textPrimary">Primary Text Color:</label>
+                    <input type="color" id="textPrimary" class="color-input" value="#ffffff">
+                </div>
+                
+                <div class="color-input-group">
+                    <label for="textSecondary">Secondary Text Color:</label>
+                    <input type="color" id="textSecondary" class="color-input" value="#b3b3b3">
+                </div>
+                
+                <div class="color-input-group">
+                    <label for="accentColor">Accent Color:</label>
+                    <input type="color" id="accentColor" class="color-input" value="#00d4ff">
+                </div>
+                
+                <div class="theme-preview" id="themePreview">
+                    <h3>Theme Preview</h3>
+                    <p>This is how your theme will look</p>
+                </div>
+                
+                <div class="custom-theme-actions">
+                    <button class="btn btn-secondary" onclick="closeThemeCreator()">Cancel</button>
+                    <button class="btn btn-primary" onclick="applyCustomTheme()">Apply Theme</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Audio element for background music -->
     <audio id="backgroundMusic" loop>
-        <source src="" type="audio/mpeg">
-        <source src="" type="audio/wav">
-        Your browser does not support the audio element.
+        <source src="https://github.com/YourUsername/YourRepo/raw/main/background-music.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Router and App State
-        let currentRoute = '/';
-        let currentProjectData = null;
-
-        // Cookie functions
-        function setCookie(name, value, days = 30) {
-            const expires = new Date();
-            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
-            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/;SameSite=Lax`;
-        }
-
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) {
-                    return c.substring(nameEQ.length, c.length);
-                }
-            }
-            return null;
-        }
-
-        // Likes system
-        function getLikeCount(projectId) {
-            const likes = getCookie(`likes_${projectId}`);
-            return likes ? parseInt(likes) : 0;
-        }
-
-        function setLikeCount(projectId, count) {
-            setCookie(`likes_${projectId}`, count.toString(), 365);
-        }
-
-        function isProjectLiked(projectId) {
-            return getCookie(`liked_${projectId}`) === 'true';
-        }
-
-        function setProjectLiked(projectId, liked) {
-            setCookie(`liked_${projectId}`, liked.toString(), 365);
-        }
-
-        // Portfolio Data with typing animations - REORDERED: Gurshaan first, then Harman
+        // Portfolio Data
         const portfolioData = {
             gurshaan: {
-                title: "Gurshaan's Portfolio",
                 name: "Gurshaan Gill",
                 greeting: "WELCOME TO A NEW WORLD",
                 fullName: "Hi, I'm Gurshaan Gill, a",
-                subtitle: "Developer.",
-                typingTexts: ["Developer.", "Writer."],
-                description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2025. I have been developing with html for a year, with my general development starting in 2022.",
+                typingTexts: ["Developer.", "Writer.", "Creator."],
+                description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2025. I have been developing with HTML for a year, with my general development starting in 2022.",
                 avatar: "https://i.ibb.co/j9KcHq5y/Screenshot-2025-09-27-235226-removebg-preview.png",
                 socialLinks: [
                     { icon: "fab fa-github", url: "https://github.com/brosmad123" },
-                    { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" },
+                    { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" }
                 ],
                 skills: ["fab fa-html5", "fa-solid fa-pen", "fa-solid fa-calculator"],
                 projects: [
                     {
-                       id: "gurshaan_history",
-                        title: "History Project",
-                        description: "History project that includes a worksheet, presentation, brochure, and business cards.",
-                        category: "Full Skill",
+                        id: "gurshaan_history",
+                        title: "Canadian History Project",
+                        description: "Comprehensive history project including worksheet, presentation, and brochure.",
+                        category: "EDUCATION",
                         image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
-                        projectUrl: "https://github.com/GSDhaliwal05/clarkpass",
-                        featured: true,
                         isHistoryProject: true
-                    },
-                    {
-                        id: "gurshaan_task_app",
-                        title: "Task Management App",
-                        description: "Collaborative task management application with real-time updates and team collaboration features for improved productivity.",
-                        category: "APPLICATION",
-                        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/GSDhaliwal05/task-manager"
-                    },
-                    {
-                        id: "gurshaan_portfolio",
-                        title: "Portfolio Website Template",
-                        description: "Modern and responsive portfolio template with dynamic content management and theme switching capabilities.",
-                        category: "WEB DESIGN",
-                        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/GSDhaliwal05/portfolio-template"
                     }
                 ]
             },
             harman: {
-                title: "Harman's Portfolio",
                 name: "Harman Sidhu",
                 greeting: "WELCOME TO THE MATH WORLD",
                 fullName: "Hi, I'm Harman Sidhu, a",
-                subtitle: "Scholar.",
-                typingTexts: ["Scholar.", "Mathematician."],
-                description: "I am 13 years old, my birthday is on October 24th, 2012. I am great at doing math, and giving presentations. My dream school is Harvard, and my dream job is as a businessman.",
+                typingTexts: ["Scholar.", "Mathematician.", "Analyst."],
+                description: "I am 13 years old, my birthday is on October 24th, 2012. I am great at doing math and giving presentations. My dream school is Harvard.",
                 avatar: "https://w0.peakpx.com/wallpaper/831/147/HD-wallpaper-numbers-mathematics.jpg",
                 socialLinks: [
                     { icon: "fab fa-github", url: "https://github.com/harman" },
-                    { icon: "fab fa-instagram", url: "https://instagram.com/harman" },
-                    { icon: "fab fa-linkedin", url: "https://linkedin.com/in/harman" }
+                    { icon: "fab fa-instagram", url: "https://instagram.com/harman" }
                 ],
                 skills: ["fab fa-python", "fas fa-database", "fas fa-chart-bar"],
-                projects: [
-                    {
-                        id: "harman_sales_dashboard",
-                        title: "Sales Analytics Dashboard",
-                        description: "Interactive dashboard providing comprehensive sales insights with real-time data visualization and predictive analytics for better business decision making.",
-                        category: "ANALYTICS",
-                        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/harman/sales-dashboard",
-                        featured: true
-                    },
-                    {
-                        id: "harman_customer_analysis",
-                        title: "Customer Behavior Analysis",
-                        description: "Advanced customer segmentation and behavior analysis using machine learning algorithms to identify patterns and improve retention.",
-                        category: "MACHINE LEARNING",
-                        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/harman/customer-analysis"
-                    },
-                    {
-                        id: "harman_financial_reporting",
-                        title: "Financial Reporting System",
-                        description: "Automated financial reporting with dynamic charts and KPI tracking for executive decision making and strategic planning.",
-                        category: "REPORTING",
-                        image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/harman/financial-reporting"
-                    }
-                ]
+                projects: []
             },
             newspaper: {
-                title: "Digital Newspaper",
                 name: "Digital News Hub",
                 greeting: "Weekly School News",
                 fullName: "This is SWG News, ",
-                subtitle: "the best newspaper.",
-                typingTexts: ["the best newspaper.", "your source of news.", "news is the name."],
-                description: "We don't just provide news, we provide stories that can alter your perspective. Our information is gathered from many sources, in order to verify the legimitacy.",
+                typingTexts: ["the best newspaper.", "your news source.", "bringing you stories."],
+                description: "We don't just provide news, we provide stories that can alter your perspective. Our information is gathered from many sources.",
                 avatar: "https://cdn.britannica.com/25/93825-050-D1300547/collection-newspapers.jpg",
                 socialLinks: [
                     { icon: "fab fa-twitter", url: "https://x.com/PeelSchools" },
-                    { icon: "fab fa-instagram", url: "https://www.instagram.com/peelschools" },
+                    { icon: "fab fa-instagram", url: "https://www.instagram.com/peelschools" }
                 ],
                 skills: ["fa-solid fa-newspaper"],
-                projects: [
-                    {
-                        id: "news_01",
-                        title: "October 6th, 2025.",
-                        description: "The first newspaper we have created. This is the newpaper for October 6th, 2025.",
-                        category: "NEWS PLATFORM",
-                        image: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=400&h=250&fit=crop",
-                        projectUrl: "https://digitalnews.com/breaking-news",
-                        featured: true
-                    },
-                    {
-                        id: "news_sports_hub",
-                        title: "Sports News Hub",
-                        description: "Comprehensive sports coverage with live scores, match analysis, and player statistics for all major sports.",
-                        category: "SPORTS",
-                        image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=250&fit=crop",
-                        projectUrl: "https://digitalnews.com/sports"
-                    },
-                    {
-                        id: "news_political_center",
-                        title: "Political Analysis Center",
-                        description: "In-depth political coverage with data visualization and election tracking systems for informed democracy.",
-                        category: "POLITICS",
-                        image: "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=400&h=250&fit=crop",
-                        projectUrl: "https://digitalnews.com/politics"
-                    }
-                ]
+                projects: []
             }
         };
 
-        // Typing Animation System
-        let typingInterval = null;
-        let currentTypingIndex = 0;
-        let currentCharIndex = 0;
-        let isDeleting = false;
-        let currentPortfolioType = null;
+        // Current state
+        let currentView = 'home';
+        let typingInterval;
+        let musicPlaying = false;
 
-        function startTypingAnimation(portfolioType) {
-            currentPortfolioType = portfolioType;
-            const subtitleElement = document.querySelector('.portfolio-subtitle');
-            if (!subtitleElement) return;
-
-            const texts = portfolioData[portfolioType].typingTexts;
-            
-            function typeText() {
-                const currentText = texts[currentTypingIndex];
-                
-                if (isDeleting) {
-                    subtitleElement.textContent = currentText.substring(0, currentCharIndex - 1);
-                    currentCharIndex--;
+        // Theme functions
+        function changeTheme(theme) {
+            if (theme === 'custom') {
+                const saved = localStorage.getItem('customTheme');
+                if (saved) {
+                    applyCustomThemeFromData(JSON.parse(saved));
                 } else {
-                    subtitleElement.textContent = currentText.substring(0, currentCharIndex + 1);
-                    currentCharIndex++;
+                    openThemeCreator();
+                    return;
                 }
-
-                let typingSpeed = isDeleting ? 50 : 100;
-
-                if (!isDeleting && currentCharIndex === currentText.length) {
-                    typingSpeed = 2000; // Pause at end
-                    isDeleting = true;
-                } else if (isDeleting && currentCharIndex === 0) {
-                    isDeleting = false;
-                    currentTypingIndex = (currentTypingIndex + 1) % texts.length;
-                    typingSpeed = 500; // Pause before next text
-                }
-
-                typingInterval = setTimeout(typeText, typingSpeed);
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
             }
-
-            // Clear any existing interval
-            if (typingInterval) {
-                clearTimeout(typingInterval);
-            }
-            
-            // Reset values
-            currentTypingIndex = 0;
-            currentCharIndex = 0;
-            isDeleting = false;
-            
-            // Start typing
-            typeText();
+            localStorage.setItem('selectedTheme', theme);
         }
 
-        function stopTypingAnimation() {
-            if (typingInterval) {
-                clearTimeout(typingInterval);
-                typingInterval = null;
-            }
-            currentPortfolioType = null;
-        }
-
-        function navigateTo(path) {
-            currentRoute = path;
-            window.history.pushState(null, null, path);
-            renderCurrentRoute();
-        }
-
-        function renderCurrentRoute() {
-            const mainContent = document.getElementById('mainContent');
+        // Music functions
+        function toggleMusic() {
+            const audio = document.getElementById('backgroundMusic');
+            const button = document.getElementById('musicToggle');
             
-            // Stop any existing typing animation
-            stopTypingAnimation();
-            
-            switch(currentRoute) {
-                case '/':
-                    mainContent.innerHTML = renderHomePage();
-                    break;
-                case '/gurshaan':
-                    mainContent.innerHTML = renderPortfolioPage('gurshaan');
-                    setTimeout(() => startTypingAnimation('gurshaan'), 100);
-                    break;
-                case '/harman':
-                    mainContent.innerHTML = renderPortfolioPage('harman');
-                    setTimeout(() => startTypingAnimation('harman'), 100);
-                    break;
-                case '/newspaper':
-                    mainContent.innerHTML = renderPortfolioPage('newspaper');
-                    setTimeout(() => startTypingAnimation('newspaper'), 100);
-                    break;
-                default:
-                    mainContent.innerHTML = renderHomePage();
-                    currentRoute = '/';
+            if (!musicPlaying) {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    button.innerHTML = '<i class="fas fa-pause"></i>';
+                }).catch(() => {
+                    alert('Please add a music file to your GitHub repo');
+                });
+            } else {
+                audio.pause();
+                musicPlaying = false;
+                button.innerHTML = '<i class="fas fa-music"></i>';
             }
         }
 
-        function renderHomePage() {
-            return `
+        // Navigation functions
+        function showHome() {
+            currentView = 'home';
+            stopTyping();
+            document.getElementById('mainContent').innerHTML = `
                 <div class="home-container">
                     <h1 class="title">Portfolio Universe</h1>
                     <p class="subtitle">Discover amazing work from talented creators</p>
                     
                     <div class="nav-grid">
-                        <div class="nav-card" onclick="navigateTo('/gurshaan')">
+                        <div class="nav-card" onclick="showPortfolio('gurshaan')">
                             <i class="fas fa-laptop-code card-icon"></i>
                             <h3 class="card-title">Gurshaan's Portfolio</h3>
                             <p class="card-description">Discover creative web development and design solutions</p>
                         </div>
                         
-                        <div class="nav-card" onclick="navigateTo('/harman')">
+                        <div class="nav-card" onclick="showPortfolio('harman')">
                             <i class="fas fa-chart-line card-icon"></i>
                             <h3 class="card-title">Harman's Portfolio</h3>
                             <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
                         </div>
                         
-                        <div class="nav-card" onclick="navigateTo('/newspaper')">
+                        <div class="nav-card" onclick="showPortfolio('newspaper')">
                             <i class="fas fa-newspaper card-icon"></i>
                             <h3 class="card-title">Digital Newspaper</h3>
                             <p class="card-description">Stay updated with the latest news and articles</p>
@@ -1432,13 +829,13 @@
             `;
         }
 
-        function renderPortfolioPage(type) {
+        function showPortfolio(type) {
+            currentView = type;
             const data = portfolioData[type];
-            if (!data) return renderHomePage();
-
-            return `
+            
+            document.getElementById('mainContent').innerHTML = `
                 <div class="portfolio-container">
-                    <button class="back-btn" onclick="navigateTo('/')">
+                    <button class="back-btn" onclick="showHome()">
                         <i class="fas fa-arrow-left"></i> Back to Home
                     </button>
                     
@@ -1446,11 +843,11 @@
                         <div class="portfolio-content">
                             <div class="portfolio-greeting">${data.greeting}</div>
                             <h1 class="portfolio-name">${data.fullName}</h1>
-                            <h2 class="portfolio-subtitle">${data.typingTexts[0]}</h2>
+                            <h2 class="portfolio-subtitle" id="typingText">${data.typingTexts[0]}</h2>
                             <p class="portfolio-description">${data.description}</p>
                             
-                            <div class="portfolio-social">
-                                <span class="find-label">FIND ME ON</span>
+                            <div style="margin-bottom: 2rem;">
+                                <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 1rem;">FIND ME ON</span>
                                 <div class="social-icons">
                                     ${data.socialLinks.map(social => `
                                         <a href="${social.url}" class="social-icon" target="_blank">
@@ -1460,11 +857,11 @@
                                 </div>
                             </div>
 
-                            <div class="portfolio-skills">
-                                <span class="skills-label">MY SKILLS</span>
+                            <div>
+                                <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 1rem;">MY SKILLS</span>
                                 <div class="skills-icons">
                                     ${data.skills.map(skill => `
-                                        <div class="skill-icon" title="${skill}">
+                                        <div class="skill-icon">
                                             <i class="${skill}"></i>
                                         </div>
                                     `).join('')}
@@ -1472,29 +869,24 @@
                             </div>
                         </div>
                         
-                        <div class="portfolio-image">
+                        <div style="display: flex; justify-content: center; align-items: center;">
                             <img src="${data.avatar}" alt="${data.name}" class="profile-photo" />
                         </div>
                     </div>
 
-                    <div class="portfolio-sections">
-                        <div class="portfolio-header">
-                            <span class="section-subtitle">COMPLETED PROJECTS</span>
-                            <h2 class="section-title">My Portfolio</h2>
-                        </div>
-                        
-                        <div class="projects-grid">
-                            ${data.projects.map((project, index) => {
-                                const likeCount = getLikeCount(project.id);
-                                const isLiked = isProjectLiked(project.id);
-                                return `
-                                    <div class="project-card" onclick="${project.isHistoryProject ? `openHistoryModal()` : `openProjectModal('${project.id}', '${project.title}', '${project.description.replace(/'/g, "\\'")}', '${project.category}', '${project.image}', '${project.projectUrl}')`}">
+                    ${data.projects.length > 0 ? `
+                        <div class="portfolio-sections">
+                            <h2 class="section-title">My Projects</h2>
+                            
+                            <div class="projects-grid">
+                                ${data.projects.map(project => `
+                                    <div class="project-card" onclick="${project.isHistoryProject ? 'openHistoryModal()' : `window.open('${project.url}', '_blank')`}">
                                         <div class="project-image">
                                             <img src="${project.image}" alt="${project.title}" />
                                             <div class="project-overlay">
                                                 <div class="project-category">${project.category}</div>
-                                                <div class="project-likes ${isLiked ? 'liked' : ''}" onclick="likeProject(event, '${project.id}')">
-                                                    <i class="fas fa-heart"></i> <span id="likes-${project.id}">${likeCount}</span>
+                                                <div class="project-likes">
+                                                    <i class="fas fa-heart"></i> 0
                                                 </div>
                                             </div>
                                         </div>
@@ -1503,42 +895,62 @@
                                             <p class="project-description">${project.description}</p>
                                         </div>
                                     </div>
-                                `;
-                            }).join('')}
+                                `).join('')}
+                            </div>
                         </div>
-                    </div>
+                    ` : ''}
                 </div>
             `;
+            
+            // Start typing animation
+            startTyping(data.typingTexts);
         }
 
-        // Project interaction functions
-        function likeProject(event, projectId) {
-            event.stopPropagation(); // Prevent opening modal when clicking like
+        // Typing animation
+        function startTyping(texts) {
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            const element = document.getElementById('typingText');
             
-            const likesElement = document.getElementById(`likes-${projectId}`);
-            const heartElement = event.currentTarget;
+            if (!element) return;
             
-            let currentLikes = getLikeCount(projectId);
-            const isLiked = isProjectLiked(projectId);
-            
-            if (!isLiked) {
-                currentLikes += 1;
-                setLikeCount(projectId, currentLikes);
-                setProjectLiked(projectId, true);
-                heartElement.classList.add('liked');
-                showNotification('Thanks for the like! ❤️', 'success');
-            } else {
-                currentLikes = Math.max(0, currentLikes - 1);
-                setLikeCount(projectId, currentLikes);
-                setProjectLiked(projectId, false);
-                heartElement.classList.remove('liked');
-                showNotification('Like removed', 'info');
+            function type() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    element.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    element.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                let speed = isDeleting ? 50 : 100;
+
+                if (!isDeleting && charIndex === currentText.length) {
+                    speed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    speed = 500;
+                }
+
+                typingInterval = setTimeout(type, speed);
             }
             
-            likesElement.textContent = currentLikes;
+            stopTyping();
+            type();
         }
 
-        // History Project Modal Functions
+        function stopTyping() {
+            if (typingInterval) {
+                clearTimeout(typingInterval);
+            }
+        }
+
+        // Modal functions
         function openHistoryModal() {
             document.getElementById('historyModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
@@ -1549,95 +961,10 @@
             document.body.style.overflow = 'auto';
         }
 
-        // Regular Project Modal Functions
-        function openProjectModal(projectId, title, description, category, image, projectUrl) {
-            currentProjectData = { id: projectId, title, description, category, image, projectUrl };
-            
-            const likeCount = getLikeCount(projectId);
-            const isLiked = isProjectLiked(projectId);
-            
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalDescription').textContent = description;
-            document.getElementById('modalCategory').textContent = `Featured - ${category}`;
-            document.getElementById('modalImage').src = image;
-            document.getElementById('modalLikeCount').textContent = likeCount;
-            
-            // Update the VIEW PROJECT button with the actual URL
-            const viewBtn = document.querySelector('.view-btn');
-            viewBtn.href = projectUrl;
-            viewBtn.onclick = function(e) {
-                e.preventDefault();
-                window.open(projectUrl, '_blank');
-                showNotification('Opening project in new tab!', 'success');
-            };
-            
-            const modalLikeBtn = document.getElementById('modalLikeBtn');
-            if (isLiked) {
-                modalLikeBtn.classList.add('liked');
-            } else {
-                modalLikeBtn.classList.remove('liked');
-            }
-            
-            document.getElementById('projectModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('projectModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            currentProjectData = null;
-        }
-
-        function likeProjectModal() {
-            if (!currentProjectData) return;
-            
-            const projectId = currentProjectData.id;
-            let currentLikes = getLikeCount(projectId);
-            const isLiked = isProjectLiked(projectId);
-            const modalLikeBtn = document.getElementById('modalLikeBtn');
-            const modalLikeCount = document.getElementById('modalLikeCount');
-            
-            if (!isLiked) {
-                currentLikes += 1;
-                setLikeCount(projectId, currentLikes);
-                setProjectLiked(projectId, true);
-                modalLikeBtn.classList.add('liked');
-                showNotification('Thanks for the like! ❤️', 'success');
-            } else {
-                currentLikes = Math.max(0, currentLikes - 1);
-                setLikeCount(projectId, currentLikes);
-                setProjectLiked(projectId, false);
-                modalLikeBtn.classList.remove('liked');
-                showNotification('Like removed', 'info');
-            }
-            
-            modalLikeCount.textContent = currentLikes;
-            
-            // Update the card view as well
-            const cardLikesElement = document.getElementById(`likes-${projectId}`);
-            if (cardLikesElement) {
-                cardLikesElement.textContent = currentLikes;
-                const cardHeartElement = cardLikesElement.closest('.project-likes');
-                if (isProjectLiked(projectId)) {
-                    cardHeartElement.classList.add('liked');
-                } else {
-                    cardHeartElement.classList.remove('liked');
-                }
-            }
-        }
-
-        // Custom Theme Creator Functions
         function openThemeCreator() {
             document.getElementById('themeCreatorModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
-            
-            // Set up color input listeners for live preview
-            const colorInputs = ['bgPrimary', 'bgSecondary', 'textPrimary', 'textSecondary', 'accentColor'];
-            colorInputs.forEach(id => {
-                document.getElementById(id).addEventListener('input', updateThemePreview);
-            });
-            
-            updateThemePreview();
+            setupThemePreview();
         }
 
         function closeThemeCreator() {
@@ -1645,42 +972,138 @@
             document.body.style.overflow = 'auto';
         }
 
-        function updateThemePreview() {
-            const preview = document.getElementById('themePreview');
-            const bgPrimary = document.getElementById('bgPrimary').value;
-            const bgSecondary = document.getElementById('bgSecondary').value;
-            const textPrimary = document.getElementById('textPrimary').value;
-            const textSecondary = document.getElementById('textSecondary').value;
-            const accentColor = document.getElementById('accentColor').value;
+        function setupThemePreview() {
+            const inputs = ['bgPrimary', 'bgSecondary', 'textPrimary', 'textSecondary', 'accentColor'];
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', updatePreview);
+            });
+            updatePreview();
+        }
 
-            preview.style.background = `linear-gradient(135deg, ${bgPrimary} 0%, ${bgSecondary} 100%)`;
-            preview.style.color = textPrimary;
-            preview.style.border = `1px solid ${accentColor}`;
+        function updatePreview() {
+            const preview = document.getElementById('themePreview');
+            const bg1 = document.getElementById('bgPrimary').value;
+            const bg2 = document.getElementById('bgSecondary').value;
+            const text1 = document.getElementById('textPrimary').value;
+            const text2 = document.getElementById('textSecondary').value;
+            const accent = document.getElementById('accentColor').value;
+
+            preview.style.background = `linear-gradient(135deg, ${bg1} 0%, ${bg2} 100%)`;
+            preview.style.color = text1;
+            preview.style.border = `1px solid ${accent}`;
             
             const h3 = preview.querySelector('h3');
             const p = preview.querySelector('p');
-            
-            if (h3) h3.style.color = accentColor;
-            if (p) p.style.color = textSecondary;
+            if (h3) h3.style.color = accent;
+            if (p) p.style.color = text2;
         }
 
         function applyCustomTheme() {
-            const bgPrimary = document.getElementById('bgPrimary').value;
-            const bgSecondary = document.getElementById('bgSecondary').value;
-            const textPrimary = document.getElementById('textPrimary').value;
-            const textSecondary = document.getElementById('textSecondary').value;
-            const accentColor = document.getElementById('accentColor').value;
+            const bg1 = document.getElementById('bgPrimary').value;
+            const bg2 = document.getElementById('bgSecondary').value;
+            const text1 = document.getElementById('textPrimary').value;
+            const text2 = document.getElementById('textSecondary').value;
+            const accent = document.getElementById('accentColor').value;
             
-            // Create custom theme CSS variables
-            const customTheme = {
-                '--bg-primary': `linear-gradient(135deg, ${bgPrimary} 0%, ${bgSecondary} 100%)`,
-                '--bg-card': `${hexToRgba(textPrimary, 0.08)}`,
-                '--text-primary': textPrimary,
-                '--text-secondary': textSecondary,
-                '--accent': accentColor,
-                '--accent-hover': adjustBrightness(accentColor, -20),
-                '--border': `${hexToRgba(textPrimary, 0.1)}`,
-                '--shadow': `${hexToRgba('#000000', 0.3)}`
+            const theme = {
+                '--bg-primary': `linear-gradient(135deg, ${bg1} 0%, ${bg2} 100%)`,
+                '--bg-card': `${hexToRgba(text1, 0.08)}`,
+                '--text-primary': text1,
+                '--text-secondary': text2,
+                '--accent': accent,
+                '--accent-hover': adjustBrightness(accent, -20),
+                '--border': `${hexToRgba(text1, 0.1)}`,
+                '--shadow': 'rgba(0, 0, 0, 0.3)'
             };
             
-            //
+            applyCustomThemeFromData(theme);
+            localStorage.setItem('customTheme', JSON.stringify(theme));
+            localStorage.setItem('selectedTheme', 'custom');
+            document.getElementById('themeSelector').value = 'custom';
+            closeThemeCreator();
+            
+            showNotification('Custom theme applied!', 'success');
+        }
+
+        function applyCustomThemeFromData(theme) {
+            const root = document.documentElement;
+            Object.keys(theme).forEach(prop => {
+                root.style.setProperty(prop, theme[prop]);
+            });
+        }
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function adjustBrightness(hex, percent) {
+            const num = parseInt(hex.replace("#", ""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                padding: 1rem 2rem;
+                background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+                color: white;
+                border-radius: 8px;
+                z-index: 4000;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Event listeners
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.style.display = 'none';
+                });
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Initialize
+        document.getElementById('themeSelector').addEventListener('change', function() {
+            changeTheme(this.value);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+        document.getElementById('themeSelector').value = savedTheme;
+        changeTheme(savedTheme);
+
+        // Set up music
+        document.getElementById('backgroundMusic').volume = 0.3;
+
+        console.log('Portfolio Hub loaded successfully!');
+    </script>
+</body>
+</html>
