@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Hub - Modern</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- GitHub Pages SPA routing handler -->
+    <script type="text/javascript">
+        // Handle GitHub Pages SPA routing
+        (function(l) {
+            if (l.search[1] === '/' ) {
+                var decoded = l.search.slice(1).split('&').map(function(s) { 
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location))
+    </script>
+    
     <style>
         :root[data-theme="dark"] {
             --bg-primary: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 50%, #2d1b69 100%);
@@ -955,10 +971,10 @@
             }
         };
 
-        // Router
+        // Router - Updated to handle GitHub Pages routing properly
         function navigateTo(path) {
             currentRoute = path;
-            history.pushState(null, null, path);
+            window.history.pushState(null, null, path);
             renderCurrentRoute();
         }
 
@@ -1241,7 +1257,7 @@
         `;
         document.head.appendChild(notificationStyle);
 
-        // Browser back/forward handling
+        // Browser back/forward handling - Updated for GitHub Pages
         window.addEventListener('popstate', function(e) {
             currentRoute = location.pathname;
             renderCurrentRoute();
@@ -1261,9 +1277,10 @@
             }
         });
 
-        // Initialize app
+        // Initialize app - Updated for GitHub Pages compatibility
         function initializeApp() {
             loadSavedTheme();
+            // Get current route from pathname, handle GitHub Pages routing
             currentRoute = location.pathname;
             renderCurrentRoute();
         }
@@ -1272,7 +1289,7 @@
         document.addEventListener('DOMContentLoaded', initializeApp);
         initializeApp();
 
-        console.log('🚀 Portfolio Hub loaded with themes, routing, and likes system!');
+        console.log('🚀 Portfolio Hub loaded with GitHub Pages routing support!');
         console.log('📍 Available routes: /, /harman, /gurshaan, /newspaper');
     </script>
 </body>
