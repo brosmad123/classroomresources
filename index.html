@@ -1053,7 +1053,11 @@
     </div>
 
     <audio id="backgroundMusic" loop>
-        <!-- Source will be set by JavaScript -->
+        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="backgroundMusic2" loop>
+        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -1151,8 +1155,7 @@
         let musicPlaying = false;
         let musicPlayerVisible = false;
         let currentTrack = 0;
-        let currentAudio = null;
-        let progressInterval = null;
+        let tracks = ["Background Music"]; // You can add more track names here
 
         // Router functionality
         class Router {
@@ -1358,6 +1361,7 @@
             if (musicPlayerVisible) {
                 player.classList.add('visible');
                 player.classList.remove('collapsed');
+                player.style.transform = 'translateY(0)';
                 toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
             } else {
                 player.classList.remove('visible');
