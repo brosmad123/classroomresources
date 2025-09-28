@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Portfolio Hub - Redirecting...</title>
+    <script type="text/javascript">
+        // GitHub Pages SPA redirect hack
+        // This script takes the current URL and redirects to the index page
+        // with the full path as a query parameter
+        var pathSegmentsToKeep = 0; // For root level deployment
+        
+        var l = window.location;
+        l.replace(
+            l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+            l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + 
+            '/?/' + 
+            l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+            (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+            l.hash
+        );
+    </script>
+</head>
+<body>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h2>Redirecting...</h2>
+        <p>If you're not redirected automatically, <a href="/">click here</a>.</p>
+    </div>
+</body>
+</html>
