@@ -1061,23 +1061,23 @@
         const musicTracks = [
             {
                 title: "Ambient Track 1",
-                src: "./music1.mp3"
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3"
             },
             {
                 title: "Ambient Track 2", 
-                src: "./music2.mp3"
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3"
             },
             {
                 title: "Ambient Track 3",
-                src: "./music3.mp3"
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music3.mp3"
             },
             {
                 title: "Ambient Track 4",
-                src: "./music4.mp3"
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music4.mp3"
             },
             {
                 title: "Ambient Track 5",
-                src: "./music5.mp3"
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music5.mp3"
             }
         ];
 
@@ -1389,21 +1389,27 @@
             }
         }
 
-        function previousTrack() {
-            const newTrack = (currentTrack - 1 + musicTracks.length) % musicTracks.length;
-            loadTrack(newTrack);
-            
-            if (musicPlaying) {
-                currentAudio.play().catch(handleMusicError);
-            }
-        }
-
         function nextTrack() {
+            if (musicTracks.length === 0) return;
             const newTrack = (currentTrack + 1) % musicTracks.length;
             loadTrack(newTrack);
             
-            if (musicPlaying) {
-                currentAudio.play().catch(handleMusicError);
+            if (musicPlaying && currentAudio) {
+                setTimeout(() => {
+                    currentAudio.play().catch(e => console.log('Next track play failed:', e.message));
+                }, 100);
+            }
+        }
+
+        function previousTrack() {
+            if (musicTracks.length === 0) return;
+            const newTrack = (currentTrack - 1 + musicTracks.length) % musicTracks.length;
+            loadTrack(newTrack);
+            
+            if (musicPlaying && currentAudio) {
+                setTimeout(() => {
+                    currentAudio.play().catch(e => console.log('Previous track play failed:', e.message));
+                }, 100);
             }
         }
 
@@ -1461,17 +1467,23 @@
             if (progressInterval) clearInterval(progressInterval);
             
             progressInterval = setInterval(() => {
-                if (musicPlaying && currentAudio && !isNaN(currentAudio.duration)) {
-                    const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+                if (musicPlaying && currentAudio && !isNaN(currentAudio.duration) && currentAudio.duration > 0) {
+                    const progress = Math.min(100, (currentAudio.currentTime / currentAudio.duration) * 100);
                     const progressFill = document.getElementById('progressFill');
                     const currentTimeElement = document.getElementById('currentTime');
                     const totalTimeElement = document.getElementById('totalTime');
                     
-                    if (progressFill) progressFill.style.width = progress + '%';
-                    if (currentTimeElement) currentTimeElement.textContent = formatTime(currentAudio.currentTime);
-                    if (totalTimeElement) totalTimeElement.textContent = formatTime(currentAudio.duration);
+                    if (progressFill && !isNaN(progress)) {
+                        progressFill.style.width = progress + '%';
+                    }
+                    if (currentTimeElement) {
+                        currentTimeElement.textContent = formatTime(currentAudio.currentTime);
+                    }
+                    if (totalTimeElement) {
+                        totalTimeElement.textContent = formatTime(currentAudio.duration);
+                    }
                 }
-            }, 1000);
+            }, 500); // Reduced frequency to prevent performance issues
         }
 
         function stopProgressUpdate() {
@@ -1749,11 +1761,8 @@
             }
             changeTheme(savedTheme);
             
-            // Show music player and try to enable audio
-            setTimeout(() => {
-                toggleMusicPlayer();
-            }, 1000);
-            
+            // Show music player after a delay, but don't auto-show it
+            // User can click the music button when they want it
             console.log('Portfolio Hub loaded successfully!');
         });
 
@@ -1776,10 +1785,7 @@
                     changeTheme(savedTheme);
                 }
                 
-                setTimeout(() => {
-                    toggleMusicPlayer();
-                }, 1000);
-                
+                // Don't auto-show music player
                 console.log('Portfolio Hub initialized!');
             }, 100);
         }
