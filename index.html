@@ -1057,19 +1057,27 @@
     </audio>
 
     <script>
-        // Music playlist with working royalty-free music URLs
+        // Music playlist using your GitHub files
         const musicTracks = [
             {
-                title: "Peaceful Atmosphere",
-                src: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav"
+                title: "Ambient Track 1",
+                src: "./music1.mp3"
             },
             {
-                title: "Ambient Vibes", 
-                src: "https://file-examples.com/storage/fe86c86a46273f44d1c4bf8/2017/11/file_example_MP3_700KB.mp3"
+                title: "Ambient Track 2", 
+                src: "./music2.mp3"
             },
             {
-                title: "Demo Music",
-                src: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
+                title: "Ambient Track 3",
+                src: "./music3.mp3"
+            },
+            {
+                title: "Ambient Track 4",
+                src: "./music4.mp3"
+            },
+            {
+                title: "Ambient Track 5",
+                src: "./music5.mp3"
             }
         ];
 
@@ -1306,8 +1314,12 @@
 
         function handleMusicError() {
             console.log(`Track ${currentTrack + 1} failed to load, trying next...`);
-            // Try next track if current one fails
-            nextTrack();
+            // Don't automatically skip - just log the error
+            const playButton = document.getElementById('playButton');
+            if (playButton) {
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+            musicPlaying = false;
         }
 
         function handleCanPlay() {
@@ -1317,11 +1329,22 @@
         function loadTrack(trackIndex) {
             if (trackIndex < 0 || trackIndex >= musicTracks.length) return;
             
+            // Stop current playback first
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            
             currentTrack = trackIndex;
             const track = musicTracks[currentTrack];
             
-            currentAudio.src = track.src;
-            document.querySelector('.track-title').textContent = track.title;
+            if (currentAudio) {
+                currentAudio.src = track.src;
+                const titleElement = document.querySelector('.track-title');
+                if (titleElement) {
+                    titleElement.textContent = track.title;
+                }
+            }
             
             console.log(`Loading track: ${track.title}`);
         }
@@ -1338,7 +1361,8 @@
                 toggleBtn.innerHTML = '<i class="fas fa-times"></i>';
             } else {
                 player.classList.remove('visible');
-                player.classList.add('collapsed');
+                player.classList.remove('collapsed');
+                player.style.transform = 'translateY(100%)';
                 toggleBtn.innerHTML = '<i class="fas fa-music"></i>';
             }
         }
