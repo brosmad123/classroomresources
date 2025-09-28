@@ -64,6 +64,7 @@
             color: var(--text-primary);
             overflow-x: hidden;
             transition: all 0.3s ease;
+            padding-bottom: 120px; /* Space for music player */
         }
 
         /* Theme Controls */
@@ -77,7 +78,7 @@
             align-items: center;
         }
 
-        .theme-selector, .music-control {
+        .theme-selector {
             background: var(--bg-card);
             border: 1px solid var(--border);
             color: var(--text-primary);
@@ -88,7 +89,7 @@
             backdrop-filter: blur(20px);
         }
 
-        .theme-selector:hover, .music-control:hover {
+        .theme-selector:hover {
             background: var(--accent);
             color: white;
         }
@@ -102,6 +103,187 @@
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s ease;
+        }
+
+        /* Music Player - Spotify Style */
+        .music-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 1rem 2rem;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            transform: translateY(100%);
+        }
+
+        .music-player.visible {
+            transform: translateY(0);
+        }
+
+        .track-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .track-art {
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .track-details {
+            min-width: 0;
+        }
+
+        .track-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .track-artist {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .control-btn:hover {
+            background: var(--bg-card);
+            transform: scale(1.1);
+        }
+
+        .play-btn {
+            background: var(--accent);
+            color: white;
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .play-btn:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            width: 100%;
+        }
+
+        .time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 35px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .volume-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .volume-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .music-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 2001;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
         }
 
         /* Modals */
@@ -557,6 +739,25 @@
         .project-description {
             color: var(--text-secondary);
             line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .project-button:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
         }
 
         /* Responsive */
@@ -572,6 +773,18 @@
             .profile-photo { width: 280px; height: 350px; }
             .projects-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 2rem; }
+            .music-player {
+                padding: 1rem;
+            }
+            .track-info {
+                display: none;
+            }
+            .player-controls {
+                flex: none;
+            }
+            .volume-controls {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -585,36 +798,56 @@
             <option value="custom">Custom</option>
         </select>
         <button class="theme-creator-btn" onclick="openThemeCreator()">Create Theme</button>
-        <button class="music-control" id="musicToggle" onclick="toggleMusic()">
-            <i class="fas fa-music"></i>
-        </button>
+    </div>
+
+    <!-- Music Toggle Button -->
+    <button class="music-toggle" id="musicToggle" onclick="toggleMusicPlayer()">
+        <i class="fas fa-music"></i>
+    </button>
+
+    <!-- Spotify-Style Music Player -->
+    <div class="music-player" id="musicPlayer">
+        <div class="track-info">
+            <div class="track-art">
+                <i class="fas fa-music"></i>
+            </div>
+            <div class="track-details">
+                <div class="track-title">Background Music</div>
+                <div class="track-artist">Portfolio Hub</div>
+            </div>
+        </div>
+        
+        <div style="flex: 1;">
+            <div class="player-controls">
+                <button class="control-btn" onclick="previousTrack()">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="control-btn play-btn" id="playButton" onclick="toggleMusic()">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="control-btn" onclick="nextTrack()">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            <div class="progress-container">
+                <span class="time" id="currentTime">0:00</span>
+                <div class="progress-bar" onclick="seekTo(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="time" id="totalTime">0:00</span>
+            </div>
+        </div>
+
+        <div class="volume-controls">
+            <button class="volume-btn" onclick="toggleMute()">
+                <i class="fas fa-volume-up" id="volumeIcon"></i>
+            </button>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="30" oninput="setVolume(this.value)">
+        </div>
     </div>
 
     <div id="mainContent">
-        <div class="home-container">
-            <h1 class="title">Portfolio Universe</h1>
-            <p class="subtitle">Discover amazing work from talented creators</p>
-            
-            <div class="nav-grid">
-                <div class="nav-card" onclick="showPortfolio('gurshaan')">
-                    <i class="fas fa-laptop-code card-icon"></i>
-                    <h3 class="card-title">Gurshaan's Portfolio</h3>
-                    <p class="card-description">Discover creative web development and design solutions</p>
-                </div>
-                
-                <div class="nav-card" onclick="showPortfolio('harman')">
-                    <i class="fas fa-chart-line card-icon"></i>
-                    <h3 class="card-title">Harman's Portfolio</h3>
-                    <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
-                </div>
-                
-                <div class="nav-card" onclick="showPortfolio('newspaper')">
-                    <i class="fas fa-newspaper card-icon"></i>
-                    <h3 class="card-title">Digital Newspaper</h3>
-                    <p class="card-description">Stay updated with the latest news and articles</p>
-                </div>
-            </div>
-        </div>
+        <!-- Content will be loaded here -->
     </div>
 
     <!-- History Project Modal -->
@@ -698,7 +931,8 @@
     </div>
 
     <audio id="backgroundMusic" loop>
-        <source src="https://github.com/YourUsername/YourRepo/raw/main/background-music.mp3" type="audio/mpeg">
+        <!-- You'll need to add your music file URL here -->
+        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/background-music.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -739,7 +973,16 @@
                     { icon: "fab fa-instagram", url: "https://instagram.com/harman" }
                 ],
                 skills: ["fab fa-python", "fas fa-database", "fas fa-chart-bar"],
-                projects: []
+                projects: [
+                    {
+                        id: "harman_demo",
+                        title: "Mathematical Analysis Dashboard",
+                        description: "An interactive dashboard showcasing advanced mathematical concepts and data visualization techniques using Python and statistical analysis.",
+                        category: "DATA SCIENCE",
+                        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                        url: "https://github.com/harman/math-dashboard"
+                    }
+                ]
             },
             newspaper: {
                 name: "Digital News Hub",
@@ -761,6 +1004,268 @@
         let currentView = 'home';
         let typingInterval;
         let musicPlaying = false;
+        let musicPlayerVisible = false;
+        let currentTrack = 0;
+        let tracks = ["Background Music"]; // You can add more track names here
+
+        // Router functionality
+        class Router {
+            constructor() {
+                this.routes = {
+                    '': () => this.showHome(),
+                    'home': () => this.showHome(),
+                    'gurshaan': () => this.showPortfolio('gurshaan'),
+                    'harman': () => this.showPortfolio('harman'),
+                    'newspaper': () => this.showPortfolio('newspaper')
+                };
+                
+                this.init();
+            }
+
+            init() {
+                window.addEventListener('popstate', () => this.handleRoute());
+                this.handleRoute();
+            }
+
+            navigate(path) {
+                history.pushState({}, '', `/#/${path}`);
+                this.handleRoute();
+            }
+
+            handleRoute() {
+                const path = window.location.hash.slice(2) || '';
+                const route = this.routes[path];
+                if (route) {
+                    route();
+                } else {
+                    this.showHome();
+                }
+            }
+
+            showHome() {
+                currentView = 'home';
+                stopTyping();
+                document.getElementById('mainContent').innerHTML = `
+                    <div class="home-container">
+                        <h1 class="title">Portfolio Universe</h1>
+                        <p class="subtitle">Discover amazing work from talented creators</p>
+                        
+                        <div class="nav-grid">
+                            <div class="nav-card" onclick="router.navigate('gurshaan')">
+                                <i class="fas fa-laptop-code card-icon"></i>
+                                <h3 class="card-title">Gurshaan's Portfolio</h3>
+                                <p class="card-description">Discover creative web development and design solutions</p>
+                            </div>
+                            
+                            <div class="nav-card" onclick="router.navigate('harman')">
+                                <i class="fas fa-chart-line card-icon"></i>
+                                <h3 class="card-title">Harman's Portfolio</h3>
+                                <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
+                            </div>
+                            
+                            <div class="nav-card" onclick="router.navigate('newspaper')">
+                                <i class="fas fa-newspaper card-icon"></i>
+                                <h3 class="card-title">Digital Newspaper</h3>
+                                <p class="card-description">Stay updated with the latest news and articles</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showPortfolio(type) {
+                currentView = type;
+                const data = portfolioData[type];
+                
+                document.getElementById('mainContent').innerHTML = `
+                    <div class="portfolio-container">
+                        <button class="back-btn" onclick="router.navigate('home')">
+                            <i class="fas fa-arrow-left"></i> Back to Home
+                        </button>
+                        
+                        <div class="portfolio-hero">
+                            <div class="portfolio-content">
+                                <div class="portfolio-greeting">${data.greeting}</div>
+                                <h1 class="portfolio-name">${data.fullName}</h1>
+                                <h2 class="portfolio-subtitle" id="typingText">${data.typingTexts[0]}</h2>
+                                <p class="portfolio-description">${data.description}</p>
+                                
+                                <div style="margin-bottom: 2rem;">
+                                    <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 1rem;">FIND ME ON</span>
+                                    <div class="social-icons">
+                                        ${data.socialLinks.map(social => `
+                                            <a href="${social.url}" class="social-icon" target="_blank">
+                                                <i class="${social.icon}"></i>
+                                            </a>
+                                        `).join('')}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 1rem;">MY SKILLS</span>
+                                    <div class="skills-icons">
+                                        ${data.skills.map(skill => `
+                                            <div class="skill-icon">
+                                                <i class="${skill}"></i>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <img src="${data.avatar}" alt="${data.name}" class="profile-photo" />
+                            </div>
+                        </div>
+
+                        ${data.projects.length > 0 ? `
+                            <div class="portfolio-sections">
+                                <h2 class="section-title">My Projects</h2>
+                                
+                                <div class="projects-grid">
+                                    ${data.projects.map(project => `
+                                        <div class="project-card">
+                                            <div class="project-image">
+                                                <img src="${project.image}" alt="${project.title}" />
+                                                <div class="project-overlay">
+                                                    <div class="project-category">${project.category}</div>
+                                                    <div class="project-likes">
+                                                        <i class="fas fa-heart"></i> 0
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="project-content">
+                                                <h3 class="project-title">${project.title}</h3>
+                                                <p class="project-description">${project.description}</p>
+                                                <button class="project-button" onclick="${project.isHistoryProject ? 'openHistoryModal()' : `window.open('${project.url}', '_blank')`}">
+                                                    View Project
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                
+                // Start typing animation
+                startTyping(data.typingTexts);
+            }
+        }
+
+        // Initialize router
+        const router = new Router();
+
+        // Music Player Functions
+        function toggleMusicPlayer() {
+            const player = document.getElementById('musicPlayer');
+            musicPlayerVisible = !musicPlayerVisible;
+            
+            if (musicPlayerVisible) {
+                player.classList.add('visible');
+                document.getElementById('musicToggle').innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                player.classList.remove('visible');
+                document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
+            }
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('backgroundMusic');
+            const playButton = document.getElementById('playButton');
+            
+            if (!musicPlaying) {
+                audio.play().then(() => {
+                    musicPlaying = true;
+                    playButton.innerHTML = '<i class="fas fa-pause"></i>';
+                    startProgressUpdate();
+                }).catch(() => {
+                    alert('Music file not found. Please add a music file to your GitHub repository at the specified URL.');
+                });
+            } else {
+                audio.pause();
+                musicPlaying = false;
+                playButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function previousTrack() {
+            // Placeholder for previous track functionality
+            console.log('Previous track');
+        }
+
+        function nextTrack() {
+            // Placeholder for next track functionality
+            console.log('Next track');
+        }
+
+        function setVolume(value) {
+            const audio = document.getElementById('backgroundMusic');
+            audio.volume = value / 100;
+            
+            const volumeIcon = document.getElementById('volumeIcon');
+            if (value == 0) {
+                volumeIcon.className = 'fas fa-volume-mute';
+            } else if (value < 50) {
+                volumeIcon.className = 'fas fa-volume-down';
+            } else {
+                volumeIcon.className = 'fas fa-volume-up';
+            }
+        }
+
+        function toggleMute() {
+            const audio = document.getElementById('backgroundMusic');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeIcon = document.getElementById('volumeIcon');
+            
+            if (audio.volume > 0) {
+                audio.dataset.previousVolume = audio.volume;
+                audio.volume = 0;
+                volumeSlider.value = 0;
+                volumeIcon.className = 'fas fa-volume-mute';
+            } else {
+                const previousVolume = audio.dataset.previousVolume || 0.3;
+                audio.volume = previousVolume;
+                volumeSlider.value = previousVolume * 100;
+                setVolume(previousVolume * 100);
+            }
+        }
+
+        function seekTo(event) {
+            const audio = document.getElementById('backgroundMusic');
+            const progressBar = event.currentTarget;
+            const clickX = event.offsetX;
+            const width = progressBar.offsetWidth;
+            const duration = audio.duration;
+            
+            if (duration) {
+                const newTime = (clickX / width) * duration;
+                audio.currentTime = newTime;
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function startProgressUpdate() {
+            const audio = document.getElementById('backgroundMusic');
+            const progressFill = document.getElementById('progressFill');
+            const currentTimeElement = document.getElementById('currentTime');
+            const totalTimeElement = document.getElementById('totalTime');
+
+            setInterval(() => {
+                if (musicPlaying && !isNaN(audio.duration)) {
+                    const progress = (audio.currentTime / audio.duration) * 100;
+                    progressFill.style.width = progress + '%';
+                    currentTimeElement.textContent = formatTime(audio.currentTime);
+                    totalTimeElement.textContent = formatTime(audio.duration);
+                }
+            }, 1000);
+        }
 
         // Theme functions
         function changeTheme(theme) {
@@ -776,134 +1281,6 @@
                 document.documentElement.setAttribute('data-theme', theme);
             }
             localStorage.setItem('selectedTheme', theme);
-        }
-
-        // Music functions
-        function toggleMusic() {
-            const audio = document.getElementById('backgroundMusic');
-            const button = document.getElementById('musicToggle');
-            
-            if (!musicPlaying) {
-                audio.play().then(() => {
-                    musicPlaying = true;
-                    button.innerHTML = '<i class="fas fa-pause"></i>';
-                }).catch(() => {
-                    alert('Please add a music file to your GitHub repo');
-                });
-            } else {
-                audio.pause();
-                musicPlaying = false;
-                button.innerHTML = '<i class="fas fa-music"></i>';
-            }
-        }
-
-        // Navigation functions
-        function showHome() {
-            currentView = 'home';
-            stopTyping();
-            document.getElementById('mainContent').innerHTML = `
-                <div class="home-container">
-                    <h1 class="title">Portfolio Universe</h1>
-                    <p class="subtitle">Discover amazing work from talented creators</p>
-                    
-                    <div class="nav-grid">
-                        <div class="nav-card" onclick="showPortfolio('gurshaan')">
-                            <i class="fas fa-laptop-code card-icon"></i>
-                            <h3 class="card-title">Gurshaan's Portfolio</h3>
-                            <p class="card-description">Discover creative web development and design solutions</p>
-                        </div>
-                        
-                        <div class="nav-card" onclick="showPortfolio('harman')">
-                            <i class="fas fa-chart-line card-icon"></i>
-                            <h3 class="card-title">Harman's Portfolio</h3>
-                            <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
-                        </div>
-                        
-                        <div class="nav-card" onclick="showPortfolio('newspaper')">
-                            <i class="fas fa-newspaper card-icon"></i>
-                            <h3 class="card-title">Digital Newspaper</h3>
-                            <p class="card-description">Stay updated with the latest news and articles</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showPortfolio(type) {
-            currentView = type;
-            const data = portfolioData[type];
-            
-            document.getElementById('mainContent').innerHTML = `
-                <div class="portfolio-container">
-                    <button class="back-btn" onclick="showHome()">
-                        <i class="fas fa-arrow-left"></i> Back to Home
-                    </button>
-                    
-                    <div class="portfolio-hero">
-                        <div class="portfolio-content">
-                            <div class="portfolio-greeting">${data.greeting}</div>
-                            <h1 class="portfolio-name">${data.fullName}</h1>
-                            <h2 class="portfolio-subtitle" id="typingText">${data.typingTexts[0]}</h2>
-                            <p class="portfolio-description">${data.description}</p>
-                            
-                            <div style="margin-bottom: 2rem;">
-                                <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 1rem;">FIND ME ON</span>
-                                <div class="social-icons">
-                                    ${data.socialLinks.map(social => `
-                                        <a href="${social.url}" class="social-icon" target="_blank">
-                                            <i class="${social.icon}"></i>
-                                        </a>
-                                    `).join('')}
-                                </div>
-                            </div>
-
-                            <div>
-                                <span style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; display: block; margin-bottom: 1rem;">MY SKILLS</span>
-                                <div class="skills-icons">
-                                    ${data.skills.map(skill => `
-                                        <div class="skill-icon">
-                                            <i class="${skill}"></i>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                            <img src="${data.avatar}" alt="${data.name}" class="profile-photo" />
-                        </div>
-                    </div>
-
-                    ${data.projects.length > 0 ? `
-                        <div class="portfolio-sections">
-                            <h2 class="section-title">My Projects</h2>
-                            
-                            <div class="projects-grid">
-                                ${data.projects.map(project => `
-                                    <div class="project-card" onclick="${project.isHistoryProject ? 'openHistoryModal()' : `window.open('${project.url}', '_blank')`}">
-                                        <div class="project-image">
-                                            <img src="${project.image}" alt="${project.title}" />
-                                            <div class="project-overlay">
-                                                <div class="project-category">${project.category}</div>
-                                                <div class="project-likes">
-                                                    <i class="fas fa-heart"></i> 0
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="project-content">
-                                            <h3 class="project-title">${project.title}</h3>
-                                            <p class="project-description">${project.description}</p>
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    ` : ''}
-                </div>
-            `;
-            
-            // Start typing animation
-            startTyping(data.typingTexts);
         }
 
         // Typing animation
