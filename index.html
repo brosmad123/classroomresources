@@ -89,9 +89,10 @@
             z-index: 1000;
             display: flex;
             gap: 10px;
+            align-items: center;
         }
 
-        .theme-selector {
+        .theme-selector, .music-control {
             background: var(--bg-card);
             border: 1px solid var(--border);
             color: var(--text-primary);
@@ -102,9 +103,229 @@
             backdrop-filter: blur(20px);
         }
 
-        .theme-selector:hover {
+        .theme-selector:hover, .music-control:hover {
             background: var(--accent);
             color: white;
+        }
+
+        .theme-creator-btn {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-creator-btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Theme Creator Modal */
+        .theme-creator-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-creator-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+        }
+
+        .color-input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .color-input-group label {
+            display: block;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .color-input {
+            width: 100%;
+            height: 50px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .theme-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .custom-theme-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        /* History Project Modal */
+        .history-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            backdrop-filter: blur(10px);
+        }
+
+        .history-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            max-width: 800px;
+            width: 90%;
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+        }
+
+        .history-header {
+            background: linear-gradient(135deg, var(--accent), var(--text-primary));
+            padding: 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .history-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .history-body {
+            padding: 2rem;
+        }
+
+        .history-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .history-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .history-btn {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .history-btn:hover::before {
+            opacity: 0.1;
+        }
+
+        .history-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+
+        .history-btn-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .history-btn-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-btn-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
         }
 
         /* Home Page Styles */
@@ -783,7 +1004,12 @@
             <option value="light">Light</option>
             <option value="neon">Neon</option>
             <option value="ocean">Ocean</option>
+            <option value="custom">Custom</option>
         </select>
+        <button class="theme-creator-btn" onclick="openThemeCreator()">Create Theme</button>
+        <button class="music-control" id="musicToggle" onclick="toggleMusic()">
+            <i class="fas fa-music"></i>
+        </button>
     </div>
 
     <div class="floating-shapes">
@@ -819,6 +1045,93 @@
             </div>
         </div>
     </div>
+
+    <!-- History Project Modal -->
+    <div id="historyModal" class="history-modal">
+        <div class="history-content">
+            <div class="history-header">
+                <button class="close-btn" onclick="closeHistoryModal()">&times;</button>
+                <h2 class="history-title">Canadian History</h2>
+                <p class="history-subtitle">A comprehensive historical exploration</p>
+            </div>
+            <div class="history-body">
+                <p class="history-description">
+                    Explore Canada's rich history through multiple formats. This project includes 
+                    detailed research, visual presentations, and interactive materials covering 
+                    key moments in Canadian history from confederation to modern times.
+                </p>
+                <div class="history-buttons">
+                    <a href="https://github.com/GSDhaliwal05/clarkpass/raw/main/brochure.pdf" class="history-btn" target="_blank">
+                        <i class="fas fa-book history-btn-icon"></i>
+                        <div class="history-btn-title">Brochure</div>
+                        <div class="history-btn-desc">The Canadian History brochure, ready for all things history</div>
+                    </a>
+                    <a href="https://github.com/GSDhaliwal05/clarkpass/raw/main/presentation.pptx" class="history-btn" target="_blank">
+                        <i class="fas fa-presentation history-btn-icon"></i>
+                        <div class="history-btn-title">Presentation</div>
+                        <div class="history-btn-desc">This is my presentation on Canadian History</div>
+                    </a>
+                    <a href="https://github.com/GSDhaliwal05/clarkpass/raw/main/worksheet.pdf" class="history-btn" target="_blank">
+                        <i class="fas fa-file-alt history-btn-icon"></i>
+                        <div class="history-btn-title">Worksheet</div>
+                        <div class="history-btn-desc">This is for students to fill out after the presentation</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Creator Modal -->
+    <div id="themeCreatorModal" class="theme-creator-modal">
+        <div class="theme-creator-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="color: var(--text-primary); margin: 0;">Create Custom Theme</h2>
+                <button class="close-btn" onclick="closeThemeCreator()">&times;</button>
+            </div>
+            
+            <div class="color-input-group">
+                <label for="bgPrimary">Background Gradient Start:</label>
+                <input type="color" id="bgPrimary" class="color-input" value="#0f0f23">
+            </div>
+            
+            <div class="color-input-group">
+                <label for="bgSecondary">Background Gradient End:</label>
+                <input type="color" id="bgSecondary" class="color-input" value="#2d1b69">
+            </div>
+            
+            <div class="color-input-group">
+                <label for="textPrimary">Primary Text Color:</label>
+                <input type="color" id="textPrimary" class="color-input" value="#ffffff">
+            </div>
+            
+            <div class="color-input-group">
+                <label for="textSecondary">Secondary Text Color:</label>
+                <input type="color" id="textSecondary" class="color-input" value="#b3b3b3">
+            </div>
+            
+            <div class="color-input-group">
+                <label for="accentColor">Accent Color:</label>
+                <input type="color" id="accentColor" class="color-input" value="#00d4ff">
+            </div>
+            
+            <div class="theme-preview" id="themePreview">
+                <h3 style="margin: 0 0 0.5rem 0;">Theme Preview</h3>
+                <p style="margin: 0; opacity: 0.7;">This is how your theme will look</p>
+            </div>
+            
+            <div class="custom-theme-actions">
+                <button class="btn btn-secondary" onclick="closeThemeCreator()">Cancel</button>
+                <button class="btn btn-primary" onclick="applyCustomTheme()">Apply Theme</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio element for background music -->
+    <audio id="backgroundMusic" loop>
+        <source src="" type="audio/mpeg">
+        <source src="" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
 
     <script>
         // Router and App State
@@ -863,8 +1176,51 @@
             setCookie(`liked_${projectId}`, liked.toString(), 365);
         }
 
-        // Portfolio Data with typing animations
+        // Portfolio Data with typing animations - REORDERED: Gurshaan first, then Harman
         const portfolioData = {
+            gurshaan: {
+                title: "Gurshaan's Portfolio",
+                name: "Gurshaan Gill",
+                greeting: "WELCOME TO A NEW WORLD",
+                fullName: "Hi, I'm Gurshaan Gill, a",
+                subtitle: "Developer.",
+                typingTexts: ["Developer.", "Writer."],
+                description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2025. I have been developing with html for a year, with my general development starting in 2022.",
+                avatar: "https://i.ibb.co/j9KcHq5y/Screenshot-2025-09-27-235226-removebg-preview.png",
+                socialLinks: [
+                    { icon: "fab fa-github", url: "https://github.com/brosmad123" },
+                    { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" },
+                ],
+                skills: ["fab fa-html5", "fa-solid fa-pen", "fa-solid fa-calculator"],
+                projects: [
+                    {
+                       id: "gurshaan_history",
+                        title: "History Project",
+                        description: "History project that includes a worksheet, presentation, brochure, and business cards.",
+                        category: "Full Skill",
+                        image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
+                        projectUrl: "https://github.com/GSDhaliwal05/clarkpass",
+                        featured: true,
+                        isHistoryProject: true
+                    },
+                    {
+                        id: "gurshaan_task_app",
+                        title: "Task Management App",
+                        description: "Collaborative task management application with real-time updates and team collaboration features for improved productivity.",
+                        category: "APPLICATION",
+                        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=250&fit=crop",
+                        projectUrl: "https://github.com/GSDhaliwal05/task-manager"
+                    },
+                    {
+                        id: "gurshaan_portfolio",
+                        title: "Portfolio Website Template",
+                        description: "Modern and responsive portfolio template with dynamic content management and theme switching capabilities.",
+                        category: "WEB DESIGN",
+                        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=250&fit=crop",
+                        projectUrl: "https://github.com/GSDhaliwal05/portfolio-template"
+                    }
+                ]
+            },
             harman: {
                 title: "Harman's Portfolio",
                 name: "Harman Sidhu",
@@ -905,48 +1261,6 @@
                         category: "REPORTING",
                         image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=250&fit=crop",
                         projectUrl: "https://github.com/harman/financial-reporting"
-                    }
-                ]
-            },
-            gurshaan: {
-                title: "Gurshaan's Portfolio",
-                name: "Gurshaan Gill",
-                greeting: "WELCOME TO A NEW WORLD",
-                fullName: "Hi, I'm Gurshaan Gill, a",
-                subtitle: "Developer.",
-                typingTexts: ["Developer.", "Writer."],
-                description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2025. I have been developing with html for a year, with my general development starting in 2022.",
-                avatar: "https://i.ibb.co/j9KcHq5y/Screenshot-2025-09-27-235226-removebg-preview.png",
-                socialLinks: [
-                    { icon: "fab fa-github", url: "https://github.com/brosmad123" },
-                    { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" },
-                ],
-                skills: ["fab fa-html5", "fa-solid fa-pen", "fa-solid fa-calculator"],
-                projects: [
-                    {
-                       id: "gurshaan_history",
-                        title: "History Project",
-                        description: "History project that includes a worksheet, presentation, brochure, and business cards.",
-                        category: "Full Skill",
-                        image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75fit=crop",
-                        projectUrl: "https://github.com/GSDhaliwal05/clarkpass",
-                        featured: true
-                    },
-                    {
-                        id: "gurshaan_task_app",
-                        title: "Task Management App",
-                        description: "Collaborative task management application with real-time updates and team collaboration features for improved productivity.",
-                        category: "APPLICATION",
-                        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/GSDhaliwal05/task-manager"
-                    },
-                    {
-                        id: "gurshaan_portfolio",
-                        title: "Portfolio Website Template",
-                        description: "Modern and responsive portfolio template with dynamic content management and theme switching capabilities.",
-                        category: "WEB DESIGN",
-                        image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=400&h=250&fit=crop",
-                        projectUrl: "https://github.com/GSDhaliwal05/portfolio-template"
                     }
                 ]
             },
@@ -1054,6 +1368,7 @@
             }
             currentPortfolioType = null;
         }
+
         function navigateTo(path) {
             currentRoute = path;
             window.history.pushState(null, null, path);
@@ -1063,18 +1378,24 @@
         function renderCurrentRoute() {
             const mainContent = document.getElementById('mainContent');
             
+            // Stop any existing typing animation
+            stopTypingAnimation();
+            
             switch(currentRoute) {
                 case '/':
                     mainContent.innerHTML = renderHomePage();
                     break;
-                case '/harman':
-                    mainContent.innerHTML = renderPortfolioPage('harman');
-                    break;
                 case '/gurshaan':
                     mainContent.innerHTML = renderPortfolioPage('gurshaan');
+                    setTimeout(() => startTypingAnimation('gurshaan'), 100);
+                    break;
+                case '/harman':
+                    mainContent.innerHTML = renderPortfolioPage('harman');
+                    setTimeout(() => startTypingAnimation('harman'), 100);
                     break;
                 case '/newspaper':
                     mainContent.innerHTML = renderPortfolioPage('newspaper');
+                    setTimeout(() => startTypingAnimation('newspaper'), 100);
                     break;
                 default:
                     mainContent.innerHTML = renderHomePage();
@@ -1089,16 +1410,16 @@
                     <p class="subtitle">Discover amazing work from talented creators</p>
                     
                     <div class="nav-grid">
-                        <div class="nav-card" onclick="navigateTo('/harman')">
-                            <i class="fas fa-chart-line card-icon"></i>
-                            <h3 class="card-title">Harman's Portfolio</h3>
-                            <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
-                        </div>
-                        
                         <div class="nav-card" onclick="navigateTo('/gurshaan')">
                             <i class="fas fa-laptop-code card-icon"></i>
                             <h3 class="card-title">Gurshaan's Portfolio</h3>
                             <p class="card-description">Discover creative web development and design solutions</p>
+                        </div>
+                        
+                        <div class="nav-card" onclick="navigateTo('/harman')">
+                            <i class="fas fa-chart-line card-icon"></i>
+                            <h3 class="card-title">Harman's Portfolio</h3>
+                            <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
                         </div>
                         
                         <div class="nav-card" onclick="navigateTo('/newspaper')">
@@ -1167,7 +1488,7 @@
                                 const likeCount = getLikeCount(project.id);
                                 const isLiked = isProjectLiked(project.id);
                                 return `
-                                    <div class="project-card" onclick="openProjectModal('${project.id}', '${project.title}', '${project.description.replace(/'/g, "\\'")}', '${project.category}', '${project.image}', '${project.projectUrl}')">
+                                    <div class="project-card" onclick="${project.isHistoryProject ? `openHistoryModal()` : `openProjectModal('${project.id}', '${project.title}', '${project.description.replace(/'/g, "\\'")}', '${project.category}', '${project.image}', '${project.projectUrl}')`}">
                                         <div class="project-image">
                                             <img src="${project.image}" alt="${project.title}" />
                                             <div class="project-overlay">
@@ -1217,6 +1538,18 @@
             likesElement.textContent = currentLikes;
         }
 
+        // History Project Modal Functions
+        function openHistoryModal() {
+            document.getElementById('historyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Regular Project Modal Functions
         function openProjectModal(projectId, title, description, category, image, projectUrl) {
             currentProjectData = { id: projectId, title, description, category, image, projectUrl };
             
@@ -1293,96 +1626,61 @@
             }
         }
 
-        // Theme Management
-        const themeSelector = document.getElementById('themeSelector');
-        themeSelector.addEventListener('change', function() {
-            const theme = this.value;
-            document.documentElement.setAttribute('data-theme', theme);
-            setCookie('userTheme', theme, 30);
-            showNotification(`Theme changed to ${theme}!`, 'success');
-        });
-
-        function loadSavedTheme() {
-            const savedTheme = getCookie('userTheme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            themeSelector.value = savedTheme;
+        // Custom Theme Creator Functions
+        function openThemeCreator() {
+            document.getElementById('themeCreatorModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            // Set up color input listeners for live preview
+            const colorInputs = ['bgPrimary', 'bgSecondary', 'textPrimary', 'textSecondary', 'accentColor'];
+            colorInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', updateThemePreview);
+            });
+            
+            updateThemePreview();
         }
 
-        // Notification System
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                padding: 1rem 2rem;
-                background: ${type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#3b82f6'};
-                color: white;
-                border-radius: 8px;
-                z-index: 3000;
-                font-weight: 500;
-                animation: slideInDown 0.3s ease-out;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            `;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.style.animation = 'slideOutUp 0.3s ease-out forwards';
-                setTimeout(() => notification.remove(), 300);
-            }, 2500);
+        function closeThemeCreator() {
+            document.getElementById('themeCreatorModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
-        // Add notification animations
-        const notificationStyle = document.createElement('style');
-        notificationStyle.textContent = `
-            @keyframes slideInDown {
-                from { transform: translate(-50%, -100%); opacity: 0; }
-                to { transform: translate(-50%, 0); opacity: 1; }
-            }
-            @keyframes slideOutUp {
-                from { transform: translate(-50%, 0); opacity: 1; }
-                to { transform: translate(-50%, -100%); opacity: 0; }
-            }
-        `;
-        document.head.appendChild(notificationStyle);
+        function updateThemePreview() {
+            const preview = document.getElementById('themePreview');
+            const bgPrimary = document.getElementById('bgPrimary').value;
+            const bgSecondary = document.getElementById('bgSecondary').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const textSecondary = document.getElementById('textSecondary').value;
+            const accentColor = document.getElementById('accentColor').value;
 
-        // Browser back/forward handling - Updated for GitHub Pages
-        window.addEventListener('popstate', function(e) {
-            stopTypingAnimation();
-            currentRoute = location.pathname;
-            renderCurrentRoute();
-        });
-
-        // Close modal events
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('projectModal');
-            if (modal && e.target === modal) {
-                closeModal();
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
-        });
-
-        // Initialize app - Updated for GitHub Pages compatibility
-        function initializeApp() {
-            loadSavedTheme();
-            // Get current route from pathname, handle GitHub Pages routing
-            currentRoute = location.pathname;
-            renderCurrentRoute();
+            preview.style.background = `linear-gradient(135deg, ${bgPrimary} 0%, ${bgSecondary} 100%)`;
+            preview.style.color = textPrimary;
+            preview.style.border = `1px solid ${accentColor}`;
+            
+            const h3 = preview.querySelector('h3');
+            const p = preview.querySelector('p');
+            
+            if (h3) h3.style.color = accentColor;
+            if (p) p.style.color = textSecondary;
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', initializeApp);
-        initializeApp();
-
-        console.log('🚀 Portfolio Hub loaded with GitHub Pages routing support!');
-        console.log('📍 Available routes: /, /harman, /gurshaan, /newspaper');
-    </script>
-</body>
-</html>
+        function applyCustomTheme() {
+            const bgPrimary = document.getElementById('bgPrimary').value;
+            const bgSecondary = document.getElementById('bgSecondary').value;
+            const textPrimary = document.getElementById('textPrimary').value;
+            const textSecondary = document.getElementById('textSecondary').value;
+            const accentColor = document.getElementById('accentColor').value;
+            
+            // Create custom theme CSS variables
+            const customTheme = {
+                '--bg-primary': `linear-gradient(135deg, ${bgPrimary} 0%, ${bgSecondary} 100%)`,
+                '--bg-card': `${hexToRgba(textPrimary, 0.08)}`,
+                '--text-primary': textPrimary,
+                '--text-secondary': textSecondary,
+                '--accent': accentColor,
+                '--accent-hover': adjustBrightness(accentColor, -20),
+                '--border': `${hexToRgba(textPrimary, 0.1)}`,
+                '--shadow': `${hexToRgba('#000000', 0.3)}`
+            };
+            
+            //
