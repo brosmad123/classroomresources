@@ -127,6 +127,16 @@
             transform: translateY(0);
         }
 
+        .music-player.collapsed {
+            transform: translateY(calc(100% - 80px));
+        }
+
+        .music-player.collapsed .track-info,
+        .music-player.collapsed .progress-container,
+        .music-player.collapsed .volume-controls {
+            display: none;
+        }
+
         .track-info {
             display: flex;
             align-items: center;
@@ -240,6 +250,7 @@
             gap: 0.5rem;
             flex: 1;
             justify-content: flex-end;
+            z-index: 1999; /* Lower than music toggle button */
         }
 
         .volume-btn {
@@ -1041,8 +1052,11 @@
         </div>
     </div>
 
-    <audio id="backgroundMusic" loop>
-        <!-- Multiple music sources -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="backgroundMusic2" loop preload="auto">
         <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3" type="audio/mpeg">
     </audio>
 
@@ -1141,6 +1155,9 @@
         let musicPlaying = false;
         let musicPlayerVisible = false;
         let currentTrack = 0;
+        let currentAudio = 1; // Toggle between audio1 and audio2 for crossfading
+        let fadeInterval = null;
+        let autoplayAttempted = false;
 
         // Router functionality
         class Router {
@@ -1289,21 +1306,85 @@
         const router = new Router();
 
         // Music Player Functions
-        function loadTrack(trackIndex) {
-            const audio = document.getElementById('backgroundMusic');
+        function getActiveAudio() {
+            return document.getElementById(`backgroundMusic${currentAudio === 1 ? '' : '2'}`);
+        }
+
+        function getInactiveAudio() {
+            return document.getElementById(`backgroundMusic${currentAudio === 1 ? '2' : ''}`);
+        }
+
+        function crossfadeToTrack(trackIndex, immediate = false) {
+            if (trackIndex < 0 || trackIndex >= musicTracks.length) return;
+            
+            const activeAudio = getActiveAudio();
+            const inactiveAudio = getInactiveAudio();
             const trackTitle = document.querySelector('.track-title');
             
-            if (trackIndex >= 0 && trackIndex < musicTracks.length) {
-                currentTrack = trackIndex;
-                audio.src = musicTracks[currentTrack].src;
-                trackTitle.textContent = musicTracks[currentTrack].title;
-                
-                if (musicPlaying) {
-                    audio.play().catch(() => {
-                        console.log(`Track ${currentTrack + 1} not found: ${musicTracks[currentTrack].src}`);
-                    });
-                }
+            currentTrack = trackIndex;
+            
+            // Set up the new track
+            inactiveAudio.src = musicTracks[currentTrack].src;
+            inactiveAudio.volume = 0;
+            inactiveAudio.currentTime = 0;
+            trackTitle.textContent = musicTracks[currentTrack].title;
+            
+            if (musicPlaying) {
+                inactiveAudio.play().then(() => {
+                    if (immediate) {
+                        // Immediate switch
+                        activeAudio.pause();
+                        activeAudio.volume = 0;
+                        inactiveAudio.volume = getActiveAudio().volume || 0.3;
+                        currentAudio = currentAudio === 1 ? 2 : 1;
+                    } else {
+                        // Smooth crossfade
+                        startCrossfade(activeAudio, inactiveAudio);
+                    }
+                }).catch(error => {
+                    console.log(`Track ${currentTrack + 1} failed to load, trying next...`);
+                    // Try next track if current one fails
+                    setTimeout(() => {
+                        crossfadeToTrack((trackIndex + 1) % musicTracks.length, true);
+                    }, 500);
+                });
+            } else {
+                // Just switch source without playing
+                currentAudio = currentAudio === 1 ? 2 : 1;
             }
+        }
+
+        function startCrossfade(fadeOutAudio, fadeInAudio) {
+            if (fadeInterval) clearInterval(fadeInterval);
+            
+            const fadeOutVolume = fadeOutAudio.volume;
+            const fadeInVolume = fadeOutVolume;
+            const fadeDuration = 2000; // 2 seconds
+            const fadeSteps = 50;
+            const fadeStepTime = fadeDuration / fadeSteps;
+            const volumeStep = fadeOutVolume / fadeSteps;
+            
+            let step = 0;
+            
+            fadeInterval = setInterval(() => {
+                step++;
+                const progress = step / fadeSteps;
+                
+                fadeOutAudio.volume = Math.max(0, fadeOutVolume * (1 - progress));
+                fadeInAudio.volume = Math.min(fadeInVolume, fadeInVolume * progress);
+                
+                if (step >= fadeSteps) {
+                    clearInterval(fadeInterval);
+                    fadeInterval = null;
+                    fadeOutAudio.pause();
+                    fadeOutAudio.volume = fadeInVolume; // Reset for next use
+                    currentAudio = currentAudio === 1 ? 2 : 1;
+                }
+            }, fadeStepTime);
+        }
+
+        function loadTrack(trackIndex) {
+            crossfadeToTrack(trackIndex, true); // Immediate switch for manual track changes
         }
 
         function toggleMusicPlayer() {
@@ -1312,47 +1393,70 @@
             
             if (musicPlayerVisible) {
                 player.classList.add('visible');
+                player.classList.remove('collapsed');
                 document.getElementById('musicToggle').innerHTML = '<i class="fas fa-times"></i>';
-                loadTrack(currentTrack); // Load current track when player is shown
+                
+                // Attempt autoplay if not done yet
+                if (!autoplayAttempted) {
+                    autoplayAttempted = true;
+                    setTimeout(() => {
+                        if (!musicPlaying) {
+                            startAutoplay();
+                        }
+                    }, 500);
+                }
             } else {
                 player.classList.remove('visible');
+                player.classList.add('collapsed');
                 document.getElementById('musicToggle').innerHTML = '<i class="fas fa-music"></i>';
             }
         }
 
+        function startAutoplay() {
+            const audio = getActiveAudio();
+            
+            // Try to autoplay with user gesture simulation
+            audio.play().then(() => {
+                musicPlaying = true;
+                document.getElementById('playButton').innerHTML = '<i class="fas fa-pause"></i>';
+                startProgressUpdate();
+            }).catch(() => {
+                // Autoplay blocked - this is normal, user needs to interact first
+                console.log('Autoplay blocked - user interaction required');
+            });
+        }
+
         function toggleMusic() {
-            const audio = document.getElementById('backgroundMusic');
+            const audio = getActiveAudio();
             const playButton = document.getElementById('playButton');
             
             if (!musicPlaying) {
-                if (!audio.src) {
-                    loadTrack(currentTrack);
-                }
-                
                 audio.play().then(() => {
                     musicPlaying = true;
                     playButton.innerHTML = '<i class="fas fa-pause"></i>';
                     startProgressUpdate();
-                }).catch(() => {
-                    console.log(`Music file not found: ${musicTracks[currentTrack].src}`);
+                }).catch(error => {
+                    console.log(`Music failed to play: ${error.message}`);
                     // Try next track
                     nextTrack();
                 });
             } else {
                 audio.pause();
+                const inactiveAudio = getInactiveAudio();
+                inactiveAudio.pause();
                 musicPlaying = false;
                 playButton.innerHTML = '<i class="fas fa-play"></i>';
             }
         }
 
         function previousTrack() {
-            currentTrack = (currentTrack - 1 + musicTracks.length) % musicTracks.length;
-            loadTrack(currentTrack);
+            const newTrack = (currentTrack - 1 + musicTracks.length) % musicTracks.length;
+            crossfadeToTrack(newTrack);
         }
 
         function nextTrack() {
-            currentTrack = (currentTrack + 1) % musicTracks.length;
-            loadTrack(currentTrack);
+            const newTrack = (currentTrack + 1) % musicTracks.length;
+            crossfadeToTrack(newTrack);
         }
 
         // Project Modal Functions
@@ -1399,8 +1503,12 @@
         }
 
         function setVolume(value) {
-            const audio = document.getElementById('backgroundMusic');
-            audio.volume = value / 100;
+            const audio1 = document.getElementById('backgroundMusic');
+            const audio2 = document.getElementById('backgroundMusic2');
+            const volume = value / 100;
+            
+            audio1.volume = volume;
+            audio2.volume = volume;
             
             const volumeIcon = document.getElementById('volumeIcon');
             if (value == 0) {
@@ -1413,25 +1521,28 @@
         }
 
         function toggleMute() {
-            const audio = document.getElementById('backgroundMusic');
+            const audio1 = document.getElementById('backgroundMusic');
+            const audio2 = document.getElementById('backgroundMusic2');
             const volumeSlider = document.getElementById('volumeSlider');
             const volumeIcon = document.getElementById('volumeIcon');
             
-            if (audio.volume > 0) {
-                audio.dataset.previousVolume = audio.volume;
-                audio.volume = 0;
+            if (audio1.volume > 0) {
+                audio1.dataset.previousVolume = audio1.volume;
+                audio1.volume = 0;
+                audio2.volume = 0;
                 volumeSlider.value = 0;
                 volumeIcon.className = 'fas fa-volume-mute';
             } else {
-                const previousVolume = audio.dataset.previousVolume || 0.3;
-                audio.volume = previousVolume;
+                const previousVolume = audio1.dataset.previousVolume || 0.3;
+                audio1.volume = previousVolume;
+                audio2.volume = previousVolume;
                 volumeSlider.value = previousVolume * 100;
                 setVolume(previousVolume * 100);
             }
         }
 
         function seekTo(event) {
-            const audio = document.getElementById('backgroundMusic');
+            const audio = getActiveAudio();
             const progressBar = event.currentTarget;
             const clickX = event.offsetX;
             const width = progressBar.offsetWidth;
@@ -1450,17 +1561,19 @@
         }
 
         function startProgressUpdate() {
-            const audio = document.getElementById('backgroundMusic');
             const progressFill = document.getElementById('progressFill');
             const currentTimeElement = document.getElementById('currentTime');
             const totalTimeElement = document.getElementById('totalTime');
 
             setInterval(() => {
-                if (musicPlaying && !isNaN(audio.duration)) {
-                    const progress = (audio.currentTime / audio.duration) * 100;
-                    progressFill.style.width = progress + '%';
-                    currentTimeElement.textContent = formatTime(audio.currentTime);
-                    totalTimeElement.textContent = formatTime(audio.duration);
+                if (musicPlaying) {
+                    const audio = getActiveAudio();
+                    if (!isNaN(audio.duration)) {
+                        const progress = (audio.currentTime / audio.duration) * 100;
+                        progressFill.style.width = progress + '%';
+                        currentTimeElement.textContent = formatTime(audio.currentTime);
+                        totalTimeElement.textContent = formatTime(audio.duration);
+                    }
                 }
             }, 1000);
         }
@@ -1670,10 +1783,22 @@
             changeTheme(this.value);
         });
 
-        // Audio event listeners for auto-next track
+        // Audio event listeners for both audio elements
         document.getElementById('backgroundMusic').addEventListener('ended', function() {
-            nextTrack();
+            if (currentAudio === 1) nextTrack();
         });
+
+        document.getElementById('backgroundMusic2').addEventListener('ended', function() {
+            if (currentAudio === 2) nextTrack();
+        });
+
+        // Autoplay attempt on user interaction
+        document.addEventListener('click', function() {
+            if (!autoplayAttempted && !musicPlaying) {
+                autoplayAttempted = true;
+                startAutoplay();
+            }
+        }, { once: true });
 
         // Load saved theme
         const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
@@ -1681,8 +1806,20 @@
         changeTheme(savedTheme);
 
         // Set up music
-        document.getElementById('backgroundMusic').volume = 0.3;
-        loadTrack(0); // Load first track
+        const audio1 = document.getElementById('backgroundMusic');
+        const audio2 = document.getElementById('backgroundMusic2');
+        audio1.volume = 0.3;
+        audio2.volume = 0.3;
+        
+        // Load first track
+        audio1.src = musicTracks[0].src;
+        audio2.src = musicTracks[0].src;
+        document.querySelector('.track-title').textContent = musicTracks[0].title;
+
+        // Try autoplay immediately (will likely fail due to browser policies)
+        setTimeout(() => {
+            startAutoplay();
+        }, 1000);
 
         console.log('Portfolio Hub loaded successfully!');
     </script>
