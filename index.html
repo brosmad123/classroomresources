@@ -271,6 +271,19 @@
             color: var(--accent);
             margin-bottom: 2rem;
             line-height: 1.1;
+            min-height: 4.5rem;
+            position: relative;
+        }
+
+        .portfolio-subtitle::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: var(--accent);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         .portfolio-description {
@@ -850,7 +863,7 @@
             setCookie(`liked_${projectId}`, liked.toString(), 365);
         }
 
-        // Portfolio Data
+        // Portfolio Data with typing animations
         const portfolioData = {
             harman: {
                 title: "Harman's Portfolio",
@@ -858,6 +871,7 @@
                 greeting: "WELCOME TO MY WORLD",
                 fullName: "Hi, I'm Harman Singh",
                 subtitle: "a Professional Data Analyst.",
+                typingTexts: ["a scholar.", "a mathematician."],
                 description: "I use data analysis as a third dimension by which to simplify experiences and guide through each and every insight. I'm not just processing numbers to present findings, but doing it in ways that drive meaningful business decisions.",
                 avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=350&h=450&fit=crop&crop=face",
                 socialLinks: [
@@ -893,14 +907,15 @@
             },
             gurshaan: {
                 title: "Gurshaan's Portfolio",
-                name: "Gurshaan Singh",
+                name: "Gurshaan Gill",
                 greeting: "WELCOME TO MY WORLD",
-                fullName: "Hi, I'm Gurshaan Singh",
+                fullName: "Hi, I'm Gurshaan Gill",
                 subtitle: "a Professional Developer.",
+                typingTexts: ["a developer.", "a writer."],
                 description: "I use code as a third dimension by which to simplify experiences and guide through each and every interaction. I'm not adding features just to fill up space, but creating meaningful user experiences that matter.",
-                avatar: "https://i.ibb.co/dsZm64tJ/20082977.png",
+                avatar: "https://i.ibb.co/j9KcHq5y/Screenshot-2025-09-27-235226-removebg-preview.png",
                 socialLinks: [
-                    { icon: "fab fa-github", url: "https://github.com/GSDhaliwal05" },
+                    { icon: "fab fa-github", url: "https://github.com/brosmad123" },
                     { icon: "fab fa-instagram", url: "https://instagram.com/gurshaan" },
                     { icon: "fab fa-linkedin", url: "https://linkedin.com/in/gurshaan" }
                 ],
@@ -934,8 +949,9 @@
                 title: "Digital Newspaper",
                 name: "Digital News Hub",
                 greeting: "WELCOME TO MY WORLD",
-                fullName: "Hi, I'm Digital News",
+                fullName: "Digital news is",
                 subtitle: "a Professional News Platform.",
+                typingTexts: ["the best newspaper.", "your source of news.", "meaningful experiences"],
                 description: "I use journalism as a third dimension by which to simplify complex stories and guide readers through each and every development. I'm not just reporting news to fill pages, but doing it in ways that inform and engage our community.",
                 avatar: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=350&h=450&fit=crop&crop=face",
                 socialLinks: [
@@ -971,7 +987,66 @@
             }
         };
 
-        // Router - Updated to handle GitHub Pages routing properly
+        // Typing Animation System
+        let typingInterval = null;
+        let currentTypingIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+        let currentPortfolioType = null;
+
+        function startTypingAnimation(portfolioType) {
+            currentPortfolioType = portfolioType;
+            const subtitleElement = document.querySelector('.portfolio-subtitle');
+            if (!subtitleElement) return;
+
+            const texts = portfolioData[portfolioType].typingTexts;
+            
+            function typeText() {
+                const currentText = texts[currentTypingIndex];
+                
+                if (isDeleting) {
+                    subtitleElement.textContent = currentText.substring(0, currentCharIndex - 1);
+                    currentCharIndex--;
+                } else {
+                    subtitleElement.textContent = currentText.substring(0, currentCharIndex + 1);
+                    currentCharIndex++;
+                }
+
+                let typingSpeed = isDeleting ? 50 : 100;
+
+                if (!isDeleting && currentCharIndex === currentText.length) {
+                    typingSpeed = 2000; // Pause at end
+                    isDeleting = true;
+                } else if (isDeleting && currentCharIndex === 0) {
+                    isDeleting = false;
+                    currentTypingIndex = (currentTypingIndex + 1) % texts.length;
+                    typingSpeed = 500; // Pause before next text
+                }
+
+                typingInterval = setTimeout(typeText, typingSpeed);
+            }
+
+            // Clear any existing interval
+            if (typingInterval) {
+                clearTimeout(typingInterval);
+            }
+            
+            // Reset values
+            currentTypingIndex = 0;
+            currentCharIndex = 0;
+            isDeleting = false;
+            
+            // Start typing
+            typeText();
+        }
+
+        function stopTypingAnimation() {
+            if (typingInterval) {
+                clearTimeout(typingInterval);
+                typingInterval = null;
+            }
+            currentPortfolioType = null;
+        }
         function navigateTo(path) {
             currentRoute = path;
             window.history.pushState(null, null, path);
@@ -1043,7 +1118,7 @@
                         <div class="portfolio-content">
                             <div class="portfolio-greeting">${data.greeting}</div>
                             <h1 class="portfolio-name">${data.fullName}</h1>
-                            <h2 class="portfolio-subtitle">${data.subtitle}</h2>
+                            <h2 class="portfolio-subtitle">${data.typingTexts[0]}</h2>
                             <p class="portfolio-description">${data.description}</p>
                             
                             <div class="portfolio-social">
@@ -1259,6 +1334,7 @@
 
         // Browser back/forward handling - Updated for GitHub Pages
         window.addEventListener('popstate', function(e) {
+            stopTypingAnimation();
             currentRoute = location.pathname;
             renderCurrentRoute();
         });
