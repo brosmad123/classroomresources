@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Hub - Modern</title>
+    <title>Class Resources</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <style>
@@ -934,9 +934,9 @@
                         <div class="history-btn-desc">The Canadian History brochure, ready for all things history</div>
                     </a>
                     <a href="https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit?utm_content=DAG0H8hKWsI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" class="history-btn" target="_blank">
-                        <i class="fas fa-presentation history-btn-icon"></i>
+                        <i class="fa-solid fa-computer history-btn-icon"></i>
                         <div class="history-btn-title">Presentation</div>
-                        <div class="history-btn-desc">This is my presentation on Canadian History</div>
+                        <div class="history-btn-desc">Explore my presentation on Canadian History</div>
                     </a>
                     <a href="https://github.com/brosmad123/classroomresources/blob/main/canadian-history-merged.pdf" class="history-btn" target="_blank">
                         <i class="fas fa-file-alt history-btn-icon"></i>
@@ -1065,12 +1065,12 @@
                 skills: ["fab fa-python", "fas fa-database", "fas fa-chart-bar"],
                 projects: [
                     {
-                        id: "harman_demo",
-                        title: "Mathematical Analysis Dashboard",
-                        description: "An interactive dashboard showcasing advanced mathematical concepts and data visualization techniques using Python and statistical analysis.",
-                        category: "DATA SCIENCE",
-                        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-                        url: "https://github.com/harman/math-dashboard"
+                        id: "harman_history",
+                        title: "Canadian History Project",
+                        description: "Presentation shared with Gurshaan Gill.",
+                        category: "EDUCATION",
+                        image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
+                        isHistoryProject: true
                     }
                 ]
             },
@@ -1086,7 +1086,16 @@
                     { icon: "fab fa-instagram", url: "https://www.instagram.com/peelschools" }
                 ],
                 skills: ["fa-solid fa-newspaper"],
-                projects: []
+                projects: [
+                    {
+                        id: "news_001",
+                        title: "Mathematical Analysis Dashboard",
+                        description: "An interactive dashboard showcasing advanced mathematical concepts and data visualization techniques using Python and statistical analysis.",
+                        category: "DATA SCIENCE",
+                        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                        url: "https://github.com/harman/math-dashboard"
+                    }
+                ]
             }
         };
 
@@ -1133,25 +1142,25 @@
                 stopTyping();
                 document.getElementById('mainContent').innerHTML = `
                     <div class="home-container">
-                        <h1 class="title">Portfolio Universe</h1>
-                        <p class="subtitle">Discover amazing work from talented creators</p>
+                        <h1 class="title">Class Resources</h1>
+                        <p class="subtitle">Discover a digital world, created by Gurshaan Gill.</p>
                         
                         <div class="nav-grid">
                             <div class="nav-card" onclick="router.navigate('gurshaan')">
                                 <i class="fas fa-laptop-code card-icon"></i>
                                 <h3 class="card-title">Gurshaan's Portfolio</h3>
-                                <p class="card-description">Discover creative web development and design solutions</p>
+                                <p class="card-description">Discover my creative solutions to problems I face</p>
                             </div>
                             
                             <div class="nav-card" onclick="router.navigate('harman')">
                                 <i class="fas fa-chart-line card-icon"></i>
                                 <h3 class="card-title">Harman's Portfolio</h3>
-                                <p class="card-description">Explore data-driven insights and innovative analytics projects</p>
+                                <p class="card-description">Explore the advanced world of education</p>
                             </div>
                             
                             <div class="nav-card" onclick="router.navigate('newspaper')">
                                 <i class="fas fa-newspaper card-icon"></i>
-                                <h3 class="card-title">Digital Newspaper</h3>
+                                <h3 class="card-title">SWG Newspaper</h3>
                                 <p class="card-description">Stay updated with the latest news and articles</p>
                             </div>
                         </div>
