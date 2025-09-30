@@ -2,9 +2,9 @@
 const musicPlaylists = {
     home: [
         {
-            title: "Chill Lofi Beat",
-            artist: "Lofi Girl",
-            src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
+            title: "Hopes & Dreams",
+            artist: "Toby Fox",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--087-Hopes-And-Dreams-UNDERTALE-Soundtrack-Toby-Fox.mp3"
         },
         {
             title: "Fuzzy Memories",
@@ -14,14 +14,14 @@ const musicPlaylists = {
     ],
     gurshaan: [
         {
-            title: "Kerosene",
-            artist: "Crystal Castles",
-            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--Crystal-Castles-Kerosene-Instrumental.mp3"
+            title: "Fuzzy Memories",
+            artist: "iColor",
+            src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
         },
         {
-            title: "Hopes & Dreams",
-            artist: "Toby Fox",
-            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--087-Hopes-And-Dreams-UNDERTALE-Soundtrack-Toby-Fox.mp3"
+            title: "Mice on Venus",
+            artist: "C418",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
         }
     ],
     harman: [
@@ -31,9 +31,9 @@ const musicPlaylists = {
             src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
         },
         {
-            title: "Chill Lofi Beat",
-            artist: "Lofi Girl",
-            src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
+            title: "Nostalgia",
+            artist: "Alan Walker",
+            src: "https://file.garden/aNtJgm887DiA_7s2/ssvid.net--Alan-Walker-Spectre-NCS-Release.mp3"
         }
     ],
     newspaper: [
