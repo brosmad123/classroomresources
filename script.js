@@ -160,23 +160,29 @@ function attemptAutoplay() {
     if (autoplayAttempted) return;
     autoplayAttempted = true;
     
+    // Load and play the audio
+    audio.load();
     audio.play().then(() => {
         isPlaying = true;
         updatePlayButton();
         console.log('Music autoplay started successfully');
     }).catch(e => {
-        console.log('Autoplay blocked by browser. User interaction needed.');
-        // Show a subtle notification or enable play on first click
-        document.addEventListener('click', function enableAudioOnFirstClick() {
-            if (!isPlaying) {
-                audio.play().then(() => {
-                    isPlaying = true;
-                    updatePlayButton();
-                    console.log('Music started after user interaction');
-                }).catch(err => console.log('Failed to start music:', err));
-            }
-            document.removeEventListener('click', enableAudioOnFirstClick);
-        }, { once: true });
+        console.log('Autoplay blocked by browser. Setting up click listener...');
+        isPlaying = false;
+        updatePlayButton();
+        
+        // Try to play on ANY user interaction
+        const startOnInteraction = () => {
+            audio.play().then(() => {
+                isPlaying = true;
+                updatePlayButton();
+                console.log('Music started after user interaction');
+            }).catch(err => console.log('Failed to start music:', err));
+        };
+        
+        document.addEventListener('click', startOnInteraction, { once: true });
+        document.addEventListener('keydown', startOnInteraction, { once: true });
+        document.addEventListener('touchstart', startOnInteraction, { once: true });
     });
 }
 
