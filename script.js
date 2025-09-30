@@ -141,6 +141,11 @@ const portfolioData = {
                 url: "https://www.canva.com/design/DAG0UYFy6MA/0S5Sb5NovyP-Wn1a_OhCQg/edit?utm_content=DAG0UYFy6MA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
             }
         ]
+    },
+    guransh: {
+        name: "Guransh Dhaliwal",
+        isExternal: true,
+        externalUrl: "https://gsdhaliwal05.github.io/Portfolio/"
     }
 };
 
@@ -384,7 +389,8 @@ class Router {
             'home': () => this.showHome(),
             'gurshaan': () => this.showPortfolio('gurshaan'),
             'harman': () => this.showPortfolio('harman'),
-            'newspaper': () => this.showPortfolio('newspaper')
+            'newspaper': () => this.showPortfolio('newspaper'),
+            'guransh': () => this.handleExternalPortfolio('guransh')
         };
         
         this.init();
@@ -436,6 +442,12 @@ class Router {
                         <i class="fas fa-newspaper card-icon"></i>
                         <h3 class="card-title">SWG Newspaper</h3>
                         <p class="card-description">Stay updated with the latest news and articles</p>
+                    </div>
+                    
+                    <div class="nav-card" onclick="router.navigate('guransh')">
+                        <i class="fas fa-user-graduate card-icon"></i>
+                        <h3 class="card-title">Guransh's Portfolio</h3>
+                        <p class="card-description">Visit Guransh Dhaliwal's personal portfolio</p>
                     </div>
                 </div>
             </div>
@@ -518,6 +530,15 @@ class Router {
         
         // Start typing animation
         startTyping(data.typingTexts);
+    }
+
+    handleExternalPortfolio(type) {
+        const data = portfolioData[type];
+        if (data && data.isExternal) {
+            window.open(data.externalUrl, '_blank');
+            // Navigate back to home after opening external link
+            this.navigate('home');
+        }
     }
 }
 
