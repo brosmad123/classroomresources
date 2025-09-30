@@ -1,24 +1,29 @@
-        // Music playlist using your GitHub files
+// Music playlist using online royalty-free music
         const musicTracks = [
             {
-                title: "Ambient Track 1",
-                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3"
+                title: "Chill Lofi Beat",
+                artist: "Lofi Girl",
+                src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
             },
             {
-                title: "Ambient Track 2", 
-                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3"
+                title: "Ambient Dreams",
+                artist: "Ambient Music",
+                src: "https://cdn.pixabay.com/audio/2022/03/10/audio_c49bd89526.mp3"
             },
             {
-                title: "Ambient Track 3",
-                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music3.mp3"
+                title: "Inspiring Cinematic",
+                artist: "Epic Music",
+                src: "https://cdn.pixabay.com/audio/2022/10/25/audio_f24c30b4f9.mp3"
             },
             {
-                title: "Ambient Track 4",
-                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music4.mp3"
+                title: "Peaceful Piano",
+                artist: "Piano Relaxation",
+                src: "https://cdn.pixabay.com/audio/2023/02/28/audio_1b96c9c9e5.mp3"
             },
             {
-                title: "Ambient Track 5",
-                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music5.mp3"
+                title: "Electronic Vibes",
+                artist: "Electronic Dreams",
+                src: "https://cdn.pixabay.com/audio/2022/08/02/audio_884fe92c21.mp3"
             }
         ];
 
@@ -106,6 +111,133 @@
         // Current state
         let currentView = 'home';
         let typingInterval;
+
+        // Music Player State
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let audio = new Audio();
+        let isMuted = false;
+
+        // Initialize Music Player
+        function initMusicPlayer() {
+            audio.volume = 0.5;
+            audio.addEventListener('ended', playNextTrack);
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('loadedmetadata', () => {
+                updateTrackInfo();
+            });
+            loadTrack(currentTrackIndex);
+        }
+
+        function loadTrack(index) {
+            currentTrackIndex = index;
+            const track = musicTracks[index];
+            audio.src = track.src;
+            updateTrackInfo();
+        }
+
+        function updateTrackInfo() {
+            const track = musicTracks[currentTrackIndex];
+            const titleEl = document.getElementById('currentTrackTitle');
+            const artistEl = document.getElementById('currentTrackArtist');
+            if (titleEl) titleEl.textContent = track.title;
+            if (artistEl) artistEl.textContent = track.artist;
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                updatePlayButton();
+            } else {
+                audio.play().catch(e => console.log('Playback failed:', e));
+                isPlaying = true;
+                updatePlayButton();
+            }
+        }
+
+        function updatePlayButton() {
+            const playBtn = document.querySelector('.play-btn');
+            if (playBtn) {
+                playBtn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
+            }
+        }
+
+        function playNextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % musicTracks.length;
+            loadTrack(currentTrackIndex);
+            if (isPlaying) {
+                audio.play().catch(e => console.log('Playback failed:', e));
+            }
+        }
+
+        function playPrevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + musicTracks.length) % musicTracks.length;
+            loadTrack(currentTrackIndex);
+            if (isPlaying) {
+                audio.play().catch(e => console.log('Playback failed:', e));
+            }
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            audio.muted = isMuted;
+            const muteBtn = document.querySelector('.volume-btn');
+            if (muteBtn) {
+                muteBtn.innerHTML = isMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            }
+        }
+
+        function setVolume(value) {
+            audio.volume = value / 100;
+            if (value > 0 && isMuted) {
+                isMuted = false;
+                audio.muted = false;
+                const muteBtn = document.querySelector('.volume-btn');
+                if (muteBtn) {
+                    muteBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }
+            }
+        }
+
+        function updateProgress() {
+            const progressFill = document.querySelector('.progress-fill');
+            const currentTimeEl = document.querySelector('.current-time');
+            const durationEl = document.querySelector('.duration-time');
+            
+            if (progressFill && audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+            }
+            
+            if (currentTimeEl) {
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+            if (durationEl && audio.duration) {
+                durationEl.textContent = formatTime(audio.duration);
+            }
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function seekTrack(e) {
+            const progressBar = e.currentTarget;
+            const clickX = e.offsetX;
+            const width = progressBar.offsetWidth;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / width) * duration;
+        }
+
+        function toggleMusicPlayer() {
+            const player = document.querySelector('.music-player');
+            if (player) {
+                player.classList.toggle('visible');
+            }
+        }
 
         // Router functionality
         class Router {
@@ -518,6 +650,9 @@
             }
             changeTheme(savedTheme);
             
+            // Initialize music player
+            initMusicPlayer();
+            
             console.log('Portfolio Hub loaded successfully!');
         });
 
@@ -537,6 +672,9 @@
                     themeSelector.value = savedTheme;
                     changeTheme(savedTheme);
                 }
+                
+                // Initialize music player
+                initMusicPlayer();
                 
                 console.log('Portfolio Hub initialized!');
             }, 100);
