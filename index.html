@@ -121,13 +121,51 @@
         </div>
     </div>
 
-    <audio id="backgroundMusic" loop>
-        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music1.mp3" type="audio/mpeg">
-    </audio>
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="track-info">
+            <div class="track-art">
+                <i class="fas fa-music"></i>
+            </div>
+            <div class="track-details">
+                <div class="track-title" id="currentTrackTitle">Track Title</div>
+                <div class="track-artist" id="currentTrackArtist">Artist Name</div>
+            </div>
+        </div>
+        
+        <div style="flex: 1;">
+            <div class="player-controls">
+                <button class="control-btn" onclick="playPrevTrack()">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="control-btn play-btn" onclick="togglePlay()">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="control-btn" onclick="playNextTrack()">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            <div class="progress-container">
+                <span class="time current-time">0:00</span>
+                <div class="progress-bar" onclick="seekTrack(event)">
+                    <div class="progress-fill"></div>
+                </div>
+                <span class="time duration-time">0:00</span>
+            </div>
+        </div>
+        
+        <div class="volume-controls">
+            <button class="volume-btn" onclick="toggleMute()">
+                <i class="fas fa-volume-up"></i>
+            </button>
+            <input type="range" class="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)">
+        </div>
+    </div>
     
-    <audio id="backgroundMusic2" loop>
-        <source src="https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3" type="audio/mpeg">
-    </audio>
+    <button class="music-toggle" onclick="toggleMusicPlayer()">
+        <i class="fas fa-music"></i>
+    </button>
+
 <script src="script.js"></script>
 </body>
 </html>
