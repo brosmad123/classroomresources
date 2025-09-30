@@ -6,7 +6,7 @@
                 src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
             },
             {
-                title: "Ambient Dreams",
+                title: "Ambient Beets",
                 artist: "Ambient Music",
                 src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3"
             },
