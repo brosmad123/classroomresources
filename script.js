@@ -68,24 +68,32 @@ let settingsState = {
     autoplay: true
 };
 
-// Load settings from localStorage
+// In-memory storage (replaces localStorage)
+const memoryStorage = {
+    volume: 50,
+    selectedTheme: 'dark',
+    animations: true,
+    autoplay: true,
+    customTheme: null
+};
+
+// Load settings from memory
 function loadSettings() {
-    const saved = {
-        volume: parseInt(localStorage.getItem('volume')) || 50,
-        theme: localStorage.getItem('selectedTheme') || 'dark',
-        animations: localStorage.getItem('animations') !== 'false',
-        autoplay: localStorage.getItem('autoplay') !== 'false'
+    settingsState = {
+        volume: memoryStorage.volume,
+        theme: memoryStorage.selectedTheme,
+        animations: memoryStorage.animations,
+        autoplay: memoryStorage.autoplay
     };
-    settingsState = saved;
-    return saved;
+    return settingsState;
 }
 
-// Save settings to localStorage
+// Save settings to memory
 function saveSettings() {
-    localStorage.setItem('volume', settingsState.volume);
-    localStorage.setItem('selectedTheme', settingsState.theme);
-    localStorage.setItem('animations', settingsState.animations);
-    localStorage.setItem('autoplay', settingsState.autoplay);
+    memoryStorage.volume = settingsState.volume;
+    memoryStorage.selectedTheme = settingsState.theme;
+    memoryStorage.animations = settingsState.animations;
+    memoryStorage.autoplay = settingsState.autoplay;
 }
 
 // Settings Modal Functions
@@ -94,7 +102,6 @@ function openSettings() {
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
     
-    // Update settings UI with current values
     const volumeControl = document.getElementById('volumeControl');
     const volumeValue = document.getElementById('volumeValue');
     const themeSelect = document.getElementById('themeSelect');
@@ -126,7 +133,12 @@ function closeSettings() {
 
 function clearAllData() {
     if (confirm('Are you sure you want to clear all settings? This will reset everything to defaults.')) {
-        localStorage.clear();
+        memoryStorage.volume = 50;
+        memoryStorage.selectedTheme = 'dark';
+        memoryStorage.animations = true;
+        memoryStorage.autoplay = true;
+        memoryStorage.customTheme = null;
+        
         settingsState = {
             volume: 50,
             theme: 'dark',
@@ -232,7 +244,6 @@ function initMusicPlayer() {
     });
     loadTrack(currentTrackIndex);
     
-    // Attempt autoplay after a short delay
     setTimeout(() => {
         attemptAutoplay();
     }, 300);
@@ -377,7 +388,7 @@ function toggleMusicPlayer() {
     }
 }
 
-// Portfolio Data
+// Portfolio Data with enhanced buttons structure
 const portfolioData = {
     gurshaan: {
         name: "Gurshaan Gill",
@@ -398,7 +409,11 @@ const portfolioData = {
                 description: "Comprehensive history project including worksheet, presentation, and brochure.",
                 category: "HISTORY",
                 image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
-                isHistoryProject: true
+                buttons: [
+                    { label: "Brochure", icon: "fas fa-book", url: "https://www.canva.com/design/DAG0UMV_aNM/-HddDrUS1mLGw4GKLuBZPw/edit" },
+                    { label: "Presentation", icon: "fa-solid fa-computer", url: "https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit" },
+                    { label: "Worksheet", icon: "fas fa-file-alt", url: "https://github.com/brosmad123/classroomresources/blob/main/canadian-history-merged.pdf" }
+                ]
             },
             {
                 id: "gurshaan_news",
@@ -406,7 +421,9 @@ const portfolioData = {
                 description: "I have contributed to this newspaper, with my role being as an editor, and writer.",
                 category: "NEWS",
                 image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
-                url: "https://www.classresources.info/#/newspaper"
+                buttons: [
+                    { label: "View Newspaper", icon: "fas fa-newspaper", url: "https://www.classresources.info/#/newspaper" }
+                ]
             }
         ]
     },
@@ -429,7 +446,9 @@ const portfolioData = {
                 description: "Presentation shared with Gurshaan Gill.",
                 category: "HISTORY",
                 image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
-                isHistoryProject: true
+                buttons: [
+                    { label: "Presentation", icon: "fa-solid fa-computer", url: "https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit" }
+                ]
             },
             {
                 id: "harman_swamp",
@@ -437,7 +456,9 @@ const portfolioData = {
                 description: "This is my comprehensive guide to business, this was a trio project including Gurshaan Gill.",
                 category: "BUSINESS",
                 image: "https://www.bgateway.com/assets/images/general/_contentNarrow/Be-your-own-Boss.jpg",
-                url: "https://www.canva.com/design/DAG0fr6sxjk/S2mpkc4f9x1Y84y6CemFVg/edit?utm_content=DAG0fr6sxjk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
+                buttons: [
+                    { label: "View Project", icon: "fas fa-briefcase", url: "https://www.canva.com/design/DAG0fr6sxjk/S2mpkc4f9x1Y84y6CemFVg/edit" }
+                ]
             }
         ]
     },
@@ -460,7 +481,9 @@ const portfolioData = {
                 description: "This is the first issue of SWG News, issued on October 6th, 2025.",
                 category: "NEWS",
                 image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
-                url: "https://www.canva.com/design/DAG0UYFy6MA/0S5Sb5NovyP-Wn1a_OhCQg/edit?utm_content=DAG0UYFy6MA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
+                buttons: [
+                    { label: "Read Issue", icon: "fas fa-book-open", url: "https://www.canva.com/design/DAG0UYFy6MA/0S5Sb5NovyP-Wn1a_OhCQg/edit" }
+                ]
             }
         ]
     },
@@ -618,7 +641,6 @@ class Router {
             </div>
         `;
         
-        // Start typing animation
         startTyping(data.typingTexts);
     }
 
@@ -631,20 +653,14 @@ class Router {
     }
 }
 
-// Initialize router
 const router = new Router();
 
-// Project Modal Functions
+// Enhanced Project Modal Functions
 function openProjectModal(projectId, portfolioType) {
     const portfolio = portfolioData[portfolioType];
     const project = portfolio.projects.find(p => p.id === projectId);
     
     if (!project) return;
-    
-    if (project.isHistoryProject) {
-        openHistoryModal();
-        return;
-    }
     
     const modal = document.getElementById('projectModal');
     const title = document.getElementById('projectModalTitle');
@@ -656,11 +672,17 @@ function openProjectModal(projectId, portfolioType) {
     subtitle.textContent = project.category;
     description.textContent = project.description;
     
-    actions.innerHTML = `
-        <button class="project-modal-btn project-modal-button" onclick="window.open('${project.url}', '_blank')">
-            VIEW PROJECT
-        </button>
-    `;
+    // Generate buttons dynamically (1-5 buttons)
+    if (project.buttons && project.buttons.length > 0) {
+        actions.innerHTML = project.buttons.map(button => `
+            <button class="project-modal-btn" onclick="window.open('${button.url}', '_blank')">
+                <i class="${button.icon}"></i>
+                <span>${button.label}</span>
+            </button>
+        `).join('');
+    } else {
+        actions.innerHTML = '<p style="color: var(--text-secondary);">No links available</p>';
+    }
     
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
@@ -671,22 +693,12 @@ function closeProjectModal() {
     document.body.style.overflow = 'auto';
 }
 
-function openHistoryModal() {
-    document.getElementById('historyModal').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-
-function closeHistoryModal() {
-    document.getElementById('historyModal').style.display = 'none';
-    document.body.style.overflow = 'auto';
-}
-
 // Theme functions
 function changeTheme(theme) {
     if (theme === 'custom') {
-        const saved = localStorage.getItem('customTheme');
+        const saved = memoryStorage.customTheme;
         if (saved) {
-            applyCustomThemeFromData(JSON.parse(saved));
+            applyCustomThemeFromData(saved);
         } else {
             openThemeCreator();
             return;
@@ -759,7 +771,7 @@ function applyCustomTheme() {
     };
     
     applyCustomThemeFromData(theme);
-    localStorage.setItem('customTheme', JSON.stringify(theme));
+    memoryStorage.customTheme = theme;
     settingsState.theme = 'custom';
     saveSettings();
     
@@ -818,7 +830,6 @@ function showNotification(message, type) {
     }, 3000);
 }
 
-// Typing animation
 function startTyping(texts) {
     let textIndex = 0;
     let charIndex = 0;
@@ -863,7 +874,6 @@ function stopTyping() {
     }
 }
 
-// Event listeners
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal') || e.target.classList.contains('project-modal')) {
         e.target.style.display = 'none';
@@ -881,12 +891,9 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Load settings
     loadSettings();
     
-    // Set up volume control in settings
     const volumeControl = document.getElementById('volumeControl');
     const volumeValue = document.getElementById('volumeValue');
     if (volumeControl && volumeValue) {
@@ -897,7 +904,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Set up theme selector in settings
     const themeSelect = document.getElementById('themeSelect');
     if (themeSelect) {
         themeSelect.addEventListener('change', function() {
@@ -905,7 +911,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Set up animation toggle
     const animationToggle = document.getElementById('animationToggle');
     if (animationToggle) {
         animationToggle.addEventListener('change', function() {
@@ -919,7 +924,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Set up autoplay toggle
     const autoplayToggle = document.getElementById('autoplayToggle');
     if (autoplayToggle) {
         autoplayToggle.addEventListener('change', function() {
@@ -928,20 +932,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Apply saved theme
     changeTheme(settingsState.theme);
-    
-    // Initialize music player
     initMusicPlayer();
     
     console.log('Portfolio Hub loaded successfully!');
 });
 
-// Fallback initialization if DOMContentLoaded already fired
 if (document.readyState === 'loading') {
-    // Do nothing, DOMContentLoaded will fire
+    // DOMContentLoaded will fire
 } else {
-    // DOM already loaded
     setTimeout(() => {
         loadSettings();
         
