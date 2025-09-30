@@ -118,7 +118,7 @@ let isPlaying = false;
 let audio = new Audio();
 let isMuted = false;
 let fadeInterval = null;
-const FADE_DURATION = 1000; // 1 second fade
+const FADE_DURATION = 600; //imma test 600 ms
 
 // Fade audio volume
 function fadeVolume(targetVolume, duration, callback) {
