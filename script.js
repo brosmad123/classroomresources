@@ -6,24 +6,24 @@
                 src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
             },
             {
-                title: "Ambient Beets",
-                artist: "Ambient Music",
-                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3"
+                title: "Fuzzy Memories",
+                artist: "iColor",
+                src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
             },
             {
-                title: "Inspiring Cinematic",
-                artist: "Epic Music",
-                src: "https://cdn.pixabay.com/audio/2022/10/25/audio_f24c30b4f9.mp3"
+                title: "Kerosene",
+                artist: "Crystal Castles",
+                src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--Crystal-Castles-Kerosene-Instrumental.mp3"
             },
             {
-                title: "Peaceful Piano",
-                artist: "Piano Relaxation",
-                src: "https://cdn.pixabay.com/audio/2023/02/28/audio_1b96c9c9e5.mp3"
+                title: "Hopes & Dreams",
+                artist: "Toby Fox",
+                src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--087-Hopes-And-Dreams-UNDERTALE-Soundtrack-Toby-Fox.mp3"
             },
             {
-                title: "Electronic Vibes",
-                artist: "Electronic Dreams",
-                src: "https://cdn.pixabay.com/audio/2022/08/02/audio_884fe92c21.mp3"
+                title: "Mice on Venus",
+                artist: "C418",
+                src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
             }
         ];
 
