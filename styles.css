@@ -1076,7 +1076,7 @@ body {
     gap: 0.75rem;
     padding: 1.25rem 2rem;
     background: var(--accent);
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 12px;
     font-size: 0.95rem;
@@ -1085,9 +1085,42 @@ body {
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    box-shadow: 0 4px 15px var(--shadow);
     white-space: nowrap;
     min-height: 56px;
+}
+
+/* Ensure white text on all buttons regardless of theme */
+.project-modal-btn,
+.project-modal-btn:hover,
+.project-modal-btn:active {
+    color: #ffffff !important;
+}
+
+/* Light theme specific adjustments */
+[data-theme="light"] .project-modal-btn {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+[data-theme="light"] .project-modal-btn:nth-child(1) {
+    background: #0ea5e9;
+}
+
+[data-theme="light"] .project-modal-btn:nth-child(2) {
+    background: #8b5cf6;
+}
+
+[data-theme="light"] .project-modal-btn:nth-child(3) {
+    background: #ec4899;
+}
+
+[data-theme="light"] .project-modal-btn:nth-child(4) {
+    background: #06b6d4;
+}
+
+[data-theme="light"] .project-modal-btn:nth-child(5) {
+    background: #10b981;
 }
 
 .project-modal-btn:hover {
@@ -1210,4 +1243,69 @@ body {
     .project-modal-btn i {
         font-size: 1rem;
     }
+}
+/* Project Modal Header Theme Support */
+.project-modal-header {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+    padding: 2rem;
+    border-radius: 12px 12px 0 0;
+    margin: -2rem -2rem 0 -2rem;
+}
+
+.project-modal-title,
+.project-modal-subtitle {
+    color: #ffffff !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.project-modal-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.project-modal-subtitle {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.95;
+    font-weight: 600;
+}
+
+/* Light theme specific header adjustments */
+[data-theme="light"] .project-modal-header {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+}
+
+[data-theme="light"] .project-modal-title,
+[data-theme="light"] .project-modal-subtitle {
+    color: #ffffff;
+}
+
+/* Modal body adjustments */
+.project-modal-body {
+    padding: 2rem;
+}
+
+.project-modal-description {
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Modal content wrapper */
+.project-modal-content {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    max-width: 600px;
+    margin: 2rem auto;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Light theme modal background */
+[data-theme="light"] .project-modal-content {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
