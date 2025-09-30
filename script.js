@@ -36,6 +36,11 @@ const musicPlaylists = {
             src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
         },
         {
+            title: "In the Back of my Car",
+            artist: "D4VD",
+            src: "https://file.garden/aNtJgm887DiA_7s2/ssvid.net--d4vd-Romantic-Homicide-remix-tiktok-version.mp3.webm"
+        },
+        {
             title: "Nostalgia",
             artist: "Alan Walker",
             src: "https://file.garden/aNtJgm887DiA_7s2/ssvid.net--Alan-Walker-Spectre-NCS-Release.mp3"
