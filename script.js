@@ -430,6 +430,14 @@ const portfolioData = {
                 category: "HISTORY",
                 image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
                 isHistoryProject: true
+            },
+            {
+                id: "harman_swamp",
+                title: "Business Project",
+                description: "This is my comprehensive guide to business, this was a trio project including Gurshaan Gill.",
+                category: "BUSINESS",
+                image: "https://www.bgateway.com/assets/images/general/_contentNarrow/Be-your-own-Boss.jpg",
+                url: "https://www.canva.com/design/DAG0fr6sxjk/S2mpkc4f9x1Y84y6CemFVg/edit?utm_content=DAG0fr6sxjk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
             }
         ]
     },
