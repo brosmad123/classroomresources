@@ -19,6 +19,11 @@ const musicPlaylists = {
             src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
         },
         {
+            title: "Hopes & Dreams",
+            artist: "Toby Fox",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--087-Hopes-And-Dreams-UNDERTALE-Soundtrack-Toby-Fox.mp3"
+        },
+        {
             title: "Mice on Venus",
             artist: "C418",
             src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
