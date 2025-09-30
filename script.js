@@ -8,7 +8,7 @@
             {
                 title: "Ambient Dreams",
                 artist: "Ambient Music",
-                src: "https://cdn.pixabay.com/audio/2022/03/10/audio_c49bd89526.mp3"
+                src: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/music2.mp3"
             },
             {
                 title: "Inspiring Cinematic",
