@@ -1,31 +1,57 @@
-// Music playlist using online royalty-free music
-const musicTracks = [
-    {
-        title: "Chill Lofi Beat",
-        artist: "Lofi Girl",
-        src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
-    },
-    {
-        title: "Fuzzy Memories",
-        artist: "iColor",
-        src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
-    },
-    {
-        title: "Kerosene",
-        artist: "Crystal Castles",
-        src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--Crystal-Castles-Kerosene-Instrumental.mp3"
-    },
-    {
-        title: "Hopes & Dreams",
-        artist: "Toby Fox",
-        src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--087-Hopes-And-Dreams-UNDERTALE-Soundtrack-Toby-Fox.mp3"
-    },
-    {
-        title: "Mice on Venus",
-        artist: "C418",
-        src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
-    }
-];
+// Music playlists for different sections
+const musicPlaylists = {
+    home: [
+        {
+            title: "Chill Lofi Beat",
+            artist: "Lofi Girl",
+            src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
+        },
+        {
+            title: "Fuzzy Memories",
+            artist: "iColor",
+            src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
+        }
+    ],
+    gurshaan: [
+        {
+            title: "Kerosene",
+            artist: "Crystal Castles",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--Crystal-Castles-Kerosene-Instrumental.mp3"
+        },
+        {
+            title: "Hopes & Dreams",
+            artist: "Toby Fox",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--087-Hopes-And-Dreams-UNDERTALE-Soundtrack-Toby-Fox.mp3"
+        }
+    ],
+    harman: [
+        {
+            title: "Mice on Venus",
+            artist: "C418",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
+        },
+        {
+            title: "Chill Lofi Beat",
+            artist: "Lofi Girl",
+            src: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3"
+        }
+    ],
+    newspaper: [
+        {
+            title: "Fuzzy Memories",
+            artist: "iColor",
+            src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
+        },
+        {
+            title: "Kerosene",
+            artist: "Crystal Castles",
+            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--Crystal-Castles-Kerosene-Instrumental.mp3"
+        }
+    ]
+};
+
+let currentPlaylist = 'home';
+let musicTracks = musicPlaylists[currentPlaylist];
 
 // Portfolio Data
 const portfolioData = {
@@ -118,9 +144,25 @@ let isPlaying = false;
 let audio = new Audio();
 let isMuted = false;
 let fadeInterval = null;
-const FADE_DURATION = 600; //imma test 600 ms
+const FADE_DURATION = 1000; // 1 second fade
 
-// Fade audio volume
+// Function to switch playlist based on current view
+function switchPlaylist(newPlaylist) {
+    if (currentPlaylist === newPlaylist) return;
+    
+    const wasPlaying = isPlaying;
+    currentPlaylist = newPlaylist;
+    musicTracks = musicPlaylists[currentPlaylist];
+    currentTrackIndex = 0;
+    
+    if (wasPlaying) {
+        fadeVolume(0, FADE_DURATION, () => {
+            loadTrack(0, true);
+        });
+    } else {
+        loadTrack(0);
+    }
+}
 function fadeVolume(targetVolume, duration, callback) {
     if (fadeInterval) clearInterval(fadeInterval);
     
@@ -315,6 +357,7 @@ class Router {
     showHome() {
         currentView = 'home';
         stopTyping();
+        switchPlaylist('home');
         document.getElementById('mainContent').innerHTML = `
             <div class="home-container">
                 <h1 class="title">Class Resources</h1>
@@ -345,6 +388,7 @@ class Router {
 
     showPortfolio(type) {
         currentView = type;
+        switchPlaylist(type);
         const data = portfolioData[type];
         
         document.getElementById('mainContent').innerHTML = `
