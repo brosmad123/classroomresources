@@ -144,7 +144,9 @@ let isPlaying = false;
 let audio = new Audio();
 let isMuted = false;
 let fadeInterval = null;
-const FADE_DURATION = 1000; // 1 second fade
+const FADE_DURATION = 1000; // 1 second fade for track changes
+const PLAY_PAUSE_FADE = 400; // 0.4 second fade for play/pause
+let targetVolume = 0.5; // Store the target volume
 
 // Function to switch playlist based on current view
 function switchPlaylist(newPlaylist) {
@@ -186,13 +188,30 @@ function fadeVolume(targetVolume, duration, callback) {
 
 // Initialize Music Player
 function initMusicPlayer() {
-    audio.volume = 0.5;
+    audio.volume = 0;
+    targetVolume = 0.5;
     audio.addEventListener('ended', playNextTrack);
     audio.addEventListener('timeupdate', updateProgress);
     audio.addEventListener('loadedmetadata', () => {
         updateTrackInfo();
     });
     loadTrack(currentTrackIndex);
+}
+
+// Autoplay function - called on first user interaction
+function startAutoplay() {
+    if (!isPlaying && !window.autoplayStarted) {
+        window.autoplayStarted = true;
+        audio.volume = 0;
+        audio.play().then(() => {
+            isPlaying = true;
+            fadeVolume(targetVolume, PLAY_PAUSE_FADE);
+            updatePlayButton();
+        }).catch(e => {
+            console.log('Autoplay failed:', e);
+            // If autoplay fails, user will need to click play button
+        });
+    }
 }
 
 function loadTrack(index, fadeIn = false) {
@@ -204,7 +223,7 @@ function loadTrack(index, fadeIn = false) {
     if (fadeIn && isPlaying) {
         audio.volume = 0;
         audio.play().then(() => {
-            fadeVolume(0.5, FADE_DURATION);
+            fadeVolume(targetVolume, FADE_DURATION);
         }).catch(e => console.log('Playback failed:', e));
     }
 }
@@ -219,13 +238,18 @@ function updateTrackInfo() {
 
 function togglePlay() {
     if (isPlaying) {
-        audio.pause();
-        isPlaying = false;
-        updatePlayButton();
+        fadeVolume(0, PLAY_PAUSE_FADE, () => {
+            audio.pause();
+            isPlaying = false;
+            updatePlayButton();
+        });
     } else {
-        audio.play().catch(e => console.log('Playback failed:', e));
-        isPlaying = true;
-        updatePlayButton();
+        audio.volume = 0;
+        audio.play().then(() => {
+            isPlaying = true;
+            fadeVolume(targetVolume, PLAY_PAUSE_FADE);
+            updatePlayButton();
+        }).catch(e => console.log('Playback failed:', e));
     }
 }
 
@@ -270,7 +294,8 @@ function toggleMute() {
 }
 
 function setVolume(value) {
-    audio.volume = value / 100;
+    targetVolume = value / 100;
+    audio.volume = targetVolume;
     if (value > 0 && isMuted) {
         isMuted = false;
         audio.muted = false;
