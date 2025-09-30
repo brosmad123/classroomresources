@@ -48,9 +48,9 @@ const musicPlaylists = {
             src: "https://file.garden/aNtJgm887DiA_7s2/background-music.mp3"
         },
         {
-            title: "Kerosene",
-            artist: "Crystal Castles",
-            src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--Crystal-Castles-Kerosene-Instrumental.mp3"
+            title: "Relaxed Scene",
+            artist: "James Clarke",
+            src: "https://file.garden/aNtJgm887DiA_7s2/Relaxed%20Scene.mp3"
         }
     ]
 };
