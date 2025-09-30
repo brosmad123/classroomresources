@@ -146,12 +146,13 @@ let typingInterval;
 // Music Player State
 let currentTrackIndex = 0;
 let isPlaying = false;
+let isMusicPlayerOpen = false;
 let audio = new Audio();
 let isMuted = false;
 let fadeInterval = null;
-const FADE_DURATION = 1000; // 1 second fade for track changes
-const PLAY_PAUSE_FADE = 400; // 0.4 second fade for play/pause
-let targetVolume = 0.5; // Store the target volume
+const FADE_DURATION = 1000;
+const PLAY_PAUSE_FADE = 400;
+let targetVolume = 0.5;
 
 // Function to switch playlist based on current view
 function switchPlaylist(newPlaylist) {
@@ -170,18 +171,19 @@ function switchPlaylist(newPlaylist) {
         loadTrack(0);
     }
 }
-function fadeVolume(targetVolume, duration, callback) {
+
+function fadeVolume(targetVol, duration, callback) {
     if (fadeInterval) clearInterval(fadeInterval);
     
     const startVolume = audio.volume;
-    const volumeStep = (targetVolume - startVolume) / (duration / 50);
+    const volumeStep = (targetVol - startVolume) / (duration / 50);
     let currentStep = 0;
     const steps = duration / 50;
     
     fadeInterval = setInterval(() => {
         currentStep++;
         if (currentStep >= steps) {
-            audio.volume = Math.max(0, Math.min(1, targetVolume));
+            audio.volume = Math.max(0, Math.min(1, targetVol));
             clearInterval(fadeInterval);
             fadeInterval = null;
             if (callback) callback();
@@ -193,30 +195,23 @@ function fadeVolume(targetVolume, duration, callback) {
 
 // Initialize Music Player
 function initMusicPlayer() {
-    audio.volume = 0;
-    targetVolume = 0.5;
+    audio.volume = targetVolume;
     audio.addEventListener('ended', playNextTrack);
     audio.addEventListener('timeupdate', updateProgress);
     audio.addEventListener('loadedmetadata', () => {
         updateTrackInfo();
     });
     loadTrack(currentTrackIndex);
-}
-
-// Autoplay function - called on first user interaction
-function startAutoplay() {
-    if (!isPlaying && !window.autoplayStarted) {
-        window.autoplayStarted = true;
-        audio.volume = 0;
+    
+    // Auto-play music on page load
+    setTimeout(() => {
         audio.play().then(() => {
             isPlaying = true;
-            fadeVolume(targetVolume, PLAY_PAUSE_FADE);
             updatePlayButton();
         }).catch(e => {
-            console.log('Autoplay failed:', e);
-            // If autoplay fails, user will need to click play button
+            console.log('Autoplay prevented:', e);
         });
-    }
+    }, 500);
 }
 
 function loadTrack(index, fadeIn = false) {
@@ -344,9 +339,14 @@ function seekTrack(e) {
 }
 
 function toggleMusicPlayer() {
-    const player = document.querySelector('.music-player');
+    const player = document.getElementById('musicPlayer');
     if (player) {
-        player.classList.toggle('visible');
+        isMusicPlayerOpen = !isMusicPlayerOpen;
+        if (isMusicPlayerOpen) {
+            player.classList.add('visible');
+        } else {
+            player.classList.remove('visible');
+        }
     }
 }
 
@@ -728,12 +728,6 @@ document.addEventListener('click', function(e) {
         e.target.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
-    
-    // Enable audio context on first user interaction
-    if (!window.audioContextStarted) {
-        window.audioContextStarted = true;
-        console.log('User interaction detected - audio enabled');
-    }
 });
 
 document.addEventListener('keydown', function(e) {
@@ -771,24 +765,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Fallback initialization if DOMContentLoaded already fired
 if (document.readyState === 'loading') {
-    // Do nothing, DOMContentLoaded will fire
+    // Do nothing, DOMContentLoade
 } else {
+
     // DOM already loaded
+
     setTimeout(() => {
+
         const themeSelector = document.getElementById('themeSelector');
+
         if (themeSelector) {
+
             themeSelector.addEventListener('change', function() {
+
                 changeTheme(this.value);
+
             });
+
             
+
             const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+
             themeSelector.value = savedTheme;
+
             changeTheme(savedTheme);
+
         }
+
         
+
         // Initialize music player
+
         initMusicPlayer();
+
         
+
         console.log('Portfolio Hub initialized!');
+
     }, 100);
+
 }
+
