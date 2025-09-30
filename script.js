@@ -38,7 +38,7 @@ const musicPlaylists = {
         {
             title: "In the Back of my Car",
             artist: "D4VD",
-            src: "https://file.garden/aNtJgm887DiA_7s2/ssvid.net--d4vd-Romantic-Homicide-remix-tiktok-version.mp3.webm"
+            src: "https://file.garden/aNtJgm887DiA_7s2/d4vd%20-%20Romantic%20Homicide%20_%20remix%20(tiktok%20version).mp3"
         },
         {
             title: "Nostalgia",
