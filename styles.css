@@ -1249,13 +1249,13 @@ body {
     background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
     padding: 2rem;
     border-radius: 12px 12px 0 0;
-    margin: -2rem -2rem 0 -2rem;
 }
 
 .project-modal-title,
 .project-modal-subtitle {
     color: #ffffff !important;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin: 0;
 }
 
 .project-modal-title {
@@ -1279,18 +1279,50 @@ body {
 
 [data-theme="light"] .project-modal-title,
 [data-theme="light"] .project-modal-subtitle {
-    color: #ffffff;
+    color: #ffffff !important;
+}
+
+/* Dark theme header */
+[data-theme="dark"] .project-modal-header {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+}
+
+/* Neon theme header */
+[data-theme="neon"] .project-modal-header {
+    background: linear-gradient(135deg, #ff006e 0%, #8338ec 100%);
+}
+
+/* Ocean theme header */
+[data-theme="ocean"] .project-modal-header {
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
 }
 
 /* Modal body adjustments */
 .project-modal-body {
     padding: 2rem;
+    background: var(--bg-card);
 }
 
 .project-modal-description {
     color: var(--text-primary);
     line-height: 1.6;
     font-size: 1rem;
+    margin-bottom: 0;
+}
+
+/* Light theme body */
+[data-theme="light"] .project-modal-body {
+    background: #ffffff;
+    color: #1f2937;
+}
+
+[data-theme="light"] .project-modal-description {
+    color: #4b5563;
+}
+
+/* Dark theme body */
+[data-theme="dark"] .project-modal-body {
+    background: rgba(15, 15, 35, 0.95);
 }
 
 /* Modal content wrapper */
@@ -1302,10 +1334,30 @@ body {
     margin: 2rem auto;
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 20px 60px var(--shadow);
 }
 
 /* Light theme modal background */
 [data-theme="light"] .project-modal-content {
     background: #ffffff;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark theme modal */
+[data-theme="dark"] .project-modal-content {
+    background: rgba(20, 20, 40, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Neon theme modal */
+[data-theme="neon"] .project-modal-content {
+    background: rgba(10, 10, 30, 0.95);
+    border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+/* Ocean theme modal */
+[data-theme="ocean"] .project-modal-content {
+    background: rgba(15, 30, 45, 0.95);
+    border: 1px solid rgba(6, 182, 212, 0.3);
 }
