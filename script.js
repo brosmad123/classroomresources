@@ -1,4 +1,36 @@
-// Music playlists for different sections
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Set up theme selector
+    const themeSelector = document.getElementById('themeSelector');
+    if (themeSelector) {
+        themeSelector.addEventListener('change', function() {
+            changeTheme(this.value);
+        });
+    }
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+    if (themeSelector) {
+        themeSelector.value = savedTheme;
+    }
+    changeTheme(savedTheme);
+    
+    // Initialize music player
+    initMusicPlayer();
+    
+    // Setup settings listeners
+    setupSettingsListeners();
+    
+    // Load saved settings
+    animationsEnabled = localStorage.getItem('animationsEnabled') !== 'false';
+    autoplayEnabled = localStorage.getItem('autoplayEnabled') !== 'false';
+    
+    console.log('Portfolio Hub loaded successfully!');
+});
+
+// Fallback initialization if DOMContentLoaded already fired
+if (document.readyState === 'loading') {
+    // Do nothing, DOMContentLoaded will fire// Music playlists for different sections
 const musicPlaylists = {
     home: [
         {
@@ -164,10 +196,12 @@ const FADE_DURATION = 1000;
 const PLAY_PAUSE_FADE = 400;
 let targetVolume = 0.5;
 let autoplayAttempted = false;
+let animationsEnabled = true;
+let autoplayEnabled = true;
 
 // Function to attempt autoplay
 function attemptAutoplay() {
-    if (autoplayAttempted) return;
+    if (autoplayAttempted || !autoplayEnabled) return;
     autoplayAttempted = true;
     
     audio.play().then(() => {
@@ -592,6 +626,101 @@ function closeHistoryModal() {
     document.body.style.overflow = 'auto';
 }
 
+// Settings functions
+function openSettings() {
+    document.getElementById('settingsModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    loadSettings();
+}
+
+function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function loadSettings() {
+    // Load volume
+    const volumeControl = document.getElementById('volumeControl');
+    const volumeValue = document.getElementById('volumeValue');
+    if (volumeControl) {
+        volumeControl.value = targetVolume * 100;
+        volumeValue.textContent = Math.round(targetVolume * 100) + '%';
+    }
+    
+    // Load theme
+    const themeSelect = document.getElementById('themeSelect');
+    const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
+    if (themeSelect) {
+        themeSelect.value = savedTheme;
+    }
+    
+    // Load animation setting
+    animationsEnabled = localStorage.getItem('animationsEnabled') !== 'false';
+    const animationToggle = document.getElementById('animationToggle');
+    if (animationToggle) {
+        animationToggle.checked = animationsEnabled;
+    }
+    
+    // Load autoplay setting
+    autoplayEnabled = localStorage.getItem('autoplayEnabled') !== 'false';
+    const autoplayToggle = document.getElementById('autoplayToggle');
+    if (autoplayToggle) {
+        autoplayToggle.checked = autoplayEnabled;
+    }
+}
+
+function setupSettingsListeners() {
+    // Volume control
+    const volumeControl = document.getElementById('volumeControl');
+    const volumeValue = document.getElementById('volumeValue');
+    if (volumeControl) {
+        volumeControl.addEventListener('input', function() {
+            const value = this.value;
+            setVolume(value);
+            volumeValue.textContent = value + '%';
+        });
+    }
+    
+    // Theme selector
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) {
+        themeSelect.addEventListener('change', function() {
+            changeTheme(this.value);
+        });
+    }
+    
+    // Animation toggle
+    const animationToggle = document.getElementById('animationToggle');
+    if (animationToggle) {
+        animationToggle.addEventListener('change', function() {
+            animationsEnabled = this.checked;
+            localStorage.setItem('animationsEnabled', animationsEnabled);
+            document.body.style.setProperty('--animation-speed', animationsEnabled ? '1' : '0');
+            showNotification(animationsEnabled ? 'Animations enabled' : 'Animations disabled', 'success');
+        });
+    }
+    
+    // Autoplay toggle
+    const autoplayToggle = document.getElementById('autoplayToggle');
+    if (autoplayToggle) {
+        autoplayToggle.addEventListener('change', function() {
+            autoplayEnabled = this.checked;
+            localStorage.setItem('autoplayEnabled', autoplayEnabled);
+            showNotification(autoplayEnabled ? 'Autoplay enabled' : 'Autoplay disabled', 'success');
+        });
+    }
+}
+
+function clearAllData() {
+    if (confirm('Are you sure you want to clear all settings? This will reset the site to default settings.')) {
+        localStorage.clear();
+        showNotification('All settings cleared! Reloading...', 'success');
+        setTimeout(() => {
+            location.reload();
+        }, 1500);
+    }
+}
+
 // Theme functions
 function changeTheme(theme) {
     if (theme === 'custom') {
@@ -829,6 +958,13 @@ if (document.readyState === 'loading') {
         
         // Initialize music player
         initMusicPlayer();
+        
+        // Setup settings listeners
+        setupSettingsListeners();
+        
+        // Load saved settings
+        animationsEnabled = localStorage.getItem('animationsEnabled') !== 'false';
+        autoplayEnabled = localStorage.getItem('autoplayEnabled') !== 'false';
         
         console.log('Portfolio Hub initialized!');
     }, 100);
