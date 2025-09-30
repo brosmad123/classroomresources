@@ -1114,64 +1114,90 @@ body {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
+        gap: 1.5rem;
+        padding: 0;
     }
     
     .project-modal-btn {
-        flex: 1;
-        min-width: 200px;
-        max-width: 300px;
+        flex: 0 1 calc(50% - 0.75rem);
+        min-width: 220px;
+        max-width: 320px;
     }
     
-    /* Single button - full width */
+    /* Single button - centered */
     .project-modal-actions:has(.project-modal-btn:only-child) {
         justify-content: center;
     }
     
     .project-modal-actions:has(.project-modal-btn:only-child) .project-modal-btn {
+        flex: 0 1 auto;
         max-width: 400px;
     }
     
-    /* Two buttons - half width each */
-    .project-modal-actions:has(.project-modal-btn:nth-child(2):last-child) .project-modal-btn {
-        flex: 1 1 45%;
+    /* Three buttons - wrap properly */
+    .project-modal-actions:has(.project-modal-btn:nth-child(3):last-child) .project-modal-btn {
+        flex: 0 1 calc(50% - 0.75rem);
+    }
+    
+    .project-modal-actions:has(.project-modal-btn:nth-child(3):last-child) .project-modal-btn:nth-child(3) {
+        flex: 0 1 100%;
+        max-width: 400px;
     }
 }
 
 /* Alternative color schemes for different button positions */
+.project-modal-btn:nth-child(1) {
+    background: var(--accent);
+    box-shadow: 0 4px 15px var(--shadow);
+}
+
+.project-modal-btn:nth-child(1):hover {
+    background: var(--accent-hover);
+    box-shadow: 0 6px 20px var(--shadow);
+}
+
 .project-modal-btn:nth-child(2) {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    background: var(--accent);
+    filter: hue-rotate(30deg) brightness(1.1);
+    box-shadow: 0 4px 15px var(--shadow);
 }
 
 .project-modal-btn:nth-child(2):hover {
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    filter: hue-rotate(30deg) brightness(1.2);
+    box-shadow: 0 6px 20px var(--shadow);
 }
 
 .project-modal-btn:nth-child(3) {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+    background: var(--accent);
+    filter: hue-rotate(60deg) brightness(1.1);
+    box-shadow: 0 4px 15px var(--shadow);
 }
 
 .project-modal-btn:nth-child(3):hover {
-    box-shadow: 0 6px 20px rgba(240, 147, 251, 0.4);
+    filter: hue-rotate(60deg) brightness(1.2);
+    box-shadow: 0 6px 20px var(--shadow);
 }
 
 .project-modal-btn:nth-child(4) {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    background: var(--accent);
+    filter: hue-rotate(90deg) brightness(1.1);
+    box-shadow: 0 4px 15px var(--shadow);
 }
 
 .project-modal-btn:nth-child(4):hover {
-    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+    filter: hue-rotate(90deg) brightness(1.2);
+    box-shadow: 0 6px 20px var(--shadow);
 }
 
 .project-modal-btn:nth-child(5) {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    box-shadow: 0 4px 15px rgba(67, 233, 123, 0.3);
+    background: var(--accent);
+    filter: hue-rotate(120deg) brightness(1.1);
+    box-shadow: 0 4px 15px var(--shadow);
 }
 
 .project-modal-btn:nth-child(5):hover {
-    box-shadow: 0 6px 20px rgba(67, 233, 123, 0.4);
+    filter: hue-rotate(120deg) brightness(1.2);
+    box-shadow: 0 6px 20px var(--shadow);
 }
 
 /* Mobile responsive */
