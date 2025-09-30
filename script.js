@@ -46,8 +46,8 @@
                         isHistoryProject: true
                     },
                     {
-                        id: "SWG News",
-                        title: "SWG NEWS ISSUE #1",
+                        id: "gurshaan_news",
+                        title: "SWG NEWS",
                         description: "I have contributed to this newspaper, with my role being as an editor, and writer.",
                         category: "NEWS",
                         image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
