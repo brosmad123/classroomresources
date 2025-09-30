@@ -153,6 +153,32 @@ let fadeInterval = null;
 const FADE_DURATION = 1000;
 const PLAY_PAUSE_FADE = 400;
 let targetVolume = 0.5;
+let autoplayAttempted = false;
+
+// Function to attempt autoplay
+function attemptAutoplay() {
+    if (autoplayAttempted) return;
+    autoplayAttempted = true;
+    
+    audio.play().then(() => {
+        isPlaying = true;
+        updatePlayButton();
+        console.log('Music autoplay started successfully');
+    }).catch(e => {
+        console.log('Autoplay blocked by browser. User interaction needed.');
+        // Show a subtle notification or enable play on first click
+        document.addEventListener('click', function enableAudioOnFirstClick() {
+            if (!isPlaying) {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    updatePlayButton();
+                    console.log('Music started after user interaction');
+                }).catch(err => console.log('Failed to start music:', err));
+            }
+            document.removeEventListener('click', enableAudioOnFirstClick);
+        }, { once: true });
+    });
+}
 
 // Function to switch playlist based on current view
 function switchPlaylist(newPlaylist) {
@@ -203,15 +229,10 @@ function initMusicPlayer() {
     });
     loadTrack(currentTrackIndex);
     
-    // Auto-play music on page load
+    // Attempt autoplay after a short delay
     setTimeout(() => {
-        audio.play().then(() => {
-            isPlaying = true;
-            updatePlayButton();
-        }).catch(e => {
-            console.log('Autoplay prevented:', e);
-        });
-    }, 500);
+        attemptAutoplay();
+    }, 300);
 }
 
 function loadTrack(index, fadeIn = false) {
@@ -765,44 +786,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Fallback initialization if DOMContentLoaded already fired
 if (document.readyState === 'loading') {
-    // Do nothing, DOMContentLoade
+    // Do nothing, DOMContentLoaded will fire
 } else {
-
     // DOM already loaded
-
     setTimeout(() => {
-
         const themeSelector = document.getElementById('themeSelector');
-
         if (themeSelector) {
-
             themeSelector.addEventListener('change', function() {
-
                 changeTheme(this.value);
-
             });
-
             
-
             const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
-
             themeSelector.value = savedTheme;
-
             changeTheme(savedTheme);
-
         }
-
         
-
         // Initialize music player
-
         initMusicPlayer();
-
         
-
         console.log('Portfolio Hub initialized!');
-
     }, 100);
-
 }
-
