@@ -1,6 +1,6 @@
 // Music playlists for different sections
 const musicPlaylists = {
-    home: [
+home: [
         {
             title: "Hopes & Dreams",
             artist: "Toby Fox",
@@ -228,6 +228,13 @@ function initMusicPlayer() {
         updateTrackInfo();
     });
     loadTrack(currentTrackIndex);
+    
+    // Open music player UI automatically
+    const player = document.getElementById('musicPlayer');
+    if (player) {
+        player.classList.add('visible');
+        isMusicPlayerOpen = true;
+    }
     
     // Attempt autoplay after a short delay
     setTimeout(() => {
