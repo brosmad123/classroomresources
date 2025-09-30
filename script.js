@@ -35,7 +35,7 @@
                 fullName: "Hi, I'm Gurshaan Gill, a",
                 typingTexts: ["Developer.", "Writer.", "Creator."],
                 description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2012. I have been developing with HTML for a year, with my general development starting in 2022.",
-                avatar: "https://i.ibb.co/HQ0VXRq/IMG-0690-removebg-preview.png",
+                avatar: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/IMG_0690-removebg-preview.png",
                 socialLinks: [
                     { icon: "fab fa-github", url: "https://github.com/brosmad123" },
                     { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" }
