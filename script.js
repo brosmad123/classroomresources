@@ -60,96 +60,87 @@ const musicPlaylists = {
     ]
 };
 
-let currentPlaylist = 'home';
-let musicTracks = musicPlaylists[currentPlaylist];
-
-// Portfolio Data
-const portfolioData = {
-    gurshaan: {
-        name: "Gurshaan Gill",
-        greeting: "WELCOME TO A NEW WORLD",
-        fullName: "Hi, I'm Gurshaan Gill, a",
-        typingTexts: ["Developer.", "Writer.", "Creator."],
-        description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2012. I have been developing with HTML for a year, with my general development starting in 2022.",
-        avatar: "https://github.com/brosmad123/classroomresources/blob/main/IMG_1851-removebg-preview.png?raw=true",
-        socialLinks: [
-            { icon: "fab fa-github", url: "https://github.com/brosmad123" },
-            { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" }
-        ],
-        skills: ["fab fa-html5", "fa-solid fa-pen", "fa-solid fa-calculator"],
-        projects: [
-            {
-                id: "gurshaan_history",
-                title: "Canadian History Project",
-                description: "Comprehensive history project including worksheet, presentation, and brochure.",
-                category: "HISTORY",
-                image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
-                isHistoryProject: true
-            },
-            {
-                id: "gurshaan_news",
-                title: "SWG NEWSPAPER",
-                description: "I have contributed to this newspaper, with my role being as an editor, and writer.",
-                category: "NEWS",
-                image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
-                url: "https://www.classresources.info/#/newspaper"
-            }
-        ]
-    },
-    harman: {
-        name: "Harman Sidhu",
-        greeting: "WELCOME TO THE MATH WORLD",
-        fullName: "Hi, I'm Harman Sidhu, a",
-        typingTexts: ["Scholar.", "Mathematician.", "Locator."],
-        description: "I am 13 years old, my birthday is on October 24th, 2012. I am great at doing math and giving presentations. My dream school is Harvard.",
-        avatar: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/BeautyPlus-AI_FILTER-2025-09-29T00_58_43-1759107523348-removebg-preview.png",
-        socialLinks: [
-            { icon: "fab fa-github", url: "https://github.com/harman" },
-            { icon: "fab fa-instagram", url: "https://instagram.com/harman" }
-        ],
-        skills: ["fa-solid fa-flask", "fa-solid fa-square-xmark", "fas fa-chart-bar"],
-        projects: [
-            {
-                id: "harman_history",
-                title: "Canadian History Project",
-                description: "Presentation shared with Gurshaan Gill.",
-                category: "HISTORY",
-                image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
-                isHistoryProject: true
-            }
-        ]
-    },
-    newspaper: {
-        name: "Digital News Hub",
-        greeting: "Weekly School News",
-        fullName: "This is SWG News, ",
-        typingTexts: ["the best newspaper.", "your news source.", "bringing you stories."],
-        description: "We don't just provide news, we provide stories that can alter your perspective. Our information is gathered from many sources.",
-        avatar: "https://cdn.britannica.com/25/93825-050-D1300547/collection-newspapers.jpg",
-        socialLinks: [
-            { icon: "fab fa-twitter", url: "https://x.com/PeelSchools" },
-            { icon: "fab fa-instagram", url: "https://www.instagram.com/peelschools" }
-        ],
-        skills: ["fa-solid fa-newspaper"],
-        projects: [
-            {
-                id: "news_001",
-                title: "SWG NEWS ISSUE #1",
-                description: "This is the first issue of SWG News, issued on October 6th, 2025.",
-                category: "NEWS",
-                image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
-                url: "https://www.canva.com/design/DAG0UYFy6MA/0S5Sb5NovyP-Wn1a_OhCQg/edit?utm_content=DAG0UYFy6MA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
-            }
-        ]
-    },
-    guransh: {
-        name: "Guransh Dhaliwal",
-        isExternal: true,
-        externalUrl: "https://gsdhaliwal05.github.io/Portfolio/"
-    }
+// Settings State
+let settingsState = {
+    volume: 50,
+    theme: 'dark',
+    animations: true,
+    autoplay: true
 };
 
+// Load settings from localStorage
+function loadSettings() {
+    const saved = {
+        volume: parseInt(localStorage.getItem('volume')) || 50,
+        theme: localStorage.getItem('selectedTheme') || 'dark',
+        animations: localStorage.getItem('animations') !== 'false',
+        autoplay: localStorage.getItem('autoplay') !== 'false'
+    };
+    settingsState = saved;
+    return saved;
+}
+
+// Save settings to localStorage
+function saveSettings() {
+    localStorage.setItem('volume', settingsState.volume);
+    localStorage.setItem('selectedTheme', settingsState.theme);
+    localStorage.setItem('animations', settingsState.animations);
+    localStorage.setItem('autoplay', settingsState.autoplay);
+}
+
+// Settings Modal Functions
+function openSettings() {
+    const modal = document.getElementById('settingsModal');
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    // Update settings UI with current values
+    const volumeControl = document.getElementById('volumeControl');
+    const volumeValue = document.getElementById('volumeValue');
+    const themeSelect = document.getElementById('themeSelect');
+    const animationToggle = document.getElementById('animationToggle');
+    const autoplayToggle = document.getElementById('autoplayToggle');
+    
+    if (volumeControl) {
+        volumeControl.value = settingsState.volume;
+        volumeValue.textContent = settingsState.volume + '%';
+    }
+    
+    if (themeSelect) {
+        themeSelect.value = settingsState.theme;
+    }
+    
+    if (animationToggle) {
+        animationToggle.checked = settingsState.animations;
+    }
+    
+    if (autoplayToggle) {
+        autoplayToggle.checked = settingsState.autoplay;
+    }
+}
+
+function closeSettings() {
+    document.getElementById('settingsModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function clearAllData() {
+    if (confirm('Are you sure you want to clear all settings? This will reset everything to defaults.')) {
+        localStorage.clear();
+        settingsState = {
+            volume: 50,
+            theme: 'dark',
+            animations: true,
+            autoplay: true
+        };
+        saveSettings();
+        location.reload();
+    }
+}
+
 // Current state
+let currentPlaylist = 'home';
+let musicTracks = musicPlaylists[currentPlaylist];
 let currentView = 'home';
 let typingInterval;
 
@@ -167,7 +158,7 @@ let autoplayAttempted = false;
 
 // Function to attempt autoplay
 function attemptAutoplay() {
-    if (autoplayAttempted) return;
+    if (autoplayAttempted || !settingsState.autoplay) return;
     autoplayAttempted = true;
     
     audio.play().then(() => {
@@ -176,9 +167,8 @@ function attemptAutoplay() {
         console.log('Music autoplay started successfully');
     }).catch(e => {
         console.log('Autoplay blocked by browser. User interaction needed.');
-        // Show a subtle notification or enable play on first click
         document.addEventListener('click', function enableAudioOnFirstClick() {
-            if (!isPlaying) {
+            if (!isPlaying && settingsState.autoplay) {
                 audio.play().then(() => {
                     isPlaying = true;
                     updatePlayButton();
@@ -231,7 +221,10 @@ function fadeVolume(targetVol, duration, callback) {
 
 // Initialize Music Player
 function initMusicPlayer() {
+    const settings = loadSettings();
+    targetVolume = settings.volume / 100;
     audio.volume = targetVolume;
+    
     audio.addEventListener('ended', playNextTrack);
     audio.addEventListener('timeupdate', updateProgress);
     audio.addEventListener('loadedmetadata', () => {
@@ -327,6 +320,9 @@ function toggleMute() {
 function setVolume(value) {
     targetVolume = value / 100;
     audio.volume = targetVolume;
+    settingsState.volume = value;
+    saveSettings();
+    
     if (value > 0 && isMuted) {
         isMuted = false;
         audio.muted = false;
@@ -380,6 +376,92 @@ function toggleMusicPlayer() {
         }
     }
 }
+
+// Portfolio Data
+const portfolioData = {
+    gurshaan: {
+        name: "Gurshaan Gill",
+        greeting: "WELCOME TO A NEW WORLD",
+        fullName: "Hi, I'm Gurshaan Gill, a",
+        typingTexts: ["Developer.", "Writer.", "Creator."],
+        description: "Hello, I am a 13-year-old kid, my birthday is June 22nd, 2012. I have been developing with HTML for a year, with my general development starting in 2022.",
+        avatar: "https://github.com/brosmad123/classroomresources/blob/main/IMG_1851-removebg-preview.png?raw=true",
+        socialLinks: [
+            { icon: "fab fa-github", url: "https://github.com/brosmad123" },
+            { icon: "fa-solid fa-envelope", url: "mailto:861814@pdsb.net" }
+        ],
+        skills: ["fab fa-html5", "fa-solid fa-pen", "fa-solid fa-calculator"],
+        projects: [
+            {
+                id: "gurshaan_history",
+                title: "Canadian History Project",
+                description: "Comprehensive history project including worksheet, presentation, and brochure.",
+                category: "HISTORY",
+                image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
+                isHistoryProject: true
+            },
+            {
+                id: "gurshaan_news",
+                title: "SWG NEWSPAPER",
+                description: "I have contributed to this newspaper, with my role being as an editor, and writer.",
+                category: "NEWS",
+                image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
+                url: "https://www.classresources.info/#/newspaper"
+            }
+        ]
+    },
+    harman: {
+        name: "Harman Sidhu",
+        greeting: "WELCOME TO THE MATH WORLD",
+        fullName: "Hi, I'm Harman Sidhu, a",
+        typingTexts: ["Scholar.", "Mathematician.", "Locator."],
+        description: "I am 13 years old, my birthday is on October 24th, 2012. I am great at doing math and giving presentations. My dream school is Harvard.",
+        avatar: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/BeautyPlus-AI_FILTER-2025-09-29T00_58_43-1759107523348-removebg-preview.png",
+        socialLinks: [
+            { icon: "fab fa-github", url: "https://github.com/harman" },
+            { icon: "fab fa-instagram", url: "https://instagram.com/harman" }
+        ],
+        skills: ["fa-solid fa-flask", "fa-solid fa-square-xmark", "fas fa-chart-bar"],
+        projects: [
+            {
+                id: "harman_history",
+                title: "Canadian History Project",
+                description: "Presentation shared with Gurshaan Gill.",
+                category: "HISTORY",
+                image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
+                isHistoryProject: true
+            }
+        ]
+    },
+    newspaper: {
+        name: "Digital News Hub",
+        greeting: "Weekly School News",
+        fullName: "This is SWG News, ",
+        typingTexts: ["the best newspaper.", "your news source.", "bringing you stories."],
+        description: "We don't just provide news, we provide stories that can alter your perspective. Our information is gathered from many sources.",
+        avatar: "https://cdn.britannica.com/25/93825-050-D1300547/collection-newspapers.jpg",
+        socialLinks: [
+            { icon: "fab fa-twitter", url: "https://x.com/PeelSchools" },
+            { icon: "fab fa-instagram", url: "https://www.instagram.com/peelschools" }
+        ],
+        skills: ["fa-solid fa-newspaper"],
+        projects: [
+            {
+                id: "news_001",
+                title: "SWG NEWS ISSUE #1",
+                description: "This is the first issue of SWG News, issued on October 6th, 2025.",
+                category: "NEWS",
+                image: "https://media.istockphoto.com/id/184625088/photo/breaking-news-headline.jpg?s=612x612&w=0&k=20&c=0WNsHBZ8Yu2YeTUjVP8xY05Ist60I00iZHmTOnQErHk=",
+                url: "https://www.canva.com/design/DAG0UYFy6MA/0S5Sb5NovyP-Wn1a_OhCQg/edit?utm_content=DAG0UYFy6MA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton"
+            }
+        ]
+    },
+    guransh: {
+        name: "Guransh Dhaliwal",
+        isExternal: true,
+        externalUrl: "https://gsdhaliwal05.github.io/Portfolio/"
+    }
+};
 
 // Router functionality
 class Router {
@@ -536,7 +618,6 @@ class Router {
         const data = portfolioData[type];
         if (data && data.isExternal) {
             window.open(data.externalUrl, '_blank');
-            // Navigate back to home after opening external link
             this.navigate('home');
         }
     }
@@ -605,7 +686,8 @@ function changeTheme(theme) {
     } else {
         document.documentElement.setAttribute('data-theme', theme);
     }
-    localStorage.setItem('selectedTheme', theme);
+    settingsState.theme = theme;
+    saveSettings();
 }
 
 function openThemeCreator() {
@@ -670,10 +752,13 @@ function applyCustomTheme() {
     
     applyCustomThemeFromData(theme);
     localStorage.setItem('customTheme', JSON.stringify(theme));
-    localStorage.setItem('selectedTheme', 'custom');
-    document.getElementById('themeSelector').value = 'custom';
-    closeThemeCreator();
+    settingsState.theme = 'custom';
+    saveSettings();
     
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) themeSelect.value = 'custom';
+    
+    closeThemeCreator();
     showNotification('Custom theme applied!', 'success');
 }
 
@@ -715,6 +800,7 @@ function showNotification(message, type) {
         border-radius: 8px;
         z-index: 4000;
         font-weight: 500;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     `;
     notification.textContent = message;
     document.body.appendChild(notification);
@@ -789,20 +875,53 @@ document.addEventListener('keydown', function(e) {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Set up theme selector
-    const themeSelector = document.getElementById('themeSelector');
-    if (themeSelector) {
-        themeSelector.addEventListener('change', function() {
+    // Load settings
+    loadSettings();
+    
+    // Set up volume control in settings
+    const volumeControl = document.getElementById('volumeControl');
+    const volumeValue = document.getElementById('volumeValue');
+    if (volumeControl && volumeValue) {
+        volumeControl.addEventListener('input', function() {
+            const value = this.value;
+            volumeValue.textContent = value + '%';
+            setVolume(value);
+        });
+    }
+    
+    // Set up theme selector in settings
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) {
+        themeSelect.addEventListener('change', function() {
             changeTheme(this.value);
         });
     }
     
-    // Load saved theme
-    const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
-    if (themeSelector) {
-        themeSelector.value = savedTheme;
+    // Set up animation toggle
+    const animationToggle = document.getElementById('animationToggle');
+    if (animationToggle) {
+        animationToggle.addEventListener('change', function() {
+            settingsState.animations = this.checked;
+            saveSettings();
+            if (!this.checked) {
+                document.body.style.setProperty('--transition-speed', '0s');
+            } else {
+                document.body.style.removeProperty('--transition-speed');
+            }
+        });
     }
-    changeTheme(savedTheme);
+    
+    // Set up autoplay toggle
+    const autoplayToggle = document.getElementById('autoplayToggle');
+    if (autoplayToggle) {
+        autoplayToggle.addEventListener('change', function() {
+            settingsState.autoplay = this.checked;
+            saveSettings();
+        });
+    }
+    
+    // Apply saved theme
+    changeTheme(settingsState.theme);
     
     // Initialize music player
     initMusicPlayer();
@@ -816,18 +935,47 @@ if (document.readyState === 'loading') {
 } else {
     // DOM already loaded
     setTimeout(() => {
-        const themeSelector = document.getElementById('themeSelector');
-        if (themeSelector) {
-            themeSelector.addEventListener('change', function() {
-                changeTheme(this.value);
+        loadSettings();
+        
+        const volumeControl = document.getElementById('volumeControl');
+        const volumeValue = document.getElementById('volumeValue');
+        if (volumeControl && volumeValue) {
+            volumeControl.addEventListener('input', function() {
+                const value = this.value;
+                volumeValue.textContent = value + '%';
+                setVolume(value);
             });
-            
-            const savedTheme = localStorage.getItem('selectedTheme') || 'dark';
-            themeSelector.value = savedTheme;
-            changeTheme(savedTheme);
         }
         
-        // Initialize music player
+        const themeSelect = document.getElementById('themeSelect');
+        if (themeSelect) {
+            themeSelect.addEventListener('change', function() {
+                changeTheme(this.value);
+            });
+        }
+        
+        const animationToggle = document.getElementById('animationToggle');
+        if (animationToggle) {
+            animationToggle.addEventListener('change', function() {
+                settingsState.animations = this.checked;
+                saveSettings();
+                if (!this.checked) {
+                    document.body.style.setProperty('--transition-speed', '0s');
+                } else {
+                    document.body.style.removeProperty('--transition-speed');
+                }
+            });
+        }
+        
+        const autoplayToggle = document.getElementById('autoplayToggle');
+        if (autoplayToggle) {
+            autoplayToggle.addEventListener('change', function() {
+                settingsState.autoplay = this.checked;
+                saveSettings();
+            });
+        }
+        
+        changeTheme(settingsState.theme);
         initMusicPlayer();
         
         console.log('Portfolio Hub initialized!');
