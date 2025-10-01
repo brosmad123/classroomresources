@@ -507,7 +507,8 @@ class Router {
             'gurshaan': () => this.showPortfolio('gurshaan'),
             'harman': () => this.showPortfolio('harman'),
             'newspaper': () => this.showPortfolio('newspaper'),
-            'guransh': () => this.handleExternalPortfolio('guransh')
+            'guransh': () => this.handleExternalPortfolio('guransh'),
+            'games': () => this.showGames()
         };
         
         this.init();
@@ -565,6 +566,12 @@ class Router {
                         <i class="fas fa-user-graduate card-icon"></i>
                         <h3 class="card-title">Guransh's Portfolio</h3>
                         <p class="card-description">Visit Guransh Dhaliwal's personal portfolio</p>
+                    </div>
+                    
+                    <div class="nav-card" onclick="router.navigate('games')">
+                        <i class="fas fa-gamepad card-icon"></i>
+                        <h3 class="card-title">Games</h3>
+                        <p class="card-description">Play Connect 4 and Tic-Tac-Toe with AI opponents</p>
                     </div>
                 </div>
             </div>
@@ -655,6 +662,485 @@ class Router {
             this.navigate('home');
         }
     }
+
+    showGames() {
+        currentView = 'games';
+        switchPlaylist('home');
+        document.getElementById('mainContent').innerHTML = `
+            <div class="portfolio-container">
+                <button class="back-btn" onclick="router.navigate('home')">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </button>
+                
+                <div class="games-hero">
+                    <h1 class="games-title">Game Arcade</h1>
+                    <p class="games-subtitle">Challenge yourself against AI opponents</p>
+                </div>
+
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-icon"><i class="fas fa-times"></i></div>
+                        <h3 class="game-title">Tic-Tac-Toe</h3>
+                        <p class="game-description">Classic X's and O's. Three in a row to win!</p>
+                        <div class="game-modes">
+                            <button class="game-mode-btn" onclick="startGame('tictactoe', 'player')">
+                                <i class="fas fa-users"></i> 2 Players
+                            </button>
+                            <button class="game-mode-btn" onclick="openDifficultyModal('tictactoe')">
+                                <i class="fas fa-robot"></i> vs Bot
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// Game State
+let currentGame = null;
+let gameMode = null;
+let gameDifficulty = null;
+let isPlayerTurn = true;
+let lastMoveTime = 0;
+const MOVE_COOLDOWN = 300;
+
+function openDifficultyModal(game) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.style.display = 'block';
+    modal.id = 'difficultyModal';
+    modal.innerHTML = `
+        <div class="project-modal-content" style="max-width: 500px;">
+            <button class="close-btn" onclick="closeDifficultyModal()">&times;</button>
+            <div class="project-modal-header">
+                <h2 class="project-modal-title">Select Difficulty</h2>
+                <p class="project-modal-subtitle">Choose your challenge level</p>
+            </div>
+            <div class="project-modal-body">
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn easy" onclick="startGame('${game}', 'bot', 'easy')">
+                        <i class="fas fa-smile"></i>
+                        <span>Easy</span>
+                        <small>Perfect for beginners</small>
+                    </button>
+                    <button class="difficulty-btn medium" onclick="startGame('${game}', 'bot', 'medium')">
+                        <i class="fas fa-meh"></i>
+                        <span>Medium</span>
+                        <small>A fair challenge</small>
+                    </button>
+                    <button class="difficulty-btn hard" onclick="startGame('${game}', 'bot', 'hard')">
+                        <i class="fas fa-brain"></i>
+                        <span>Hard</span>
+                        <small>Master level AI</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDifficultyModal() {
+    const modal = document.getElementById('difficultyModal');
+    if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function startGame(game, mode, difficulty = null) {
+    closeDifficultyModal();
+    currentGame = game;
+    gameMode = mode;
+    gameDifficulty = difficulty;
+    isPlayerTurn = true;
+    
+    if (game === 'connect4') {
+        initConnect4();
+    } else if (game === 'tictactoe') {
+        initTicTacToe();
+    }
+}
+
+// Connect 4 Game
+let c4Board = [];
+let c4CurrentPlayer = 1;
+const C4_ROWS = 6;
+const C4_COLS = 7;
+
+function initConnect4() {
+    c4Board = Array(C4_ROWS).fill(null).map(() => Array(C4_COLS).fill(0));
+    c4CurrentPlayer = 1;
+    isPlayerTurn = true;
+    
+    document.getElementById('mainContent').innerHTML = `
+        <div class="game-container">
+            <button class="back-btn" onclick="router.navigate('games')">
+                <i class="fas fa-arrow-left"></i> Back to Games
+            </button>
+            
+            <div class="game-header">
+                <h1 class="game-title-text">Connect 4</h1>
+                <div class="game-info">
+                    <span class="current-player">Player ${c4CurrentPlayer}'s Turn</span>
+                    ${gameMode === 'bot' ? `<span class="difficulty-badge">${gameDifficulty}</span>` : ''}
+                </div>
+            </div>
+            
+            <div class="connect4-board" id="c4Board"></div>
+            
+            <button class="game-reset-btn" onclick="initConnect4()">
+                <i class="fas fa-redo"></i> New Game
+            </button>
+        </div>
+    `;
+    
+    renderConnect4Board();
+}
+
+function renderConnect4Board() {
+    const board = document.getElementById('c4Board');
+    board.innerHTML = '';
+    
+    for (let col = 0; col < C4_COLS; col++) {
+        const column = document.createElement('div');
+        column.className = 'c4-column';
+        column.onclick = () => dropDisc(col);
+        
+        for (let row = 0; row < C4_ROWS; row++) {
+            const cell = document.createElement('div');
+            cell.className = 'c4-cell';
+            if (c4Board[row][col] === 1) cell.classList.add('player1');
+            if (c4Board[row][col] === 2) cell.classList.add('player2');
+            column.appendChild(cell);
+        }
+        
+        board.appendChild(column);
+    }
+}
+
+function dropDisc(col) {
+    const now = Date.now();
+    if (now - lastMoveTime < MOVE_COOLDOWN) return;
+    
+    if (gameMode === 'bot' && !isPlayerTurn) return;
+    
+    for (let row = C4_ROWS - 1; row >= 0; row--) {
+        if (c4Board[row][col] === 0) {
+            c4Board[row][col] = c4CurrentPlayer;
+            lastMoveTime = now;
+            renderConnect4Board();
+            
+            if (checkConnect4Win(row, col)) {
+                setTimeout(() => {
+                    alert(`Player ${c4CurrentPlayer} wins!`);
+                    initConnect4();
+                }, 100);
+                return;
+            }
+            
+            if (isBoardFull()) {
+                setTimeout(() => {
+                    alert("It's a draw!");
+                    initConnect4();
+                }, 100);
+                return;
+            }
+            
+            c4CurrentPlayer = c4CurrentPlayer === 1 ? 2 : 1;
+            updateGameInfo();
+            
+            if (gameMode === 'bot' && c4CurrentPlayer === 2) {
+                isPlayerTurn = false;
+                setTimeout(makeBotMoveConnect4, 500);
+            } else {
+                isPlayerTurn = true;
+            }
+            
+            return;
+        }
+    }
+}
+
+function makeBotMoveConnect4() {
+    let col;
+    
+    if (gameDifficulty === 'easy') {
+        col = getRandomMove();
+    } else if (gameDifficulty === 'medium') {
+        col = Math.random() < 0.5 ? getBestMoveConnect4() : getRandomMove();
+    } else {
+        col = getBestMoveConnect4();
+    }
+    
+    if (col !== -1) {
+        dropDisc(col);
+    }
+}
+
+function getRandomMove() {
+    const validCols = [];
+    for (let col = 0; col < C4_COLS; col++) {
+        if (c4Board[0][col] === 0) validCols.push(col);
+    }
+    return validCols.length > 0 ? validCols[Math.floor(Math.random() * validCols.length)] : -1;
+}
+
+function getBestMoveConnect4() {
+    for (let col = 0; col < C4_COLS; col++) {
+        if (c4Board[0][col] === 0) {
+            const row = getLowestRow(col);
+            if (row !== -1) {
+                c4Board[row][col] = 2;
+                if (checkConnect4Win(row, col)) {
+                    c4Board[row][col] = 0;
+                    return col;
+                }
+                c4Board[row][col] = 0;
+            }
+        }
+    }
+    
+    for (let col = 0; col < C4_COLS; col++) {
+        if (c4Board[0][col] === 0) {
+            const row = getLowestRow(col);
+            if (row !== -1) {
+                c4Board[row][col] = 1;
+                if (checkConnect4Win(row, col)) {
+                    c4Board[row][col] = 0;
+                    return col;
+                }
+                c4Board[row][col] = 0;
+            }
+        }
+    }
+    
+    return getRandomMove();
+}
+
+function getLowestRow(col) {
+    for (let row = C4_ROWS - 1; row >= 0; row--) {
+        if (c4Board[row][col] === 0) return row;
+    }
+    return -1;
+}
+
+function checkConnect4Win(row, col) {
+    const player = c4Board[row][col];
+    const directions = [[0,1], [1,0], [1,1], [1,-1]];
+    
+    for (const [dr, dc] of directions) {
+        let count = 1;
+        count += countDirection(row, col, dr, dc, player);
+        count += countDirection(row, col, -dr, -dc, player);
+        if (count >= 4) return true;
+    }
+    return false;
+}
+
+function countDirection(row, col, dr, dc, player) {
+    let count = 0;
+    let r = row + dr;
+    let c = col + dc;
+    while (r >= 0 && r < C4_ROWS && c >= 0 && c < C4_COLS && c4Board[r][c] === player) {
+        count++;
+        r += dr;
+        c += dc;
+    }
+    return count;
+}
+
+function isBoardFull() {
+    return c4Board[0].every(cell => cell !== 0);
+}
+
+// Tic-Tac-Toe Game
+let tttBoard = [];
+let tttCurrentPlayer = 'X';
+
+function initTicTacToe() {
+    tttBoard = Array(9).fill('');
+    tttCurrentPlayer = 'X';
+    isPlayerTurn = true;
+    
+    document.getElementById('mainContent').innerHTML = `
+        <div class="game-container">
+            <button class="back-btn" onclick="router.navigate('games')">
+                <i class="fas fa-arrow-left"></i> Back to Games
+            </button>
+            
+            <div class="game-header">
+                <h1 class="game-title-text">Tic-Tac-Toe</h1>
+                <div class="game-info">
+                    <span class="current-player">${tttCurrentPlayer}'s Turn</span>
+                    ${gameMode === 'bot' ? `<span class="difficulty-badge">${gameDifficulty}</span>` : ''}
+                </div>
+            </div>
+            
+            <div class="tictactoe-board" id="tttBoard"></div>
+            
+            <button class="game-reset-btn" onclick="initTicTacToe()">
+                <i class="fas fa-redo"></i> New Game
+            </button>
+        </div>
+    `;
+    
+    renderTicTacToeBoard();
+}
+
+function renderTicTacToeBoard() {
+    const board = document.getElementById('tttBoard');
+    board.innerHTML = '';
+    
+    for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'ttt-cell';
+        cell.textContent = tttBoard[i];
+        cell.onclick = () => makeMove(i);
+        if (tttBoard[i]) cell.classList.add('filled');
+        board.appendChild(cell);
+    }
+}
+
+function makeMove(index) {
+    const now = Date.now();
+    if (now - lastMoveTime < MOVE_COOLDOWN) return;
+    
+    if (tttBoard[index] !== '') return;
+    if (gameMode === 'bot' && !isPlayerTurn) return;
+    
+    tttBoard[index] = tttCurrentPlayer;
+    lastMoveTime = now;
+    renderTicTacToeBoard();
+    
+    if (checkTTTWin()) {
+        setTimeout(() => {
+            alert(`${tttCurrentPlayer} wins!`);
+            initTicTacToe();
+        }, 100);
+        return;
+    }
+    
+    if (tttBoard.every(cell => cell !== '')) {
+        setTimeout(() => {
+            alert("It's a draw!");
+            initTicTacToe();
+        }, 100);
+        return;
+    }
+    
+    tttCurrentPlayer = tttCurrentPlayer === 'X' ? 'O' : 'X';
+    updateGameInfo();
+    
+    if (gameMode === 'bot' && tttCurrentPlayer === 'O') {
+        isPlayerTurn = false;
+        setTimeout(makeBotMoveTTT, 500);
+    } else {
+        isPlayerTurn = true;
+    }
+}
+
+function makeBotMoveTTT() {
+    let move;
+    
+    if (gameDifficulty === 'easy') {
+        move = getRandomMoveTTT();
+    } else if (gameDifficulty === 'medium') {
+        move = Math.random() < 0.5 ? getBestMoveTTT() : getRandomMoveTTT();
+    } else {
+        move = getBestMoveTTT();
+    }
+    
+    if (move !== -1) {
+        makeMove(move);
+    }
+}
+
+function getRandomMoveTTT() {
+    const empty = tttBoard.map((v, i) => v === '' ? i : -1).filter(i => i !== -1);
+    return empty.length > 0 ? empty[Math.floor(Math.random() * empty.length)] : -1;
+}
+
+function getBestMoveTTT() {
+    let bestScore = -Infinity;
+    let bestMove = -1;
+    
+    for (let i = 0; i < 9; i++) {
+        if (tttBoard[i] === '') {
+            tttBoard[i] = 'O';
+            const score = minimax(tttBoard, 0, false);
+            tttBoard[i] = '';
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = i;
+            }
+        }
+    }
+    
+    return bestMove;
+}
+
+function minimax(board, depth, isMaximizing) {
+    const winner = checkTTTWinForPlayer();
+    if (winner === 'O') return 10 - depth;
+    if (winner === 'X') return depth - 10;
+    if (board.every(cell => cell !== '')) return 0;
+    
+    if (isMaximizing) {
+        let bestScore = -Infinity;
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = 'O';
+                const score = minimax(board, depth + 1, false);
+                board[i] = '';
+                bestScore = Math.max(score, bestScore);
+            }
+        }
+        return bestScore;
+    } else {
+        let bestScore = Infinity;
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                board[i] = 'X';
+                const score = minimax(board, depth + 1, true);
+                board[i] = '';
+                bestScore = Math.min(score, bestScore);
+            }
+        }
+        return bestScore;
+    }
+}
+
+function checkTTTWin() {
+    return checkTTTWinForPlayer() !== null;
+}
+
+function checkTTTWinForPlayer() {
+    const lines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
+    
+    for (const [a, b, c] of lines) {
+        if (tttBoard[a] && tttBoard[a] === tttBoard[b] && tttBoard[a] === tttBoard[c]) {
+            return tttBoard[a];
+        }
+    }
+    return null;
+}
+
+function updateGameInfo() {
+    const playerDisplay = document.querySelector('.current-player');
+    if (playerDisplay) {
+        if (currentGame === 'connect4') {
+            playerDisplay.textContent = `Player ${c4CurrentPlayer}'s Turn`;
+        } else {
+            playerDisplay.textContent = `${tttCurrentPlayer}'s Turn`;
+        }
+    }
 }
 
 const router = new Router();
@@ -676,7 +1162,6 @@ function openProjectModal(projectId, portfolioType) {
     subtitle.textContent = project.category;
     description.textContent = project.description;
     
-    // Generate buttons dynamically (1-5 buttons)
     if (project.buttons && project.buttons.length > 0) {
         actions.innerHTML = project.buttons.map(button => `
             <button class="project-modal-btn" onclick="window.open('${button.url}', '_blank')">
@@ -691,16 +1176,13 @@ function openProjectModal(projectId, portfolioType) {
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
     
-    // FORCE background colors based on current theme
     const currentTheme = settingsState.theme;
     const modalBody = document.querySelector('.project-modal-body');
     
     if (modalBody) {
-        // Remove any inline background style first
         modalBody.style.removeProperty('background');
         modalBody.style.removeProperty('background-color');
         
-        // Force theme-specific background
         if (currentTheme === 'light') {
             modalBody.style.setProperty('background', '#ffffff', 'important');
         } else if (currentTheme === 'dark') {
@@ -734,7 +1216,6 @@ function changeTheme(theme) {
     settingsState.theme = theme;
     saveSettings();
     
-    // Update modal background if it's open
     const modalBody = document.querySelector('.project-modal-body');
     if (modalBody && document.getElementById('projectModal').style.display === 'block') {
         modalBody.style.removeProperty('background');
