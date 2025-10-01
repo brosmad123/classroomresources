@@ -525,26 +525,26 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.75) !important;
     backdrop-filter: blur(5px);
     transition: background-color 0.3s ease;
 }
 
 [data-theme="light"] .project-modal {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 [data-theme="dark"] .project-modal {
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: rgba(0, 0, 0, 0.85) !important;
 }
 
 [data-theme="neon"] .project-modal {
-    background-color: rgba(139, 0, 139, 0.7);
+    background-color: rgba(139, 0, 139, 0.7) !important;
     backdrop-filter: blur(8px);
 }
 
 [data-theme="ocean"] .project-modal {
-    background-color: rgba(0, 50, 80, 0.75);
+    background-color: rgba(0, 50, 80, 0.75) !important;
     backdrop-filter: blur(6px);
 }
 
@@ -664,17 +664,25 @@ body {
 
 .project-modal-body {
     padding: 2rem;
-    background: var(--bg-card);
+    background: var(--bg-card) !important;
     text-align: center;
 }
 
 [data-theme="light"] .project-modal-body {
-    background: #ffffff;
-    color: #1f2937;
+    background: #ffffff !important;
+    color: #1f2937 !important;
 }
 
 [data-theme="dark"] .project-modal-body {
-    background: rgba(15, 15, 35, 0.95);
+    background: rgba(15, 15, 35, 0.95) !important;
+}
+
+[data-theme="neon"] .project-modal-body {
+    background: rgba(10, 10, 30, 0.95) !important;
+}
+
+[data-theme="ocean"] .project-modal-body {
+    background: rgba(15, 30, 45, 0.95) !important;
 }
 
 .project-modal-description {
