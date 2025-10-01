@@ -677,6 +677,7 @@ class Router {
                     <p class="games-subtitle">Challenge yourself against AI opponents</p>
                 </div>
 
+
                 <div class="games-grid">
                     <div class="game-card">
                         <div class="game-icon"><i class="fas fa-times"></i></div>
@@ -687,6 +688,20 @@ class Router {
                                 <i class="fas fa-users"></i> 2 Players
                             </button>
                             <button class="game-mode-btn" onclick="openDifficultyModal('tictactoe')">
+                                <i class="fas fa-robot"></i> vs Bot
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-icon"><i class="fas fa-circle"></i></div>
+                        <h3 class="game-title">Connect 4</h3>
+                        <p class="game-description">Drop discs and connect four in a row to win!</p>
+                        <div class="game-modes">
+                            <button class="game-mode-btn" onclick="startGame('connect4', 'player')">
+                                <i class="fas fa-users"></i> 2 Players
+                            </button>
+                            <button class="game-mode-btn" onclick="openDifficultyModal('connect4')">
                                 <i class="fas fa-robot"></i> vs Bot
                             </button>
                         </div>
