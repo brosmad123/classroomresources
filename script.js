@@ -686,6 +686,27 @@ function openProjectModal(projectId, portfolioType) {
     
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    
+    // FORCE background colors based on current theme
+    const currentTheme = settingsState.theme;
+    const modalBody = document.querySelector('.project-modal-body');
+    
+    if (modalBody) {
+        // Remove any inline background style first
+        modalBody.style.removeProperty('background');
+        modalBody.style.removeProperty('background-color');
+        
+        // Force theme-specific background
+        if (currentTheme === 'light') {
+            modalBody.style.setProperty('background', '#ffffff', 'important');
+        } else if (currentTheme === 'dark') {
+            modalBody.style.setProperty('background', 'rgba(15, 15, 35, 0.95)', 'important');
+        } else if (currentTheme === 'neon') {
+            modalBody.style.setProperty('background', 'rgba(10, 10, 30, 0.95)', 'important');
+        } else if (currentTheme === 'ocean') {
+            modalBody.style.setProperty('background', 'rgba(15, 30, 45, 0.95)', 'important');
+        }
+    }
 }
 
 function closeProjectModal() {
@@ -708,6 +729,23 @@ function changeTheme(theme) {
     }
     settingsState.theme = theme;
     saveSettings();
+    
+    // Update modal background if it's open
+    const modalBody = document.querySelector('.project-modal-body');
+    if (modalBody && document.getElementById('projectModal').style.display === 'block') {
+        modalBody.style.removeProperty('background');
+        modalBody.style.removeProperty('background-color');
+        
+        if (theme === 'light') {
+            modalBody.style.setProperty('background', '#ffffff', 'important');
+        } else if (theme === 'dark') {
+            modalBody.style.setProperty('background', 'rgba(15, 15, 35, 0.95)', 'important');
+        } else if (theme === 'neon') {
+            modalBody.style.setProperty('background', 'rgba(10, 10, 30, 0.95)', 'important');
+        } else if (theme === 'ocean') {
+            modalBody.style.setProperty('background', 'rgba(15, 30, 45, 0.95)', 'important');
+        }
+    }
 }
 
 function openThemeCreator() {
