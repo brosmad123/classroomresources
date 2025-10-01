@@ -677,7 +677,6 @@ class Router {
                     <p class="games-subtitle">Challenge yourself against AI opponents</p>
                 </div>
 
-
                 <div class="games-grid">
                     <div class="game-card">
                         <div class="game-icon"><i class="fas fa-times"></i></div>
@@ -827,6 +826,8 @@ function renderConnect4Board() {
         for (let row = 0; row < C4_ROWS; row++) {
             const cell = document.createElement('div');
             cell.className = 'c4-cell';
+            cell.dataset.row = row;
+            cell.dataset.col = col;
             if (c4Board[row][col] === 1) cell.classList.add('player1');
             if (c4Board[row][col] === 2) cell.classList.add('player2');
             column.appendChild(cell);
@@ -846,33 +847,41 @@ function dropDisc(col) {
         if (c4Board[row][col] === 0) {
             c4Board[row][col] = c4CurrentPlayer;
             lastMoveTime = now;
-            renderConnect4Board();
             
-            if (checkConnect4Win(row, col)) {
-                setTimeout(() => {
-                    alert(`Player ${c4CurrentPlayer} wins!`);
-                    initConnect4();
-                }, 100);
-                return;
+            // Add drop animation
+            const cell = document.querySelector(`.c4-cell[data-row="${row}"][data-col="${col}"]`);
+            if (cell) {
+                cell.classList.add('dropping');
+                cell.classList.add(c4CurrentPlayer === 1 ? 'player1' : 'player2');
             }
             
-            if (isBoardFull()) {
-                setTimeout(() => {
-                    alert("It's a draw!");
-                    initConnect4();
-                }, 100);
-                return;
-            }
-            
-            c4CurrentPlayer = c4CurrentPlayer === 1 ? 2 : 1;
-            updateGameInfo();
-            
-            if (gameMode === 'bot' && c4CurrentPlayer === 2) {
-                isPlayerTurn = false;
-                setTimeout(makeBotMoveConnect4, 500);
-            } else {
-                isPlayerTurn = true;
-            }
+            setTimeout(() => {
+                if (checkConnect4Win(row, col)) {
+                    setTimeout(() => {
+                        alert(`Player ${c4CurrentPlayer} wins!`);
+                        initConnect4();
+                    }, 100);
+                    return;
+                }
+                
+                if (isBoardFull()) {
+                    setTimeout(() => {
+                        alert("It's a draw!");
+                        initConnect4();
+                    }, 100);
+                    return;
+                }
+                
+                c4CurrentPlayer = c4CurrentPlayer === 1 ? 2 : 1;
+                updateGameInfo();
+                
+                if (gameMode === 'bot' && c4CurrentPlayer === 2) {
+                    isPlayerTurn = false;
+                    setTimeout(makeBotMoveConnect4, 600);
+                } else {
+                    isPlayerTurn = true;
+                }
+            }, 500);
             
             return;
         }
@@ -883,9 +892,9 @@ function makeBotMoveConnect4() {
     let col;
     
     if (gameDifficulty === 'easy') {
-        col = getRandomMove();
+        col = getRandomMoveC4();
     } else if (gameDifficulty === 'medium') {
-        col = Math.random() < 0.5 ? getBestMoveConnect4() : getRandomMove();
+        col = Math.random() < 0.5 ? getBestMoveConnect4() : getRandomMoveC4();
     } else {
         col = getBestMoveConnect4();
     }
@@ -895,7 +904,7 @@ function makeBotMoveConnect4() {
     }
 }
 
-function getRandomMove() {
+function getRandomMoveC4() {
     const validCols = [];
     for (let col = 0; col < C4_COLS; col++) {
         if (c4Board[0][col] === 0) validCols.push(col);
@@ -904,6 +913,7 @@ function getRandomMove() {
 }
 
 function getBestMoveConnect4() {
+    // Check for winning move
     for (let col = 0; col < C4_COLS; col++) {
         if (c4Board[0][col] === 0) {
             const row = getLowestRow(col);
@@ -918,6 +928,7 @@ function getBestMoveConnect4() {
         }
     }
     
+    // Block opponent's winning move
     for (let col = 0; col < C4_COLS; col++) {
         if (c4Board[0][col] === 0) {
             const row = getLowestRow(col);
@@ -932,7 +943,14 @@ function getBestMoveConnect4() {
         }
     }
     
-    return getRandomMove();
+    // Prefer center column
+    if (c4Board[0][3] === 0) {
+        const centerScore = Math.random();
+        if (centerScore > 0.3) return 3;
+    }
+    
+    // Choose random valid move
+    return getRandomMoveC4();
 }
 
 function getLowestRow(col) {
