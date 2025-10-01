@@ -447,9 +447,7 @@ const portfolioData = {
                 category: "HISTORY",
                 image: "https://www.flamingotravels.co.in/_next/image?url=https%3A%2F%2Fimgcdn.flamingotravels.co.in%2FImages%2FCountry%2Fcanada-history-culture.jpg&w=1080&q=75",
                 buttons: [
-                    { label: "Brochure", icon: "fas fa-book", url: "https://www.canva.com/design/DAG0UMV_aNM/-HddDrUS1mLGw4GKLuBZPw/edit" },
-                    { label: "Presentation", icon: "fa-solid fa-computer", url: "https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit" },
-                    { label: "Worksheet", icon: "fas fa-file-alt", url: "https://github.com/brosmad123/classroomresources/blob/main/canadian-history-merged.pdf" }
+                    { label: "Presentation", icon: "fa-solid fa-computer", url: "https://www.canva.com/design/DAG0H8hKWsI/aKSA3yOECUVXyRaSkA1E8A/edit" }
                 ]
             },
             {
@@ -459,9 +457,7 @@ const portfolioData = {
                 category: "BUSINESS",
                 image: "https://www.bgateway.com/assets/images/general/_contentNarrow/Be-your-own-Boss.jpg",
                 buttons: [
-                    { label: "Presentation", icon: "fas fa-briefcase", url: "https://www.canva.com/design/DAG0fr6sxjk/S2mpkc4f9x1Y84y6CemFVg/edit" },
-                    { label: "Form", icon: "fas fa-file-alt", url: "https://docs.google.com/forms/d/e/1FAIpQLSetkXwH66Lg1KWm06ecruzIowNMmV3RpThdQz-HuDFeg3pihA/viewform?pli=1" },
-                    { label: "Responses", icon: "fa-wpforms", url: "https://docs.google.com/spreadsheets/d/10FOhRVua_qWtZhQvfay_9sxj9h0oDQLaIkGhZt68eW4/edit?usp=sharing" }
+                    { label: "View Project", icon: "fas fa-briefcase", url: "https://www.canva.com/design/DAG0fr6sxjk/S2mpkc4f9x1Y84y6CemFVg/edit" }
                 ]
             }
         ]
