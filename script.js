@@ -36,9 +36,9 @@ const musicPlaylists = {
             src: "https://file.garden/aNtJgm887DiA_7s2/SSvid.net--c418-mice-on-venus-8bit-cover-slowed.mp3"
         },
         {
-            title: "In the Back of my Car",
-            artist: "D4VD",
-            src: "https://file.garden/aNtJgm887DiA_7s2/d4vd%20-%20Romantic%20Homicide%20_%20remix%20(tiktok%20version).mp3"
+            title: "Pigstep",
+            artist: "Lena Raine",
+            src: "https://file.garden/aNtJgm887DiA_7s2/YTDown.com_YouTube_Minecraft-OST-Pigstep_Media_R9eC3WBRKeY_008_128k.mp3"
         },
         {
             title: "Nostalgia",
