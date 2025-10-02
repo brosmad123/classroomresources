@@ -848,7 +848,6 @@ function dropDisc(col) {
             c4Board[row][col] = c4CurrentPlayer;
             lastMoveTime = now;
             
-            // Add drop animation
             const cell = document.querySelector(`.c4-cell[data-row="${row}"][data-col="${col}"]`);
             if (cell) {
                 cell.classList.add('dropping');
@@ -894,7 +893,7 @@ function makeBotMoveConnect4() {
     if (gameDifficulty === 'easy') {
         col = getRandomMoveC4();
     } else if (gameDifficulty === 'medium') {
-        col = Math.random() < 0.5 ? getBestMoveConnect4() : getRandomMoveC4();
+        col = Math.random() < 0.7 ? getBestMoveConnect4() : getRandomMoveC4();
     } else {
         col = getBestMoveConnect4();
     }
@@ -913,7 +912,7 @@ function getRandomMoveC4() {
 }
 
 function getBestMoveConnect4() {
-    // Check for winning move
+    // Priority 1: Win immediately if possible
     for (let col = 0; col < C4_COLS; col++) {
         if (c4Board[0][col] === 0) {
             const row = getLowestRow(col);
@@ -928,7 +927,7 @@ function getBestMoveConnect4() {
         }
     }
     
-    // Block opponent's winning move
+    // Priority 2: Block opponent's winning move
     for (let col = 0; col < C4_COLS; col++) {
         if (c4Board[0][col] === 0) {
             const row = getLowestRow(col);
@@ -943,14 +942,155 @@ function getBestMoveConnect4() {
         }
     }
     
-    // Prefer center column
-    if (c4Board[0][3] === 0) {
-        const centerScore = Math.random();
-        if (centerScore > 0.3) return 3;
+    // Priority 3: Don't create a win opportunity for opponent above our move
+    const safeMoves = [];
+    for (let col = 0; col < C4_COLS; col++) {
+        if (c4Board[0][col] === 0) {
+            const row = getLowestRow(col);
+            if (row !== -1) {
+                if (row > 0) {
+                    c4Board[row][col] = 2;
+                    c4Board[row-1][col] = 1;
+                    const createsWin = checkConnect4Win(row-1, col);
+                    c4Board[row][col] = 0;
+                    c4Board[row-1][col] = 0;
+                    
+                    if (!createsWin) {
+                        safeMoves.push(col);
+                    }
+                } else {
+                    safeMoves.push(col);
+                }
+            }
+        }
     }
     
-    // Choose random valid move
-    return getRandomMoveC4();
+    // Priority 4: Evaluate positions using scoring
+    let bestCol = -1;
+    let bestScore = -Infinity;
+    const movesToEvaluate = safeMoves.length > 0 ? safeMoves : [];
+    
+    if (movesToEvaluate.length === 0) {
+        for (let col = 0; col < C4_COLS; col++) {
+            if (c4Board[0][col] === 0) movesToEvaluate.push(col);
+        }
+    }
+    
+    for (const col of movesToEvaluate) {
+        const row = getLowestRow(col);
+        if (row !== -1) {
+            c4Board[row][col] = 2;
+            const score = evaluatePosition(2);
+            c4Board[row][col] = 0;
+            
+            let positionBonus = 0;
+            if (col === 3) positionBonus = 4;
+            else if (col === 2 || col === 4) positionBonus = 2;
+            else if (col === 1 || col === 5) positionBonus = 1;
+            
+            const totalScore = score + positionBonus;
+            
+            if (totalScore > bestScore) {
+                bestScore = totalScore;
+                bestCol = col;
+            }
+        }
+    }
+    
+    // Priority 5: Prefer center if no clear advantage
+    if (bestScore < 50 && c4Board[0][3] === 0) {
+        const centerRow = getLowestRow(3);
+        if (centerRow !== -1) {
+            return 3;
+        }
+    }
+    
+    return bestCol !== -1 ? bestCol : getRandomMoveC4();
+}
+
+function evaluatePosition(player) {
+    let score = 0;
+    const opponent = player === 1 ? 2 : 1;
+    
+    // Evaluate horizontal windows
+    for (let row = 0; row < C4_ROWS; row++) {
+        for (let col = 0; col < C4_COLS - 3; col++) {
+            const window = [
+                c4Board[row][col], 
+                c4Board[row][col+1], 
+                c4Board[row][col+2], 
+                c4Board[row][col+3]
+            ];
+            score += evaluateWindow(window, player, opponent);
+        }
+    }
+    
+    // Evaluate vertical windows
+    for (let col = 0; col < C4_COLS; col++) {
+        for (let row = 0; row < C4_ROWS - 3; row++) {
+            const window = [
+                c4Board[row][col], 
+                c4Board[row+1][col], 
+                c4Board[row+2][col], 
+                c4Board[row+3][col]
+            ];
+            score += evaluateWindow(window, player, opponent);
+        }
+    }
+    
+    // Evaluate diagonal (down-right) windows
+    for (let row = 0; row < C4_ROWS - 3; row++) {
+        for (let col = 0; col < C4_COLS - 3; col++) {
+            const window = [
+                c4Board[row][col], 
+                c4Board[row+1][col+1], 
+                c4Board[row+2][col+2], 
+                c4Board[row+3][col+3]
+            ];
+            score += evaluateWindow(window, player, opponent);
+        }
+    }
+    
+    // Evaluate diagonal (down-left) windows
+    for (let row = 0; row < C4_ROWS - 3; row++) {
+        for (let col = 3; col < C4_COLS; col++) {
+            const window = [
+                c4Board[row][col], 
+                c4Board[row+1][col-1], 
+                c4Board[row+2][col-2], 
+                c4Board[row+3][col-3]
+            ];
+            score += evaluateWindow(window, player, opponent);
+        }
+    }
+    
+    return score;
+}
+
+function evaluateWindow(window, player, opponent) {
+    let score = 0;
+    const playerCount = window.filter(cell => cell === player).length;
+    const opponentCount = window.filter(cell => cell === opponent).length;
+    const emptyCount = window.filter(cell => cell === 0).length;
+    
+    if (playerCount === 4) {
+        score += 100;
+    }
+    else if (playerCount === 3 && emptyCount === 1) {
+        score += 10;
+    }
+    else if (playerCount === 2 && emptyCount === 2) {
+        score += 5;
+    }
+    
+    if (opponentCount === 3 && emptyCount === 1) {
+        score -= 8;
+    }
+    else if (opponentCount === 2 && emptyCount === 2) {
+        score -= 3;
+    }
+    
+    return score;
 }
 
 function getLowestRow(col) {
