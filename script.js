@@ -433,7 +433,7 @@ const portfolioData = {
         fullName: "Hi, I'm Harman Sidhu, a",
         typingTexts: ["Scholar.", "Mathematician.", "Locator."],
         description: "I am 13 years old, my birthday is on October 24th, 2012. I am great at doing math and giving presentations. My dream school is Harvard.",
-        avatar: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/IMG_1855-removebg-preview.png",
+        avatar: "https://raw.githubusercontent.com/brosmad123/classroomresources/main/22b2cd9b-6a6f-4684-b785-0111b5066563-removebg-preview.png",
         socialLinks: [
             { icon: "fab fa-github", url: "https://github.com/harman" },
             { icon: "fab fa-instagram", url: "https://instagram.com/harman" }
